@@ -22,9 +22,9 @@ class About extends StatefulWidget {
 class _AboutState extends State<About> with SingleTickerProviderStateMixin {
 
   final List<Widget> _tabs = [
-    new Tab(text: '借钱', icon: const Icon(Icons.home)),
-    new Tab(text: '认证', icon: const Icon(Icons.assignment)),
-    new Tab(text: '我的', icon: const Icon(Icons.person_pin)),
+    new Tab(text: '借钱', icon: const Icon(Icons.home, size: 24.0)),
+    new Tab(text: '认证', icon: const Icon(Icons.assignment, size: 24.0)),
+    new Tab(text: '我的', icon: const Icon(Icons.person_pin, size: 24.0)),
   ];
 
   final List<Widget> _tabviews = <Widget>[

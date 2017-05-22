@@ -1,7 +1,8 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:release_app/src/components/singlePage/borrow.dart';
-
 
 class MessageCard extends StatefulWidget {
   MessageCard({Key key, this.title}) : super(key: key);
@@ -12,14 +13,15 @@ class MessageCard extends StatefulWidget {
   _MessageCardState createState() => new _MessageCardState();
 }
 
-class _MessageCardState extends State<MessageCard> with SingleTickerProviderStateMixin {
-
-
-
+class _MessageCardState extends State<MessageCard>
+    with SingleTickerProviderStateMixin {
   final List<BottomNavigationBarItem> _bottomBarList = [
-    new BottomNavigationBarItem(icon: const Icon(Icons.assignment), title: new Text('登录')),
-    new BottomNavigationBarItem(icon: const Icon(Icons.access_time), title: new Text('二屏')),
-    new BottomNavigationBarItem(icon: const Icon(Icons.person), title: new Text('我的')),
+    new BottomNavigationBarItem(
+        icon: const Icon(Icons.assignment), title: new Text('登录')),
+    new BottomNavigationBarItem(
+        icon: const Icon(Icons.access_time), title: new Text('二屏')),
+    new BottomNavigationBarItem(
+        icon: const Icon(Icons.person), title: new Text('我的')),
   ];
 
   final List<Widget> _tabviews = <Widget>[
@@ -31,38 +33,50 @@ class _MessageCardState extends State<MessageCard> with SingleTickerProviderStat
   TabController _tabController;
   int _index;
 
+  ScrollController _ScrollController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(length: _bottomBarList.length, vsync: this);
+    _tabController =
+        new TabController(length: _bottomBarList.length, vsync: this);
     _tabController.addListener(_handleTabController);
     if (_index == null || _index < 0) {
       _index = 0;
     }
+    _ScrollController = new ScrollController();
+//    _ScrollController.addListener();
   }
-
 
   @override
   void dispose() {
+    _tabController.removeListener(_handleTabController);
     _tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return new Scaffold(
-//      appBar: new AppBar(
-//        title: new Text(widget.title),
-//      ),
-        body: new Container(
-          child: new TabBarView(
-            children: _tabviews,
-            controller: _tabController,
+      appBar: new AppBar(
+        title: new Text(widget.title),
+      ),
+
+        body: new Card(
+          color: Colors.green,
+          child: new Container(
+            height: 100.0,
+              width: 200.0,
+            child: new Text('hahah'),
           ),
         ),
+
+//        body: new Container(
+//          child: new TabBarView(
+//            children: _tabviews,
+//            controller: _tabController,
+//          ),
+//        ),
 
 //      body: new ListView(
 //
@@ -73,49 +87,52 @@ class _MessageCardState extends State<MessageCard> with SingleTickerProviderStat
 //          ),
 //        ],
 //      ),
+
       //底部导航栏
-      bottomNavigationBar: new BottomNavigationBar(
-          items: _bottomBarList,
-          currentIndex: _tabController.index,
-        onTap: (index){
-            setState((){
-              _index = index;
-              _tabController.animateTo(index);
-            });
-        },
-      ),
-
-
+//      bottomNavigationBar: new BottomNavigationBar(
+//        items: _bottomBarList,
+//        currentIndex: _index,
+//        onTap: (index) {
+//          setState(() {
+//            _index = index;
+//            _tabController.animateTo(index);
+//          });
+//        },
+//      ),
+//时间选择器
 //      body: new Card(
 //        color: Colors.grey[100],
 //        child: new Container(
-//            height: 150.0,
-//            child: new DayPicker(
-//                selectedDate: new DateTime.now(),
-//                currentDate: new DateTime.now(),
-//                onChanged: (date) {
+//          height: 150.0,
+//          child: new DayPicker(
+//              selectedDate: new DateTime.now(),
+//              currentDate: new DateTime.now(),
+//              onChanged: (date) {
 ////                  showDialog(context: context, child: new Text(date.toIso8601String()));
 ////                  showAboutDialog(context: context);
-//                  showDialog(context: context, child: new CupertinoAlertDialog(
-//                    title: new Text('提醒'),
-//                    content: new Text(date.toIso8601String()),
-//                    actions: [
-//                      new CupertinoButton(
-//                          child: new Text('确定'), onPressed: () {
-//                            Navigator.of(context).pop();
-//                      }),
-//                    ],
-//                  )
-//                  )
-//                  ;
-//                },
-//                firstDate: new DateTime(2017),
-//                lastDate: new DateTime(2018),
-//                displayedMonth: new DateTime.now()
-//            ),
+//                if (Platform.isIOS) {
+//                  showDialog(
+//                      context: context,
+//                      child: new CupertinoAlertDialog(
+//                        title: new Text('提醒'),
+//                        content: new Text(date.toIso8601String()),
+//                        actions: [
+//                          new CupertinoButton(
+//                              child: new Text('确定'),
+//                              onPressed: () {
+//                                Navigator.of(context).pop();
+//                              }),
+//                        ],
+//                      ));
+//                } else {
+//
+//                }
+//              },
+//              firstDate: new DateTime(2017),
+//              lastDate: new DateTime(2018),
+//              displayedMonth: new DateTime.now()),
 //        ),
 //      ),
-
 
 //      body: new Container(
 //        height: 150.0,
@@ -158,19 +175,21 @@ class _MessageCardState extends State<MessageCard> with SingleTickerProviderStat
   void didChangeDependencies() {
     super.didChangeDependencies();
     print('当前tab index：' + _tabController.index.toString());
-    setState((){
+    setState(() {
       _index = _tabController?.index;
 //      _tabController.addListener();
     });
   }
 
-
   void _handleTabController() {
-    print('监听tab index：' + _tabController.index.toString());
-    if (_tabController.indexIsChanging){
-      setState((){
-        _index = _tabController.index;
-      });
-    }
+    print('监听tab index：' +
+        _tabController.index.toString() +
+        '是否changing:' +
+        _tabController.indexIsChanging.toString());
+//    if (_tabController.indexIsChanging){
+    setState(() {
+      _index = _tabController.index;
+    });
+//    }
   }
 }
