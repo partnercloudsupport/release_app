@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:release_app/src/components/About.dart';
+import 'package:release_app/src/components/Home.dart';
 import 'package:release_app/src/components/MyHomePage.dart';
-import 'package:release_app/src/components/singlePage/borrow.dart';
+import 'package:release_app/src/components/singlePage/Borrow.dart';
 import 'package:release_app/src/widget/MessageCard.dart';
 
 
@@ -42,11 +42,11 @@ class MyApp extends StatelessWidget {
 //        // is not restarted.
 //        primarySwatch: Colors.blue,
 //      ),
-      home: new About(title: '现金口贷'),
+      home: new Home(title: '现金口贷'),
       routes: <String, WidgetBuilder>{
         '/a': (BuildContext context) => new MyHomePage(title: '我要借钱'),
-        '/b': (BuildContext context) => new About(title: '口贷'),
-        '/c': (BuildContext context) => new borrow(title: '我要借钱'),
+        '/b': (BuildContext context) => new Home(title: '口贷'),
+        '/c': (BuildContext context) => new Borrow(title: '我要借钱'),
         '/message': (BuildContext context) => new MessageCard(title: '信息'),
       },
     );

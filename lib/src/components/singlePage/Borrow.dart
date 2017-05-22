@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class borrow extends StatefulWidget {
-  borrow({Key key, this.title,}) : super(key: key);
+class Borrow extends StatefulWidget {
+  Borrow({Key key, this.title,}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful,
   // meaning that it has a State object (defined below) that contains
@@ -19,10 +19,10 @@ class borrow extends StatefulWidget {
 //  final BuildContext context;
 
   @override
-  _borrowState createState() => new _borrowState();
+  _BorrowState createState() => new _BorrowState();
 }
 
-class _borrowState extends State<borrow> {
+class _BorrowState extends State<Borrow> {
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +55,6 @@ class _borrowState extends State<borrow> {
     // instances of widgets.
     return new Column(
       children: [
-        new AppBar(
-          title: new Text(
-            widget.title,
-          ),
-          actions: actions,
-          centerTitle: true,
-        ),
         new Flexible(
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +89,7 @@ class _borrowState extends State<borrow> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        color: Colors.blue,
+                        color: Theme.of(context).primaryColor,
       //                    highlightColor: Colors.grey[100],
                       )
                     : new RaisedButton(

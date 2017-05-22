@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:release_app/src/components/singlePage/borrow.dart';
+import 'package:release_app/src/components/singlePage/Borrow.dart';
 
 class MessageCard extends StatefulWidget {
   MessageCard({Key key, this.title}) : super(key: key);
@@ -25,15 +25,17 @@ class _MessageCardState extends State<MessageCard>
   ];
 
   final List<Widget> _tabviews = <Widget>[
-    new borrow(title: '我要借钱'),
-    new borrow(title: '认证'),
-    new borrow(title: '我的'),
+    new Borrow(title: '我要借钱'),
+    new Borrow(title: '认证'),
+    new Borrow(title: '我的'),
   ];
+
 
   TabController _tabController;
   int _index;
+  TabController get tabController => _tabController;
 
-  ScrollController _ScrollController;
+//  ScrollController _ScrollController;
 
   @override
   void initState() {
@@ -41,10 +43,11 @@ class _MessageCardState extends State<MessageCard>
     _tabController =
         new TabController(length: _bottomBarList.length, vsync: this);
     _tabController.addListener(_handleTabController);
+    _tabController.animation.addListener(_handleTabAnimationController);
     if (_index == null || _index < 0) {
       _index = 0;
     }
-    _ScrollController = new ScrollController();
+//    _ScrollController = new ScrollController();
 //    _ScrollController.addListener();
   }
 
@@ -62,21 +65,21 @@ class _MessageCardState extends State<MessageCard>
         title: new Text(widget.title),
       ),
 
-        body: new Card(
-          color: Colors.green,
-          child: new Container(
-            height: 100.0,
-              width: 200.0,
-            child: new Text('hahah'),
+//      body: new Card(
+//        color: Colors.green,
+//        child: new Container(
+//          height: 100.0,
+//          width: 200.0,
+//          child: new Text('hahah'),
+//        ),
+//      ),
+
+        body: new Container(
+          child: new TabBarView(
+            children: _tabviews,
+            controller: _tabController,
           ),
         ),
-
-//        body: new Container(
-//          child: new TabBarView(
-//            children: _tabviews,
-//            controller: _tabController,
-//          ),
-//        ),
 
 //      body: new ListView(
 //
@@ -89,16 +92,16 @@ class _MessageCardState extends State<MessageCard>
 //      ),
 
       //底部导航栏
-//      bottomNavigationBar: new BottomNavigationBar(
-//        items: _bottomBarList,
-//        currentIndex: _index,
-//        onTap: (index) {
-//          setState(() {
-//            _index = index;
-//            _tabController.animateTo(index);
-//          });
-//        },
-//      ),
+      bottomNavigationBar: new BottomNavigationBar(
+        items: _bottomBarList,
+        currentIndex: _index,
+        onTap: (index) {
+          setState(() {
+            _index = index;
+            _tabController.animateTo(index);
+          });
+        },
+      ),
 //时间选择器
 //      body: new Card(
 //        color: Colors.grey[100],
@@ -177,7 +180,6 @@ class _MessageCardState extends State<MessageCard>
     print('当前tab index：' + _tabController.index.toString());
     setState(() {
       _index = _tabController?.index;
-//      _tabController.addListener();
     });
   }
 
@@ -191,5 +193,17 @@ class _MessageCardState extends State<MessageCard>
       _index = _tabController.index;
     });
 //    }
+  }
+
+  @override
+  void didUpdateWidget(MessageCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+  }
+
+
+
+  void _handleTabAnimationController() {
+    print("animation : "+ _tabController.index.toString() +"changing: "+_tabController.indexIsChanging.toString());
   }
 }

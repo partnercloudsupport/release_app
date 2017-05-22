@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:release_app/src/components/singlePage/borrow.dart';
+import 'package:release_app/src/components/singlePage/Approve.dart';
+import 'package:release_app/src/components/singlePage/Borrow.dart';
 
-class About extends StatefulWidget {
-  About({Key key, this.title}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful,
   // meaning that it has a State object (defined below) that contains
@@ -16,10 +18,10 @@ class About extends StatefulWidget {
   final String title;
 
   @override
-  _AboutState createState() => new _AboutState();
+  _HomeState createState() => new _HomeState();
 }
 
-class _AboutState extends State<About> with SingleTickerProviderStateMixin {
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   final List<Widget> _tabs = [
     new Tab(text: '借钱', icon: const Icon(Icons.home, size: 24.0)),
@@ -28,9 +30,9 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
   ];
 
   final List<Widget> _tabviews = <Widget>[
-    new borrow(title: '我要借钱'),
-    new borrow(title: '认证'),
-    new borrow(title: '我的'),
+    new Borrow(title: '我要借钱'),
+    new Approve(),
+    new Borrow(title: '我的'),
   ];
 
   TabController _tabController;
@@ -62,16 +64,24 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
     // needs updating rather than having to individually change
     // instances of widgets.
     return new Scaffold(
-//      appBar: new AppBar(
-//        title: new Text(widget.title),
-////        bottom: new TabBar(
-////          tabs: _tabs,
-//////          indicatorColor: Colors.white,
-//////          unselectedLabelColor: Colors.grey,
-////          controller: _tabController,
-////          labelColor: Colors.white,
-////        ),
-//      ),
+      appBar: new AppBar(
+        title: new Text(widget.title),
+        bottom: new TabBar(
+          tabs: _tabs,
+//          indicatorColor: Colors.white,
+//          unselectedLabelColor: Colors.grey,
+          controller: _tabController,
+          labelColor: Colors.white,
+        ),
+        actions: [
+          new CupertinoButton(
+            child: new Text('消息', style: const TextStyle(color: Colors.white)),
+            onPressed: (){
+              Navigator.of(context).pushNamed('/message');
+            },
+          ),
+        ],
+      ),
       body: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -81,16 +91,16 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                 controller: _tabController,
               ),
           ),
-          new Container(
-            color: Colors.blue,
-            child: new TabBar(
-              tabs: _tabs,
-//          indicatorColor: Colors.white,
-//          unselectedLabelColor: Colors.grey,
-              controller: _tabController,
-              labelColor: Colors.white,
-            ),
-          ),
+//          new Container(
+//            color: Colors.blue,
+//            child: new TabBar(
+//              tabs: _tabs,
+////          indicatorColor: Colors.white,
+////          unselectedLabelColor: Colors.grey,
+//              controller: _tabController,
+////              labelColor: Colors.white,
+//            ),
+//          ),
 
 
         ],
