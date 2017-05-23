@@ -112,7 +112,7 @@ class _MessageState extends State<Message> with TickerProviderStateMixin {
     Map data = JSON.decode(res.body);
     print(data['data']);
     List<Map> msgs = data['data'];
-//    _listMessage.clear();
+    _listMessage.clear();
     setState(() {
       for (int i = 0; i < msgs.length; i++) {
         _listMessage.insert(

@@ -93,7 +93,7 @@ class _BorrowHomeState extends State<BorrowHome> {
                         //                    highlightColor: Colors.grey[100],
                       )
                     : new RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {Navigator.of(context).pushNamed('/cash');},
                         child: const Text(
                           '我要借钱',
                           style: const TextStyle(
