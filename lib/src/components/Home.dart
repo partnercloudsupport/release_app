@@ -14,7 +14,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-
   final List<Widget> _tabs = [
     new Tab(text: '借钱', icon: const Icon(Icons.home, size: 24.0)),
     new Tab(text: '认证', icon: const Icon(Icons.assignment, size: 24.0)),
@@ -22,7 +21,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   ];
 
   final List<Widget> _tabviews = <Widget>[
-    new Borrow(title: '我要借钱'),
+    new BorrowHome(title: '我要借钱'),
     new Approve(),
     new UserCenter(),
   ];
@@ -31,16 +30,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   var _drawer = new Drawer();
 
-
   @override
   void initState() {
     super.initState();
     _tabController = new TabController(
-        length: _tabs.length,
-        vsync: this,
+      length: _tabs.length,
+      vsync: this,
     );
   }
-
 
   @override
   void dispose() {
@@ -48,14 +45,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
 //      drawer: _drawer,
       appBar: new AppBar(
         title: new Text(widget.title),
+        centerTitle: true,
         bottom: new TabBar(
           tabs: _tabs,
 //          indicatorColor: Colors.white,
@@ -66,7 +62,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         actions: [
           new CupertinoButton(
             child: new Text('消息', style: const TextStyle(color: Colors.white)),
-            onPressed: (){
+            onPressed: () {
               Navigator.of(context).pushNamed('/message');
             },
           ),
@@ -76,10 +72,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           new Flexible(
-              child: new TabBarView(
-                children: _tabviews,
-                controller: _tabController,
-              ),
+            child: new TabBarView(
+              children: _tabviews,
+              controller: _tabController,
+            ),
           ),
 //          new Container(
 //            color: Colors.blue,
@@ -91,8 +87,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 ////              labelColor: Colors.white,
 //            ),
 //          ),
-
-
         ],
       ),
 //      body: new Column(
@@ -108,7 +102,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 //          ),
 //        ],
 //      ),
-
     );
   }
 }

@@ -25,9 +25,9 @@ class _MessageCardState extends State<MessageCard>
   ];
 
   final List<Widget> _tabviews = <Widget>[
-    new Borrow(title: '我要借钱'),
-    new Borrow(title: '认证'),
-    new Borrow(title: '我的'),
+    new BorrowHome(title: '我要借钱'),
+    new BorrowHome(title: '认证'),
+    new BorrowHome(title: '我的'),
   ];
 
 

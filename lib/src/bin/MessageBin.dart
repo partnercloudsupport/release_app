@@ -31,12 +31,12 @@ class MessageBin extends StatelessWidget {
             child: new Column(
               children: [
                 new Container(
-                  color: Colors.grey,
+                  color: Theme.of(context).highlightColor,
                   height: 35.0,
                   padding: const EdgeInsets.only(left: 10.0),
                   alignment: FractionalOffset.centerLeft,
                   child: new Text(title,
-                      style: const TextStyle(color: Colors.white)),
+                      style: Theme.of(context).primaryTextTheme.subhead),
                 ),
                 new Container(
                   height: 85.0,
@@ -51,7 +51,7 @@ class MessageBin extends StatelessWidget {
                   height: 30.0,
                   child: new Row(
                     children: <Widget>[
-                      new Icon(Icons.access_time),
+                      new Icon(Icons.access_time,color: IconTheme.of(context).color),
                       new Text(time),
                     ],
                   ),

@@ -29,7 +29,7 @@ class _ApproveState extends State<Approve> {
 
       return new Container(
         child: new RaisedButton(
-          color: Colors.white,
+//          color: Colors.white,
           colorBrightness: Brightness.light,
           onPressed: (){},
           child: new Row(
@@ -103,7 +103,8 @@ class _ApproveState extends State<Approve> {
                         text: '',
                         style: DefaultTextStyle.of(context).style,
                         children: [
-                          new TextSpan(text: '5000', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0,color: Colors.white)),
+//                          new TextSpan(text: '5000', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0,color: Colors.white),
+                          new TextSpan(text: '5000', style: Theme.of(context).primaryTextTheme.title),
                           new TextSpan(text: ' .00'),
                         ],
                       ),
@@ -137,11 +138,11 @@ class _ApproveState extends State<Approve> {
           child: new Column(
             children: [
               _itemLine('身份认证', Icons.account_circle),
-              new Divider(height: 1.0, color: Colors.grey, indent: 40.0),
+              new Divider(height: 1.0, indent: 40.0),
               _itemLine('个人信息', Icons.person),
-              new Divider(height: 1.0, color: Colors.grey, indent: 40.0),
+              new Divider(height: 1.0, indent: 40.0),
               _itemLine('信用认证', Icons.card_membership),
-              new Divider(height: 1.0, color: Colors.grey, indent: 40.0),
+              new Divider(height: 1.0, indent: 40.0),
               _itemLine('手机认证', Icons.phone_android),
             ],
           ),

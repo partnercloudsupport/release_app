@@ -17,10 +17,12 @@ class MyApp extends StatelessWidget {
     primaryColorBrightness: Brightness.light,
   );
 
-  final ThemeData defaultThme = new ThemeData(
-    primarySwatch: Colors.blue,
-    accentColor: Colors.blueAccent[400],
-  );
+//  final ThemeData defaultThme = new ThemeData(
+//    primarySwatch: Colors.orange,
+////    accentColor: Colors.blueAccent[400],
+//  );
+  final ThemeData defaultThme = new ThemeData.dark();
+
 
   // This widget is the root of your application.
   @override
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/a': (BuildContext context) => new MyHomePage(title: '我要借钱'),
         '/b': (BuildContext context) => new Home(title: '口贷'),
-        '/c': (BuildContext context) => new Borrow(title: '我要借钱'),
+        '/c': (BuildContext context) => new BorrowHome(title: '我要借钱'),
         '/message': (BuildContext context) => new Message(),
       },
     );

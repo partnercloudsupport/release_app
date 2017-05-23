@@ -74,7 +74,7 @@ class _MessageState extends State<Message> with TickerProviderStateMixin {
 //                File imageFile = await ImagePicker.pickImage();
               },
               child: new Container(
-                color: Colors.grey[200],
+                color: Theme.of(context).splashColor,
                 height: 40.0,
                 alignment: FractionalOffset.center,
                 child: new Text('有疑问？请联系客服>'),

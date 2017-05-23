@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class Borrow extends StatefulWidget {
-  Borrow({
+class BorrowHome extends StatefulWidget {
+  BorrowHome({
     Key key,
     this.title,
   })
@@ -23,10 +23,10 @@ class Borrow extends StatefulWidget {
 //  final BuildContext context;
 
   @override
-  _BorrowState createState() => new _BorrowState();
+  _BorrowHomeState createState() => new _BorrowHomeState();
 }
 
-class _BorrowState extends State<Borrow> {
+class _BorrowHomeState extends State<BorrowHome> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> actions = <Widget>[
@@ -76,7 +76,7 @@ class _BorrowState extends State<Borrow> {
 //                        borderRadius:
 //                            new BorderRadius.all(new Radius.circular(8.0)),
 //                      ),
-                margin: const EdgeInsets.only(top: 20.0),
+                margin: const EdgeInsets.only(top: 20.0, bottom: 10.0),
                 child: defaultTargetPlatform == TargetPlatform.iOS
                     ? new CupertinoButton(
                         onPressed: () {},
@@ -100,10 +100,21 @@ class _BorrowState extends State<Borrow> {
                             color: Colors.white,
                           ),
                         ),
-                        color: Colors.blue,
+                        color: Theme.of(context).buttonColor,
                       ),
                 height: 45.0,
                 width: 200.0,
+              ),
+              new RichText(
+                text: new TextSpan(
+                  text: '简单4步，放款只需',
+                  children: [
+                    new TextSpan(text: '20', style: const TextStyle(color: Colors.redAccent)),
+                    new TextSpan(text: '分钟'),
+                  ],
+                  style: const TextStyle(color: Colors.grey),
+                ),
+
               ),
             ],
           ),
