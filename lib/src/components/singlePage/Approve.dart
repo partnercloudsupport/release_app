@@ -5,17 +5,6 @@ import 'package:flutter/material.dart';
 class Approve extends StatefulWidget {
   Approve({Key key}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful,
-  // meaning that it has a State object (defined below) that contains
-  // fields that affect how it looks.
-
-  // This class is the configuration for the state. It holds the
-  // values (in this case the title) provided by the parent (in this
-  // case the App widget) and used by the build method of the State.
-  // Fields in a Widget subclass are always marked "final".
-
-//  final String title;
-
   @override
   _ApproveState createState() => new _ApproveState();
 }
@@ -47,7 +36,10 @@ class _ApproveState extends State<Approve> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               new Icon(icon),
-              new Text(lable),
+              new Container(
+                padding: const EdgeInsets.only(left: 2.0),
+                child: new Text(lable),
+              ),
               new Expanded(
                 child: new Container(
                   alignment: FractionalOffset.centerRight,
@@ -136,7 +128,7 @@ class _ApproveState extends State<Approve> {
           padding: const EdgeInsets.only(left: 10.0),
           alignment: FractionalOffset.centerLeft,
           height: 40.0,
-          color: Colors.grey,
+//          color: Colors.grey,
           child: const Text('基本信息', style: const TextStyle(fontWeight: FontWeight.bold)),
         ),
         new Container(
@@ -145,11 +137,11 @@ class _ApproveState extends State<Approve> {
           child: new Column(
             children: [
               _itemLine('身份认证', Icons.account_circle),
-              new Divider(height: 1.0, color: Colors.grey),
+              new Divider(height: 1.0, color: Colors.grey, indent: 40.0),
               _itemLine('个人信息', Icons.person),
-              new Divider(height: 1.0, color: Colors.grey),
+              new Divider(height: 1.0, color: Colors.grey, indent: 40.0),
               _itemLine('信用认证', Icons.card_membership),
-              new Divider(height: 1.0, color: Colors.grey),
+              new Divider(height: 1.0, color: Colors.grey, indent: 40.0),
               _itemLine('手机认证', Icons.phone_android),
             ],
           ),

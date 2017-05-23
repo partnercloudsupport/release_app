@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:release_app/src/components/Home.dart';
 import 'package:release_app/src/components/MyHomePage.dart';
 import 'package:release_app/src/components/singlePage/Borrow.dart';
-import 'package:release_app/src/widget/MessageCard.dart';
+import 'package:release_app/src/components/singlePage/Message.dart';
 
 
 /**
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         '/a': (BuildContext context) => new MyHomePage(title: '我要借钱'),
         '/b': (BuildContext context) => new Home(title: '口贷'),
         '/c': (BuildContext context) => new Borrow(title: '我要借钱'),
-        '/message': (BuildContext context) => new MessageCard(title: '信息'),
+        '/message': (BuildContext context) => new Message(),
       },
     );
   }
