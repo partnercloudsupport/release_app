@@ -70,6 +70,9 @@ class _UserCenter extends State<UserCenter> {
               new Container(
                 height: 50.0,
 //                color: Colors.white,
+                decoration: new BoxDecoration(
+                  border: const Border(top: const BorderSide(width: 1.0)),
+                ),
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
