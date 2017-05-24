@@ -15,8 +15,8 @@ import 'package:release_app/src/components/singlePage/MessagePage.dart';
 class MyApp extends StatelessWidget {
 
   final ThemeData kIOSTheme = new ThemeData(
-    primarySwatch: Colors.red,
-    primaryColor: Colors.red[500],
+    primarySwatch: Colors.orange,
+//    primaryColor: Colors.red[500],
     primaryColorBrightness: Brightness.light,
   );
 

@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
 
       body: new Form(
         key: _formKey,
-//        autovalidate: _autovalidate,
+        autovalidate: _autovalidate,
         child: new ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             children: [
@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
                     hintText: '请输入手机号码',
                     labelText: '手机号码',
                   ),
-                  keyboardType: TextInputType.number,
+//                  keyboardType: TextInputType.number,
 //                  onSaved: (String value) {
 //                    //form.save时才会调用
 //                    user.phoneno = value;
@@ -83,6 +83,8 @@ class _LoginState extends State<Login> {
                     icon: const Icon(Icons.keyboard),
                     hintText: '请输入登录密码',
                     labelText: '密码'),
+                obscureText: true,
+                validator: _validatePassword,
 //                onSaved: (String value) {
 //                  user.phoneno = value;
 //                },
@@ -117,6 +119,9 @@ class _LoginState extends State<Login> {
               ),
               new Image.asset('images/ic_center_more_icon.png',
                   width: 150.0, height: 150.0),
+              new Align(
+
+              ),
             ]),
       ),
 
@@ -174,6 +179,9 @@ class _LoginState extends State<Login> {
   }
 
   String _validatePassword(String value) {
+    if(value.length ==0){
+      return '请输入密码';
+    }
     return null;
   }
 

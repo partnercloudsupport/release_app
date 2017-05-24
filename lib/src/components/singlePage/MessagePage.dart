@@ -90,7 +90,7 @@ class _MessagePageState extends State<MessagePage> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    _initMessage(new Completer<Null>());
+//    _initMessage(new Completer<Null>());
   }
 
   Future<Null> _initMessage(Completer<Null> completer) async {
@@ -110,6 +110,7 @@ class _MessagePageState extends State<MessagePage> with TickerProviderStateMixin
   }
 
   void _initList(http.Response res) {
+    print(res.body);
     Map data = JSON.decode(res.body);
     print(data['data']);
     List<Map> msgs = data['data'];

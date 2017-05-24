@@ -84,7 +84,9 @@ class _BorrowHomeState extends State<BorrowHome> {
                   margin: const EdgeInsets.only(top: 20.0, bottom: 10.0),
                   child: defaultTargetPlatform == TargetPlatform.iOS
                       ? new CupertinoButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/cash');
+                          },
                           child: const Text(
                             '我要借钱',
                             style: const TextStyle(
