@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/components/singlePage/Approve.dart';
-import 'package:release_app/src/components/singlePage/Borrow.dart';
+import 'package:release_app/src/components/singlePage/BorrowHome.dart';
 import 'package:release_app/src/components/singlePage/UserCenter.dart';
 
 class Home extends StatefulWidget {

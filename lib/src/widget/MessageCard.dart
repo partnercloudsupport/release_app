@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:release_app/src/components/singlePage/Borrow.dart';
+import 'package:release_app/src/components/singlePage/BorrowHome.dart';
 
 class MessageCard extends StatefulWidget {
   MessageCard({Key key, this.title}) : super(key: key);

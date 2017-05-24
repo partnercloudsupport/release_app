@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:release_app/src/comm/CommBin.dart';
 
 /**
  * Created by zgx on 2017/5/23.
  * 单条消息显示模板
  */
-class MessageBin extends StatelessWidget {
-  MessageBin({this.title, this.body, this.time, this.animationController});
+class MessageItem extends StatelessWidget {
+  MessageItem({this.message});
 
-  final String title;
-  final String body;
-  final String time;
-  final AnimationController animationController;
-
+//  final String title;
+//  final String body;
+//  final String time;
+//  final AnimationController animationController;
+  final Message message;
   @override
   Widget build(BuildContext context) {
     return new SizeTransition(
         sizeFactor: new CurvedAnimation(
-            parent: animationController, //new
+            parent: message.animationController,
             curve: Curves.easeInOut //new
             ),
         axisAlignment: 0.0,
@@ -35,12 +36,12 @@ class MessageBin extends StatelessWidget {
                   height: 35.0,
                   padding: const EdgeInsets.only(left: 10.0),
                   alignment: FractionalOffset.centerLeft,
-                  child: new Text(title,
+                  child: new Text(message.title,
                       style: Theme.of(context).primaryTextTheme.subhead),
                 ),
                 new Container(
                   height: 85.0,
-                  child: new Text(body, softWrap: true),
+                  child: new Text(message.body, softWrap: true),
                 ),
                 new Container(
                   padding: const EdgeInsets.only(left: 10.0, right: 10.0),
@@ -52,7 +53,7 @@ class MessageBin extends StatelessWidget {
                   child: new Row(
                     children: <Widget>[
                       new Icon(Icons.access_time,color: IconTheme.of(context).color),
-                      new Text(time),
+                      new Text(message.time),
                     ],
                   ),
                 ),

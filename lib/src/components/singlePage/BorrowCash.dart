@@ -118,8 +118,8 @@ class _BorrowCashState extends State<BorrowCash> {
                   value: _sliderValue,
                   min: 100.0,
                   max: 3000.0,
-                  label: '金额${_sliderValue}',
-                  divisions: 100,
+//                  label: '金额${_sliderValue}',
+//                  divisions: 100,
                 ),
                 new Container(
                   margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),

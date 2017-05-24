@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/AppRoute.dart';
 import 'package:release_app/src/components/Home.dart';
 import 'package:release_app/src/components/MyHomePage.dart';
-import 'package:release_app/src/components/singlePage/Borrow.dart';
+import 'package:release_app/src/components/bottom_navigation_home.dart';
+import 'package:release_app/src/components/singlePage/BorrowHome.dart';
 import 'package:release_app/src/components/singlePage/BorrowCash.dart';
-import 'package:release_app/src/components/singlePage/Message.dart';
+import 'package:release_app/src/components/singlePage/MessagePage.dart';
 
 
 /**
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
 //        // is not restarted.
 //        primarySwatch: Colors.blue,
 //      ),
-      home: new Home(title: '现金口贷'),
+//      home: new Home(title: '现金口贷'),
+      home: new BottomNavigationHome(),
       routes: AppRoute.routes,
     );
   }

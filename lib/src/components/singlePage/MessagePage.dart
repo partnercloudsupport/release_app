@@ -3,18 +3,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:release_app/src/bin/MessageBin.dart';
+import 'package:release_app/src/components/listItem/MessageItem.dart';
+import 'package:release_app/src/comm/CommBin.dart';
 
 /**
  * Created by zgx on 2017/5/23.
  */
-class Message extends StatefulWidget {
+class MessagePage extends StatefulWidget {
   @override
-  _MessageState createState() => new _MessageState();
+  _MessagePageState createState() => new _MessagePageState();
 }
 
-class _MessageState extends State<Message> with TickerProviderStateMixin {
-  final List<MessageBin> _listMessage = <MessageBin>[];
+class _MessagePageState extends State<MessagePage> with TickerProviderStateMixin {
+  final List<MessageItem> _listMessage = <MessageItem>[];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
@@ -112,25 +113,27 @@ class _MessageState extends State<Message> with TickerProviderStateMixin {
     Map data = JSON.decode(res.body);
     print(data['data']);
     List<Map> msgs = data['data'];
-    _listMessage.clear();
+//    _listMessage.clear();
     setState(() {
       for (int i = 0; i < msgs.length; i++) {
-        _listMessage.insert(
-            0,
-            new MessageBin(
-              title: msgs[i]['post_title'],
-              body: msgs[i]['post_excerpt'],
-              time: msgs[i]['post_modified'],
-              animationController: new AnimationController(
-                vsync: this,
-                duration: new Duration(milliseconds: 800),
-              ),
+        Message message = new Message(
+            msgs[i]['post_title'],
+            msgs[i]['post_excerpt'],
+            msgs[i]['post_modified'],
+            new AnimationController(
+              vsync: this,
+              duration: new Duration(milliseconds: 800),
+            )
+        );
+        _listMessage.add(
+            new MessageItem(
+              message: message,
             ));
       }
     });
 
     for (var i = 0; i < _listMessage.length; ++i) {
-      _listMessage[i].animationController.forward();
+      _listMessage[i].message.animationController.forward();
 
     }
   }
@@ -155,8 +158,8 @@ class _MessageState extends State<Message> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    for(MessageBin msg in _listMessage){
-      msg.animationController.dispose();
+    for(MessageItem msg in _listMessage){
+      msg.message.animationController.dispose();
     }
     super.dispose();
   }

@@ -12,64 +12,74 @@ class UserCenter extends StatefulWidget {
 class _UserCenter extends State<UserCenter> {
   @override
   Widget build(BuildContext context) {
-    Widget _itemLine(String lable, IconData icon) {
+    Widget _itemLine(String lable, IconData icon, int index) {
       return new Container(
-//          height: 45.0,
-          child: new RaisedButton(
-//        color: Colors.white,
-        colorBrightness: Brightness.light,
-        onPressed: () {},
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            new Icon(icon),
-            new Container(
-              padding: const EdgeInsets.only(left: 2.0),
-              child: new Text(lable),
+          height: 45.0,
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          child: new InkWell(
+            onTap: () {
+              _handleClick(context, index);
+            },
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                new Icon(icon),
+                new Container(
+                  padding: const EdgeInsets.only(left: 2.0),
+                  child: new Text(lable),
+                ),
+                new Expanded(
+                  child: new Container(
+                    alignment: FractionalOffset.centerRight,
+                    child: const Icon(Icons.keyboard_arrow_right),
+                  ),
+                ),
+              ],
             ),
-            new Expanded(
-              child: new Container(
-                alignment: FractionalOffset.centerRight,
-                child: const Icon(Icons.keyboard_arrow_right),
-              ),
-            ),
-          ],
-        ),
-      ));
+          ));
     }
 
     return new ListView(
       children: [
         new Container(
-          height: 150.0,
+          height: 200.0,
           color: Theme.of(context).primaryColor,
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Container(
-                height: 100.0,
+                height: 150.0,
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    new Icon(Icons.person_outline, size: 80.0),
-                    new Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        new Text(
-                          '您好',
-                        ),
-                        new Text(
-                          'XXX',
-                        ),
-                      ],
+                    new InkWell(
+                      child: new Icon(Icons.person_outline, size: 80.0),
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/login');
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 5.0),
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          new Text(
+                            '您好',
+                          ),
+                          new Text(
+                            'XXX',
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
               new Container(
                 height: 50.0,
-//                color: Colors.white,
                 decoration: new BoxDecoration(
                   border: const Border(top: const BorderSide(width: 1.0)),
                 ),
@@ -135,8 +145,8 @@ class _UserCenter extends State<UserCenter> {
                         alignment: FractionalOffset.center,
                         decoration: new BoxDecoration(
                           border: new Border(
-                              right: const BorderSide(
-                                  color: Colors.grey, width: 1.0)),
+                              right: new BorderSide(
+                                  color: Theme.of(context).dividerColor, width: 1.0)),
                         ),
                         child: new Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -166,12 +176,13 @@ class _UserCenter extends State<UserCenter> {
         new Container(
             margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
             height: 50.0,
-//            color: Colors.white,
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+            decoration: new BoxDecoration(
+              border: new Border.all(width: 1.0,color: Theme.of(context).dividerColor),
+            ),
             child: new Container(
-                child: new RaisedButton(
-//              color: Colors.white,
-              colorBrightness: Brightness.light,
-              onPressed: () {},
+                child: new InkWell(
+              onTap: () {_handleClick(context, 0);},
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -190,19 +201,20 @@ class _UserCenter extends State<UserCenter> {
               ),
             ))),
         new Container(
-//          color: Colors.green,
-//          height: 100.0,
+          decoration: new BoxDecoration(
+            border: new Border.all(width: 1.0,color: Theme.of(context).dividerColor),
+          ),
           child: new Column(
             children: [
-              _itemLine('帮助中心', Icons.lightbulb_outline),
+              _itemLine('帮助中心', Icons.lightbulb_outline, 0),
               new Divider(height: 1.0, indent: 40.0),
-              _itemLine('个人资料', Icons.info),
+              _itemLine('个人资料', Icons.info, 1),
               new Divider(height: 1.0, indent: 40.0),
-              _itemLine('我的卡券', Icons.card_giftcard),
+              _itemLine('我的卡券', Icons.card_giftcard, 2),
               new Divider(height: 1.0, indent: 40.0),
-              _itemLine('邀请好友', Icons.person_add),
+              _itemLine('邀请好友', Icons.person_add, 3),
               new Divider(height: 1.0, indent: 40.0),
-              _itemLine('设置', Icons.settings),
+              _itemLine('设置', Icons.settings, 4),
             ],
           ),
         ),
@@ -212,5 +224,25 @@ class _UserCenter extends State<UserCenter> {
 
   void _showMessage(BuildContext context) {
     Navigator.of(context).pushNamed('/message');
+  }
+
+  void _handleClick(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/borrowRecord');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/borrowRecord');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/borrowRecord');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/borrowRecord');
+        break;
+      case 4:
+        Navigator.pushNamed(context, '/borrowRecord');
+        break;
+    }
   }
 }

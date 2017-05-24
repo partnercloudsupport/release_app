@@ -28,10 +28,10 @@ class _ApproveState extends State<Approve> {
     Widget _itemLine(String lable, IconData icon) {
 
       return new Container(
-        child: new RaisedButton(
-//          color: Colors.white,
-          colorBrightness: Brightness.light,
-          onPressed: (){},
+        height: 45.0,
+          padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+        child: new InkWell(
+          onTap: (){},
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -82,7 +82,7 @@ class _ApproveState extends State<Approve> {
     return new ListView(
       children: [
         new Container(
-          height: 150.0,
+          height: 200.0,
           color: Theme.of(context).primaryColor,
           child: new Center(
             child: new Container(
@@ -129,7 +129,7 @@ class _ApproveState extends State<Approve> {
           padding: const EdgeInsets.only(left: 10.0),
           alignment: FractionalOffset.centerLeft,
           height: 40.0,
-//          color: Colors.grey,
+          color: Colors.grey[300],
           child: const Text('基本信息', style: const TextStyle(fontWeight: FontWeight.bold)),
         ),
         new Container(
