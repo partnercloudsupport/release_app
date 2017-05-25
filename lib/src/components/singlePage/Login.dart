@@ -1,9 +1,15 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 /**
  * Created by zgx on 2017/5/24.
  */
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => new _LoginState();
@@ -23,21 +29,26 @@ class _LoginState extends State<Login> {
   UserData user = new UserData();
 
   void showInSnackBar(String s) {
-    _scaffoldKey.currentState.showSnackBar(
-        new SnackBar(content: new Text(s))
-    );
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(s)));
   }
 
-  void _handleSubmitted() {
+  Future<String> _handleSubmitted() async {
     final FormState form = _formKey.currentState;
     if (!form.validate()) {
-      _autovalidate = true;  // Start validating on every change.
+      _autovalidate = true; // Start validating on every change.
       showInSnackBar('请按照提示修改输入内容.');
     } else {
 //        form.save();
-      showInSnackBar('${user.phoneno}\'s phone number is ${user.phoneno}');
+//      showInSnackBar('${user.phoneno}\'s phone number is ${user.phoneno}');
+      FirebaseUser user = auth.currentUser;
+      if (user == null) {
+        user = await auth.signInAnonymously();
+
+      }
     }
+    return 'signInAnonymously succeeded: $user';
   }
+
   String userName;
   String password;
 
@@ -46,7 +57,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
 //      key: _scaffoldKey,
       appBar: new AppBar(
@@ -113,15 +123,17 @@ class _LoginState extends State<Login> {
                 padding: const EdgeInsets.all(20.0),
                 child: new RaisedButton(
 //                  onPressed: (){},
-                  onPressed: _handleSubmitted,
+                  onPressed: () {
+                    _handleSubmitted().then<Null>((value) {
+
+                    });
+                  },
                   child: const Text('登录'),
                 ),
               ),
               new Image.asset('images/ic_center_more_icon.png',
                   width: 150.0, height: 150.0),
-              new Align(
-
-              ),
+              new Align(),
             ]),
       ),
 
@@ -172,18 +184,17 @@ class _LoginState extends State<Login> {
 
   String _validatePhoneNumber(String value) {
     _formWasEdited = true;
-    final RegExp phoneExp = new RegExp(r'^\(\d\d\d\) \d\d\d\-\d\d\d\d$');
-    if (!phoneExp.hasMatch(value))
-      return '(###) ###-#### - 请检查格式.';
+//    final RegExp phoneExp = new RegExp(r'^\(\d\d\d\) \d\d\d\-\d\d\d\d$');
+    final RegExp phoneExp = new RegExp(r'^\d\d\d\d\d\d\d\d\d\d\d$');
+    if (!phoneExp.hasMatch(value)) return '99999999999 - 请检查格式.';
+//      return '(###) ###-#### - 请检查格式.';
     return null;
   }
 
   String _validatePassword(String value) {
-    if(value.length ==0){
+    if (value.length == 0) {
       return '请输入密码';
     }
     return null;
   }
-
-
 }

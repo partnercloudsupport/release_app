@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: '现金口贷',
       theme: defaultTargetPlatform == TargetPlatform.iOS
           ? kIOSTheme
           : defaultThme,

@@ -1,4 +1,4 @@
-package com.yourcompany.release_app;
+package com.yiyisandra.release_app;
 
 import android.os.Bundle;
 

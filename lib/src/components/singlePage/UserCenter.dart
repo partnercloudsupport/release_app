@@ -1,7 +1,12 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+final googleSignIn = new GoogleSignIn();
+final FirebaseAuth auth = FirebaseAuth.instance;
 class UserCenter extends StatefulWidget {
   UserCenter({Key key}) : super(key: key);
 
@@ -56,7 +61,27 @@ class _UserCenter extends State<UserCenter> {
                     new InkWell(
                       child: new Icon(Icons.person_outline, size: 80.0),
                       onTap: () {
-                        Navigator.of(context).pushNamed('/login');
+                        print(auth.currentUser);
+                        if(auth.currentUser!= null) {
+                          showDialog(
+                            context: context,
+                            child: new AlertDialog(
+                              content: new Text('您已登录,UID:'+ auth.currentUser.uid),
+                              actions: <Widget>[
+                                new FlatButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(null);
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        else {
+                          Navigator.of(context).pushNamed('/login');
+                        }
+//                        _handleSubmitted();
                       },
                     ),
                     new Padding(
@@ -250,5 +275,13 @@ class _UserCenter extends State<UserCenter> {
         Navigator.pushNamed(context, '/borrowRecord');
         break;
     }
+  }
+
+  Future<Null> _handleSubmitted()async {
+    GoogleSignInAccount account = googleSignIn.currentUser;
+    if(account==null)
+      account = await googleSignIn.signInSilently();
+    if(account ==null)
+      await googleSignIn.signIn();
   }
 }
