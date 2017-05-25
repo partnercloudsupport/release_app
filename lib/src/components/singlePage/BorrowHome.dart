@@ -92,12 +92,11 @@ class _BorrowHomeState extends State<BorrowHome> {
                             style: const TextStyle(
                               fontSize: 15.0,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+//                              color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
                           ),
                           color: Theme.of(context).primaryColor,
-                          //                    highlightColor: Colors.grey[100],
                         )
                       : new RaisedButton(
                           onPressed: () {
@@ -105,9 +104,6 @@ class _BorrowHomeState extends State<BorrowHome> {
                           },
                           child: const Text(
                             '我要借钱',
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
                           ),
                           color: Theme.of(context).buttonColor,
                         ),
@@ -120,10 +116,10 @@ class _BorrowHomeState extends State<BorrowHome> {
                     children: [
                       new TextSpan(
                           text: '20',
-                          style: const TextStyle(color: Colors.redAccent)),
+                          style: new TextStyle(color: Theme.of(context).primaryColor)),
                       new TextSpan(text: '分钟'),
                     ],
-                    style: const TextStyle(color: Colors.grey),
+                    style: Theme.of(context).textTheme.body1,
                   ),
                 ),
               ],

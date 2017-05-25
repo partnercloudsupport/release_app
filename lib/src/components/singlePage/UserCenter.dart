@@ -81,7 +81,8 @@ class _UserCenter extends State<UserCenter> {
               new Container(
                 height: 50.0,
                 decoration: new BoxDecoration(
-                  border: const Border(top: const BorderSide(width: 1.0)),
+                  border: new Border.all(
+                      width: 1.0, color: Theme.of(context).dividerColor),
                 ),
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -146,7 +147,8 @@ class _UserCenter extends State<UserCenter> {
                         decoration: new BoxDecoration(
                           border: new Border(
                               right: new BorderSide(
-                                  color: Theme.of(context).dividerColor, width: 1.0)),
+                                  color: Theme.of(context).dividerColor,
+                                  width: 1.0)),
                         ),
                         child: new Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -178,11 +180,14 @@ class _UserCenter extends State<UserCenter> {
             height: 50.0,
             padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             decoration: new BoxDecoration(
-              border: new Border.all(width: 1.0,color: Theme.of(context).dividerColor),
+              border: new Border.all(
+                  width: 1.0, color: Theme.of(context).dividerColor),
             ),
             child: new Container(
                 child: new InkWell(
-              onTap: () {_handleClick(context, 0);},
+              onTap: () {
+                _handleClick(context, 0);
+              },
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -202,7 +207,8 @@ class _UserCenter extends State<UserCenter> {
             ))),
         new Container(
           decoration: new BoxDecoration(
-            border: new Border.all(width: 1.0,color: Theme.of(context).dividerColor),
+            border: new Border.all(
+                width: 1.0, color: Theme.of(context).dividerColor),
           ),
           child: new Column(
             children: [

@@ -90,7 +90,7 @@ class _MessagePageState extends State<MessagePage> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-//    _initMessage(new Completer<Null>());
+    _initMessage(new Completer<Null>());
   }
 
   Future<Null> _initMessage(Completer<Null> completer) async {
