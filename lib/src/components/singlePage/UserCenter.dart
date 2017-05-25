@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 final googleSignIn = new GoogleSignIn();
 final FirebaseAuth auth = FirebaseAuth.instance;
+
 class UserCenter extends StatefulWidget {
   UserCenter({Key key}) : super(key: key);
 
@@ -62,23 +63,29 @@ class _UserCenter extends State<UserCenter> {
                       child: new Icon(Icons.person_outline, size: 80.0),
                       onTap: () {
                         print(auth.currentUser);
-                        if(auth.currentUser!= null) {
+                        if (auth.currentUser != null) {
                           showDialog(
                             context: context,
-                            child: new AlertDialog(
-                              content: new Text('您已登录,UID:'+ auth.currentUser.uid),
-                              actions: <Widget>[
-                                new FlatButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop(null);
-                                  },
-                                ),
-                              ],
-                            ),
+                            child: defaultTargetPlatform == TargetPlatform.iOS
+                                ? new CupertinoAlertDialog(
+                                    title: const Text('提示'),
+                                    content: new Text(
+                                        '您已登录,UID:' + auth.currentUser.uid),
+                                  )
+                                : new AlertDialog(
+                                    content: new Text(
+                                        '您已登录,UID:' + auth.currentUser.uid),
+                                    actions: <Widget>[
+                                      new FlatButton(
+                                        child: const Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop(null);
+                                        },
+                                      ),
+                                    ],
+                                  ),
                           );
-                        }
-                        else {
+                        } else {
                           Navigator.of(context).pushNamed('/login');
                         }
 //                        _handleSubmitted();
@@ -277,11 +284,9 @@ class _UserCenter extends State<UserCenter> {
     }
   }
 
-  Future<Null> _handleSubmitted()async {
+  Future<Null> _handleSubmitted() async {
     GoogleSignInAccount account = googleSignIn.currentUser;
-    if(account==null)
-      account = await googleSignIn.signInSilently();
-    if(account ==null)
-      await googleSignIn.signIn();
+    if (account == null) account = await googleSignIn.signInSilently();
+    if (account == null) await googleSignIn.signIn();
   }
 }

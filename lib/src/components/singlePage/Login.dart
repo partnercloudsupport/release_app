@@ -32,7 +32,7 @@ class _LoginState extends State<Login> {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(s)));
   }
 
-  Future<String> _handleSubmitted() async {
+  Future<bool> _handleSubmitted() async {
     final FormState form = _formKey.currentState;
     if (!form.validate()) {
       _autovalidate = true; // Start validating on every change.
@@ -43,10 +43,11 @@ class _LoginState extends State<Login> {
       FirebaseUser user = auth.currentUser;
       if (user == null) {
         user = await auth.signInAnonymously();
-
+//        if (user==null)
+//          return false;
       }
     }
-    return 'signInAnonymously succeeded: $user';
+    return user != null;
   }
 
   String userName;
@@ -124,8 +125,21 @@ class _LoginState extends State<Login> {
                 child: new RaisedButton(
 //                  onPressed: (){},
                   onPressed: () {
-                    _handleSubmitted().then<Null>((value) {
-
+                    _handleSubmitted().then<Null>((bool success) {
+                      if (success) {
+                        showDialog(
+                            context: context,
+                            child: new AlertDialog(
+                                title: const Text('提醒'),
+                                content: new Text('登录成功')));
+                        Navigator.of(context).pop(true);
+                      }
+                      else
+                        showDialog(
+                            context: context,
+                            child: new AlertDialog(
+                                title: const Text('提醒'),
+                                content: new Text('登录失败')));
                     });
                   },
                   child: const Text('登录'),
