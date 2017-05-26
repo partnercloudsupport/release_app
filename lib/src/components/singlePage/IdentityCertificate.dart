@@ -201,4 +201,20 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
   }
 
   void _handleClick(BuildContext context, int i) {}
+
+  Future<Null>  _uploadFile()async {
+
+//    Directory systemTempDir = Directory.systemTemp;
+//    File file = await new File('${systemTempDir.path}/foo.txt').create();
+//    file.writeAsString(kTestString);
+//    assert(await file.readAsString() == kTestString);
+//    String rand = "${new Random().nextInt(10000)}";
+//    StorageReference ref = FirebaseStorage.instance.ref().child("foo$rand.txt");
+//    StorageUploadTask uploadTask = ref.put(file);
+//    Uri downloadUrl = (await uploadTask.future).downloadUrl;
+//    http.Response downloadData = await http.get(downloadUrl);
+//    setState(() {
+//      _fileContents = downloadData.body;
+//    });
+  }
 }

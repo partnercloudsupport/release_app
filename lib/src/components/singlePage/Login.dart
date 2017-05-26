@@ -7,6 +7,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 /**
  * Created by zgx on 2017/5/24.
  */
+enum LoginStatus {
+  success,
+  fail,
+}
+
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -32,23 +37,7 @@ class _LoginState extends State<Login> {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(s)));
   }
 
-  Future<bool> _handleSubmitted() async {
-    final FormState form = _formKey.currentState;
-    if (!form.validate()) {
-      _autovalidate = true; // Start validating on every change.
-      showInSnackBar('请按照提示修改输入内容.');
-    } else {
-//        form.save();
-//      showInSnackBar('${user.phoneno}\'s phone number is ${user.phoneno}');
-      FirebaseUser user = auth.currentUser;
-      if (user == null) {
-        user = await auth.signInAnonymously();
-//        if (user==null)
-//          return false;
-      }
-    }
-    return user != null;
-  }
+
 
   String userName;
   String password;
@@ -58,6 +47,27 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+
+    Future<bool> _handleSubmitted() async {
+      final FormState form = _formKey.currentState;
+      if (!form.validate()) {
+        _autovalidate = true; // Start validating on every change.
+        showInSnackBar('请按照提示修改输入内容.');
+        return false;
+      } else {
+//        form.save();
+//      showInSnackBar('${user.phoneno}\'s phone number is ${user.phoneno}');
+        FirebaseUser user = auth.currentUser;
+        if (user == null) {
+          print('loging......');
+          user = await auth.signInAnonymously();
+          print('loging call complete...');
+        }
+
+      }
+    return user != null;
+    }
+
     return new Scaffold(
 //      key: _scaffoldKey,
       appBar: new AppBar(
@@ -78,7 +88,7 @@ class _LoginState extends State<Login> {
                     hintText: '请输入手机号码',
                     labelText: '手机号码',
                   ),
-//                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.phone,
 //                  onSaved: (String value) {
 //                    //form.save时才会调用
 //                    user.phoneno = value;
@@ -123,24 +133,45 @@ class _LoginState extends State<Login> {
               new Container(
                 padding: const EdgeInsets.all(20.0),
                 child: new RaisedButton(
-//                  onPressed: (){},
                   onPressed: () {
-                    _handleSubmitted().then<Null>((bool success) {
-                      if (success) {
-                        showDialog(
-                            context: context,
-                            child: new AlertDialog(
-                                title: const Text('提醒'),
-                                content: new Text('登录成功')));
-                        Navigator.of(context).pop(true);
+                    print('before press login');
+                    _handleSubmitted().then((status){
+                      print('返回状态：'+ status.toString());
+                      if (status) {
+                        print('登录成功.....');
+//                        showDialog(
+//                            context: context,
+//                            child: new AlertDialog(
+//                              title: const Text('提示'),
+//                                content: new Text('登录成功!'),
+//                                actions: <Widget>[
+//                                  new FlatButton(
+//                                      child: const Text('OK'),
+//                                      onPressed: () {
+//                                        Navigator.of(context).pop(
+//                                            false); // Pops the confirmation dialog but not the page.
+//                                      }),
+//                                ])) ??
+//                            false;
+                        Navigator.pop(context, auth.currentUser);
                       }
                       else
                         showDialog(
                             context: context,
                             child: new AlertDialog(
-                                title: const Text('提醒'),
-                                content: new Text('登录失败')));
+                                title: const Text('提示'),
+                                content: new Text('登录失败!'),
+                                actions: <Widget>[
+                                  new FlatButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop(
+                                            false); // Pops the confirmation dialog but not the page.
+                                      }),
+                                ])) ??
+                            false;
                     });
+                    print('after press login');
                   },
                   child: const Text('登录'),
                 ),
@@ -199,6 +230,7 @@ class _LoginState extends State<Login> {
   String _validatePhoneNumber(String value) {
     _formWasEdited = true;
 //    final RegExp phoneExp = new RegExp(r'^\(\d\d\d\) \d\d\d\-\d\d\d\d$');
+    print('手机号是:'+ value);
     final RegExp phoneExp = new RegExp(r'^\d\d\d\d\d\d\d\d\d\d\d$');
     if (!phoneExp.hasMatch(value)) return '99999999999 - 请检查格式.';
 //      return '(###) ###-#### - 请检查格式.';

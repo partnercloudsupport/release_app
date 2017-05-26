@@ -49,7 +49,7 @@ class _BorrowHomeState extends State<BorrowHome> {
         centerTitle: true,
         actions: [
           new CupertinoButton(
-            child: new Text('消息'),
+            child: new Text('消息', style: new TextStyle(color: Theme.of(context).buttonColor),),
             onPressed: () {
               Navigator.of(context).pushNamed('/message');
             },
@@ -105,7 +105,7 @@ class _BorrowHomeState extends State<BorrowHome> {
                           child: const Text(
                             '我要借钱',
                           ),
-                          color: Theme.of(context).buttonColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                   height: 45.0,
                   width: 200.0,

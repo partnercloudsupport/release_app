@@ -57,7 +57,7 @@ class _ApproveState extends State<Approve> {
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                new Icon(icon),
+                new Icon(icon,color: Theme.of(context).primaryColor,),
                 new Container(
                   padding: const EdgeInsets.only(left: 2.0),
                   child: new Text(lable),

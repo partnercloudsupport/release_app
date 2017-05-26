@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:release_app/src/components/singlePage/Login.dart';
 
 final googleSignIn = new GoogleSignIn();
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -16,6 +17,9 @@ class UserCenter extends StatefulWidget {
 }
 
 class _UserCenter extends State<UserCenter> {
+
+  FirebaseUser _user;
+
   @override
   Widget build(BuildContext context) {
     Widget _itemLine(String lable, IconData icon, int index) {
@@ -29,7 +33,7 @@ class _UserCenter extends State<UserCenter> {
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                new Icon(icon),
+                new Icon(icon,color: Theme.of(context).primaryColor,),
                 new Container(
                   padding: const EdgeInsets.only(left: 2.0),
                   child: new Text(lable),
@@ -70,7 +74,7 @@ class _UserCenter extends State<UserCenter> {
                                 ? new CupertinoAlertDialog(
                                     title: const Text('提示'),
                                     content: new Text(
-                                        '您已登录,UID:' + auth.currentUser.uid),
+                                        '你好,UID:' + auth.currentUser.uid),
                                   )
                                 : new AlertDialog(
                                     content: new Text(
@@ -86,7 +90,16 @@ class _UserCenter extends State<UserCenter> {
                                   ),
                           );
                         } else {
-                          Navigator.of(context).pushNamed('/login');
+
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute<FirebaseUser>(
+                                builder: (BuildContext context) => new Login(),
+                                fullscreenDialog: false,
+                              )).then((user){
+                            setState(_user = user);
+                          });
+
                         }
 //                        _handleSubmitted();
                       },
@@ -96,13 +109,13 @@ class _UserCenter extends State<UserCenter> {
                           vertical: 10.0, horizontal: 5.0),
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           new Text(
-                            '您好',
+                              _user==null?'  ':'您好',
                           ),
                           new Text(
-                            'XXX',
+                            _user==null?'  ':_user.uid,
                           ),
                         ],
                       ),
@@ -223,7 +236,7 @@ class _UserCenter extends State<UserCenter> {
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  new Icon(Icons.attach_money),
+                  new Icon(Icons.attach_money, color: Theme.of(context).primaryColor,),
                   new Container(
                     padding: const EdgeInsets.only(left: 2.0),
                     child: new Text('借款记录'),
@@ -265,6 +278,24 @@ class _UserCenter extends State<UserCenter> {
   }
 
   void _handleClick(BuildContext context, int index) {
+    if(_user==null){
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: const Text('提示'),
+          content: const Text('请先点击头像登录'),
+          actions: [
+            new FlatButton(
+              child: const Text('OK'),
+              onPressed: (){
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        ),
+      );
+      return;
+    }
     switch (index) {
       case 0:
         Navigator.pushNamed(context, '/borrowRecord');

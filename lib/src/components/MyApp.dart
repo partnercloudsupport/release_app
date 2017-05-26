@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   );
 
   final ThemeData defaultThme = new ThemeData(
-    primarySwatch: Colors.orange,
+    primarySwatch: Colors.blue,
 //    accentColor: Colors.blueAccent[400],
   );
 //  final ThemeData defaultThme = new ThemeData.dark();
