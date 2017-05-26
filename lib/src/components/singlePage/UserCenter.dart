@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:release_app/src/components/singlePage/Login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final googleSignIn = new GoogleSignIn();
 final FirebaseAuth auth = FirebaseAuth.instance;
+
 
 class UserCenter extends StatefulWidget {
   UserCenter({Key key}) : super(key: key);
@@ -19,6 +21,13 @@ class UserCenter extends StatefulWidget {
 class _UserCenter extends State<UserCenter> {
 
   FirebaseUser _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = auth.currentUser;
+    _getUserInterface();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,19 +85,19 @@ class _UserCenter extends State<UserCenter> {
                         ),
                       ),
                       onTap: () {
-                        print(auth.currentUser);
-                        if (auth.currentUser != null) {
+                        print(_user);
+                        if (_user != null) {
                           showDialog(
                             context: context,
                             child: defaultTargetPlatform == TargetPlatform.iOS
                                 ? new CupertinoAlertDialog(
                                     title: const Text('提示'),
                                     content: new Text(
-                                        '你好,UID:' + auth.currentUser.uid),
+                                        '你好,UID:' + _user.uid),
                                   )
                                 : new AlertDialog(
                                     content: new Text(
-                                        '您已登录,UID:' + auth.currentUser.uid),
+                                        '您已登录,UID:' + _user.uid),
                                     actions: <Widget>[
                                       new FlatButton(
                                         child: const Text('OK'),
@@ -100,15 +109,7 @@ class _UserCenter extends State<UserCenter> {
                                   ),
                           );
                         } else {
-
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute<FirebaseUser>(
-                                builder: (BuildContext context) => new Login(),
-                                fullscreenDialog: false,
-                              )).then((user){
-                            setState(_user = user);
-                          });
+                          _doLogin();
 
                         }
 //                        _handleSubmitted();
@@ -330,4 +331,28 @@ class _UserCenter extends State<UserCenter> {
     if (account == null) account = await googleSignIn.signInSilently();
     if (account == null) await googleSignIn.signIn();
   }
+
+  Future<bool> _saveUserInterface() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userUid', _user.uid);
+    return true;
+  }
+
+  Future<Null> _getUserInterface() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print("获取保存的user uid:"+prefs.getString('userUid'));
+  }
+
+  Future<Null> _doLogin()async {
+    FirebaseUser user = await Navigator.push(
+        context,
+        new MaterialPageRoute<FirebaseUser>(
+          builder: (BuildContext context) => new Login(),
+          fullscreenDialog: false,
+        ));
+    setState((){_user = user;});
+    bool _saveStaus = await _saveUserInterface();
+    print("保存数据成功："+ _saveStaus.toString());
+  }
+
 }
