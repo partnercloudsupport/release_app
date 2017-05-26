@@ -108,7 +108,8 @@ class _ApproveState extends State<Approve> {
               height: 120.0,
               width: 120.0,
               decoration: new BoxDecoration(
-                borderRadius: new BorderRadius.circular(100.0),
+                shape: BoxShape.circle,
+//                borderRadius: new BorderRadius.circular(100.0),
 //              color: Colors.white,
                 border: new Border.all(color: Colors.white, width: 2.0),
               ),

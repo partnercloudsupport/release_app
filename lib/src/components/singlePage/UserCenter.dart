@@ -58,13 +58,23 @@ class _UserCenter extends State<UserCenter> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Container(
+                padding: const EdgeInsets.only(bottom: 10.0,left: 10.0),
                 height: 150.0,
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     new InkWell(
-                      child: new Icon(Icons.person_outline, size: 80.0),
+                      child: new Container(
+                        height: 70.0,
+                        width: 70.0,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: const DecorationImage(
+                            image: const AssetImage('images/ic_center_more_icon.png'),//登录后可替换为头像，待完善
+                          ),
+                        ),
+                      ),
                       onTap: () {
                         print(auth.currentUser);
                         if (auth.currentUser != null) {

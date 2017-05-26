@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 /**
  * Created by zgx on 2017/5/25.
@@ -13,6 +15,8 @@ enum DismissDialogAction {
   discard,
   save,
 }
+
+final FirebaseAuth auth = FirebaseAuth.instance;
 
 class IdentityCertificate extends StatefulWidget {
   IdentityCertificate({Key key}) : super(key: key);
@@ -192,7 +196,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                       vertical: 10.0, horizontal: 20.0),
                   child: new RaisedButton(
                     color: Theme.of(context).primaryColor,
-                    onPressed: () {},
+                    onPressed: _uploadFile,
                     child: const Text('提交'),
                   ),
                 ),
@@ -203,15 +207,49 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
   void _handleClick(BuildContext context, int i) {}
 
   Future<Null>  _uploadFile()async {
+    if(imageFile1==null){
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: const Text('提醒'),
+          content: const Text('请先选择图片'),
+          actions: <Widget>[
+            new FlatButton(
+              child: const Text('OK'),
+              onPressed: (){
+                Navigator.of(context).pop(true);
+              },
+            )
+          ],
+        ),
+      );
+      return;
+    }
+    String xx = imageFile1.path.split('.')[1];
+    print("图片路径"+xx);
+    if(auth.currentUser==null){
+      print("未登录");
+      return;
+    }
+    FirebaseUser user = auth.currentUser;
+
+//    StorageReference ref = FirebaseStorage.instance.ref().child('faceimages/${user.uid}/face1.${xx}');
+//    StorageUploadTask uploadTask = ref.put(imageFile1);
+//    print("start uploading image.....");
+//    await uploadTask.future.then((snapshot){
+//      print("photo url:"+snapshot.downloadUrl.toString());
+//    });
 
 //    Directory systemTempDir = Directory.systemTemp;
 //    File file = await new File('${systemTempDir.path}/foo.txt').create();
 //    file.writeAsString(kTestString);
 //    assert(await file.readAsString() == kTestString);
 //    String rand = "${new Random().nextInt(10000)}";
-//    StorageReference ref = FirebaseStorage.instance.ref().child("foo$rand.txt");
-//    StorageUploadTask uploadTask = ref.put(file);
-//    Uri downloadUrl = (await uploadTask.future).downloadUrl;
+    StorageReference ref = FirebaseStorage.instance.ref().child("faceimages/${user.uid}/face1.${xx}");
+    StorageUploadTask uploadTask = ref.put(imageFile1);
+    print('start uploading....');
+    Uri downloadUrl = (await uploadTask.future).downloadUrl;
+    print('complete uploading....'+ downloadUrl.path);
 //    http.Response downloadData = await http.get(downloadUrl);
 //    setState(() {
 //      _fileContents = downloadData.body;
