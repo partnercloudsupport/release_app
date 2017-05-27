@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:release_app/src/comm/Colors.dart';
 
 /**
  * Created by zgx on 2017/5/23.
@@ -36,7 +37,7 @@ class SingleRecord extends StatelessWidget {
                       children: [
                         new Container(
                           padding: const EdgeInsets.only(left: 5.0),
-                          child: const FlutterLogo(),
+                          child: new FlutterLogo(colors: AppColors.primary,),
                         ),
                         new Container(
                           child: new Text('借款', style: Theme.of(context).primaryTextTheme.subhead),

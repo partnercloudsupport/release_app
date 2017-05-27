@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/AppRoute.dart';
+import 'package:release_app/src/comm/Colors.dart';
 import 'package:release_app/src/components/Home.dart';
 import 'package:release_app/src/components/MyHomePage.dart';
 import 'package:release_app/src/components/bottom_navigation_home.dart';
@@ -28,7 +29,7 @@ class _MyAppState extends State<MyApp> {
 
   final ThemeData defaultThme = new ThemeData(
     brightness: Brightness.light,
-    primarySwatch: Colors.blue,
+    primarySwatch: AppColors.primary,
 //    accentColor: Colors.blueAccent[400],
   );
 

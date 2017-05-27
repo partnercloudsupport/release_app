@@ -27,7 +27,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   String kTestString = 'Hello world';
 
-  String _fileContents;
+//  String _fileContents;
 
   Future<bool> _onWillPop() async {
     if (!_saveNeeded) return true;
@@ -288,44 +288,12 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 child: const Text('提交'),
               ),
             ),
-            new Container(
-              margin: const EdgeInsets.only(top: 15.0),
-              padding:
-              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
-              child:new Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _fileContents == null ?
-                  new Text('Press the button to upload a file') :
-                  new Text(
-                    'Success!\n\nFile contents: "$_fileContents"',
-                    style: const TextStyle(color: const Color.fromARGB(255, 0, 155, 0)),
-                  )
-                ],
-              ),
-            ),
           ])),
-      floatingActionButton: new FloatingActionButton(child: new Icon(Icons.cloud_upload), onPressed: _uploadFile)
     );
   }
 
   void _handleClick(BuildContext context, int i) {}
 
-  Future<Null>  _uploadFile()async {
-
-    Directory systemTempDir = Directory.systemTemp;
-    File file = await new File('${systemTempDir.path}/foo.txt').create();
-    file.writeAsString(kTestString);
-    assert(await file.readAsString() == kTestString);
-    String rand = "${new Random().nextInt(10000)}";
-    StorageReference ref = FirebaseStorage.instance.ref().child("foo$rand.txt");
-    StorageUploadTask uploadTask = ref.put(file);
-    Uri downloadUrl = (await uploadTask.future).downloadUrl;
-    http.Response downloadData = await http.get(downloadUrl);
-    setState(() {
-      _fileContents = downloadData.body;
-    });
-  }
 }
 
 //'学历'弹出对话框

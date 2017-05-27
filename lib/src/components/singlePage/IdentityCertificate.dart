@@ -30,6 +30,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
   File imageFile2;
   bool _saveNeeded = false;
   bool _isUploading = false;
+  bool _uploadSuccess = false;
   double _processValue = 0.0; //上传进度
 
   getImage() async {
@@ -207,6 +208,22 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                 new Center(
                   child: _isUploading ? new CircularProgressIndicator() : null,
                 ),
+                new Container(
+                  margin: const EdgeInsets.only(top: 15.0),
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+                  child:new Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      !_uploadSuccess?
+                      new Text('选择好照片后，请点击提交按钮！') :
+                      new Text(
+                        '上传成功!',
+                        style: const TextStyle(color: const Color.fromARGB(255, 0, 155, 0)),
+                      )
+                    ],
+                  ),
+                ),
               ])),
     );
   }
@@ -241,6 +258,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
     }
     setState(() {
       _isUploading = true;
+      _uploadSuccess = false;
     });
     print('start uploading....');
 
@@ -263,6 +281,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
     setState(() {
       _isUploading = false;
       _saveNeeded = false;
+      _uploadSuccess = true;
     });
 
 //    http.Response downloadData = await http.get(downloadUrl);
