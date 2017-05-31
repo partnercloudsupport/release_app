@@ -100,7 +100,7 @@ class _BorrowCashState extends State<BorrowCash> {
           new Container(
             padding: const EdgeInsets.only(left: 20.0, right: 20.0),
             height: 180.0,
-            color: Colors.green,
+            color:Theme.of(context).backgroundColor,
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

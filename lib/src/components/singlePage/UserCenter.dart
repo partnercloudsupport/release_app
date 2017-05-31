@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:release_app/src/components/singlePage/Login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebaseui/firebaseui.dart';
 
 final googleSignIn = new GoogleSignIn();
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -344,15 +345,18 @@ class _UserCenter extends State<UserCenter> {
   }
 
   Future<Null> _doLogin()async {
-    FirebaseUser user = await Navigator.push(
-        context,
-        new MaterialPageRoute<FirebaseUser>(
-          builder: (BuildContext context) => new Login(),
-          fullscreenDialog: false,
-        ));
-    setState((){_user = user;});
-    bool _saveStaus = await _saveUserInterface();
-    print("保存数据成功："+ _saveStaus.toString());
+//    FirebaseUser user = await Navigator.push(
+//        context,
+//        new MaterialPageRoute<FirebaseUser>(
+//          builder: (BuildContext context) => new Login(),
+//          fullscreenDialog: false,
+//        ));
+//    setState((){_user = user;});
+//    bool _saveStaus = await _saveUserInterface();
+//    print("保存数据成功："+ _saveStaus.toString());
+
+    String name = await Firebaseui.signin;
+    print(name);
   }
 
 }

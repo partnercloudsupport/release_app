@@ -10,6 +10,10 @@ dependencies:
   google_sign_in: "^0.0.2"
   firebase_storage: "^0.0.2"
   shared_preferences: "^0.2.0+1"
+  firebaseui:
+    git:
+      url: git://github.com/yiyisf/firebaseui
+
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 

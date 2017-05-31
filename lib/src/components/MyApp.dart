@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
 //        primarySwatch: Colors.blue,
 //      ),
       home: home,
-        color: Colors.grey,
+//        color: Colors.grey,
 //      home: _home==null?new SplashScreen():_home,
       routes: AppRoute.routes,
     );
