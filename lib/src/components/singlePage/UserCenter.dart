@@ -278,6 +278,8 @@ class _UserCenter extends State<UserCenter> {
               _itemLine('邀请好友', Icons.person_add, 3),
               new Divider(height: 1.0, indent: 40.0),
               _itemLine('设置', Icons.settings, 4),
+              new Divider(height: 1.0, indent: 40.0),
+              _itemLine('退出', Icons.all_out, 5),
             ],
           ),
         ),
@@ -324,6 +326,9 @@ class _UserCenter extends State<UserCenter> {
       case 4:
         Navigator.pushNamed(context, '/borrowRecord');
         break;
+      case 4:
+        _signout();
+        break;
     }
   }
 
@@ -357,6 +362,10 @@ class _UserCenter extends State<UserCenter> {
 
     String name = await Firebaseui.signin;
     print(name);
+  }
+
+  _signout() async {
+    await Firebaseui.signout;
   }
 
 }

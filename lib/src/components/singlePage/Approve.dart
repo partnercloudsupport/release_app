@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/components/singlePage/IdentityCertificate.dart';
 import 'package:release_app/src/components/singlePage/PersonalInfo.dart';
+import 'package:share/share.dart';
+
 
 class Approve extends StatefulWidget {
   Approve({Key key}) : super(key: key);
@@ -42,7 +44,9 @@ class _ApproveState extends State<Approve> {
             fullscreenDialog: true,
           ));
           break;
-
+        default:
+          share('check out my website https://example.com');
+          break;
       }
     }
 
