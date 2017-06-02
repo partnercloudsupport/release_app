@@ -26,28 +26,24 @@ class IdentityCertificate extends StatefulWidget {
 }
 
 class _IdentityCertificateState extends State<IdentityCertificate> {
-  File imageFile1;
-  File imageFile2;
+  Future<File> imageFile1;
+  Future<File> imageFile2;
   bool _saveNeeded = false;
   bool _isUploading = false;
   bool _uploadSuccess = false;
   double _processValue = 0.0; //上传进度
 
-  getImage() async {
-    var _fileName = await ImagePicker.pickImage();
-    setState(() {
-      imageFile1 = _fileName;
-      _saveNeeded = true;
-    });
+  Future<File> getImage() async {
+    return ImagePicker.pickImage();
   }
 
-  getImage1() async {
-    var _fileName = await ImagePicker.pickImage();
-    setState(() {
-      imageFile2 = _fileName;
-      _saveNeeded = true;
-    });
-  }
+//  getImage1() async {
+//    var _fileName = await ImagePicker.pickImage();
+//    setState(() {
+//      imageFile2 = _fileName;
+//      _saveNeeded = true;
+//    });
+//  }
 
   Future<bool> _onWillPop() async {
     if (!_saveNeeded) return true;
@@ -107,7 +103,11 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                     children: <Widget>[
                       new Expanded(
                         child: new InkWell(
-                          onTap: !_isUploading ? getImage : null,
+                          onTap: (){
+                            setState((){
+                              imageFile1 = getImage();
+                            });
+                          },
                           child: new Container(
                             decoration: new BoxDecoration(
                               shape: BoxShape.rectangle,
@@ -121,26 +121,39 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                             child: new Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: imageFile1 == null
-                                  ? <Widget>[
-                                      new Icon(
-                                        Icons.photo_camera,
-                                        color: Colors.green[500],
-                                      ),
-                                      new Text('身份证正面'),
-                                    ]
-                                  : [
-                                      new Image(
-                                        image: new FileImage(imageFile1),
-                                      ),
-                                    ],
+                              children: <Widget>[
+                                new FutureBuilder(
+                                  future: imageFile1,
+                                  builder: (BuildContext context, AsyncSnapshot<File> snapshot){
+                                    if (snapshot.connectionState == ConnectionState.done && snapshot.data != null){
+                                      return new Expanded(
+                                        child: new Image.file(snapshot.data),
+                                      );
+                                    }else{
+                                      return new Column(
+                                        children: <Widget>[
+                                          new Icon(
+                                            Icons.photo_camera,
+                                            color: Colors.green[500],
+                                          ),
+                                          new Text('身份证正面'),
+                                        ],
+                                      );
+                                    }
+                                  },
+                                ),
+                              ]
                             ),
                           ),
                         ),
                       ),
                       new Expanded(
                         child: new InkWell(
-                          onTap: !_isUploading ? getImage1 : null,
+                          onTap: (){
+                            setState((){
+                              imageFile2 = getImage();
+                            });
+                          },
                           child: new Container(
                             decoration: new BoxDecoration(
                               border: new Border.all(
@@ -150,20 +163,28 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                             child: new Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: imageFile2 == null
-                                  ? <Widget>[
-                                      new Icon(
-                                        Icons.photo_camera,
-                                        color: Colors.green[500],
-                                      ),
-                                      new Text('身份证反面'),
-                                    ]
-                                  : <Widget>[
-                                      new Image.file(
-                                        imageFile2,
-                                        height: 85.0,
-                                      ),
-                                    ],
+                              children: <Widget>[
+                                new FutureBuilder(
+                                  future: imageFile2,
+                                  builder: (BuildContext context, AsyncSnapshot<File> snapshot){
+                                    if (snapshot.connectionState == ConnectionState.done && snapshot.data != null){
+                                      return new Expanded(
+                                        child: new Image.file(snapshot.data),
+                                      );
+                                    }else{
+                                      return new Column(
+                                        children: <Widget>[
+                                          new Icon(
+                                            Icons.photo_camera,
+                                            color: Colors.green[500],
+                                          ),
+                                          new Text('身份证反面'),
+                                        ],
+                                      );
+                                    }
+                                  },
+                                ),
+                              ]
                             ),
                           ),
                         ),
@@ -261,20 +282,29 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
       _uploadSuccess = false;
     });
     print('start uploading....');
-
-    String xx = imageFile1.path.split('.')[1];
+    String xx;
+    File imagefile;
+    await imageFile1.then((file){
+      imagefile = file;
+      xx = file.path.split('.')[1];
+    });
     StorageReference ref = FirebaseStorage.instance
         .ref()
         .child("faceimages/${user.uid}/face1.${xx}");
-    StorageUploadTask uploadTask = ref.put(imageFile1);
+    StorageUploadTask uploadTask = ref.put(imagefile);
 
     Uri downloadUrl = (await uploadTask.future).downloadUrl;
 
-    xx = imageFile2.path.split('.')[1];
+    await imageFile2.then((file){
+      imagefile = file;
+      xx = file.path.split('.')[1];
+    });
+
+//    xx = imageFile2.path.split('.')[1];
     ref = FirebaseStorage.instance
         .ref()
         .child("faceimages/${user.uid}/face2.${xx}");
-    uploadTask = ref.put(imageFile2);
+    uploadTask = ref.put(imagefile);
     downloadUrl = (await uploadTask.future).downloadUrl;
 
     print('complete uploading....' + downloadUrl.path);

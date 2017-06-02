@@ -1,16 +1,18 @@
 import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:release_app/src/comm/Colors.dart';
 import 'package:release_app/src/components/singlePage/Login.dart';
+import 'package:release_app/src/components/singlePage/LoginEmail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebaseui/firebaseui.dart';
 
-final googleSignIn = new GoogleSignIn();
 final FirebaseAuth auth = FirebaseAuth.instance;
-
+final googleSignIn = new GoogleSignIn();
 
 class UserCenter extends StatefulWidget {
   UserCenter({Key key}) : super(key: key);
@@ -20,15 +22,7 @@ class UserCenter extends StatefulWidget {
 }
 
 class _UserCenter extends State<UserCenter> {
-
   FirebaseUser _user;
-
-  @override
-  void initState() {
-    super.initState();
-    _user = auth.currentUser;
-    _getUserInterface();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +37,10 @@ class _UserCenter extends State<UserCenter> {
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                new Icon(icon,color: Theme.of(context).primaryColor,),
+                new Icon(
+                  icon,
+                  color: Theme.of(context).primaryColor,
+                ),
                 new Container(
                   padding: const EdgeInsets.only(left: 2.0),
                   child: new Text(lable),
@@ -63,12 +60,13 @@ class _UserCenter extends State<UserCenter> {
       children: [
         new Container(
           height: 200.0,
-          color: Theme.of(context).primaryColor,
+//          color: Theme.of(context).primaryColor,
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Container(
-                padding: const EdgeInsets.only(bottom: 10.0,left: 10.0),
+                color: AppColors.primary,
+                padding: const EdgeInsets.only(bottom: 10.0, left: 10.0),
                 height: 150.0,
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -81,7 +79,8 @@ class _UserCenter extends State<UserCenter> {
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           image: const DecorationImage(
-                            image: const AssetImage('images/ic_center_more_icon.png'),//登录后可替换为头像，待完善
+                            image: const AssetImage(
+                                'images/ic_center_more_icon.png'), //登录后可替换为头像，待完善
                           ),
                         ),
                       ),
@@ -93,12 +92,10 @@ class _UserCenter extends State<UserCenter> {
                             child: defaultTargetPlatform == TargetPlatform.iOS
                                 ? new CupertinoAlertDialog(
                                     title: const Text('提示'),
-                                    content: new Text(
-                                        '你好,UID:' + _user.uid),
+                                    content: new Text('你好,UID:' + _user.uid),
                                   )
                                 : new AlertDialog(
-                                    content: new Text(
-                                        '您已登录,UID:' + _user.uid),
+                                    content: new Text('您已登录,UID:' + _user.uid),
                                     actions: <Widget>[
                                       new FlatButton(
                                         child: const Text('OK'),
@@ -111,7 +108,6 @@ class _UserCenter extends State<UserCenter> {
                           );
                         } else {
                           _doLogin();
-
                         }
 //                        _handleSubmitted();
                       },
@@ -124,10 +120,10 @@ class _UserCenter extends State<UserCenter> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           new Text(
-                              _user==null?'  ':'您好',
+                            _user == null ? '  ' : '您好',
                           ),
                           new Text(
-                            _user==null?'  ':_user.uid,
+                            _user == null ? '  ' : _user.uid,
                           ),
                         ],
                       ),
@@ -159,10 +155,10 @@ class _UserCenter extends State<UserCenter> {
                             new Column(
                               children: [
                                 new Text('525.00',
-                                    style: Theme
+                                    style: new TextStyle(fontSize: Theme
                                         .of(context)
                                         .primaryTextTheme
-                                        .title),
+                                        .title.fontSize,color: AppColors.primary)),
                                 new Text('待还金额'),
                               ],
                             ),
@@ -172,57 +168,65 @@ class _UserCenter extends State<UserCenter> {
                       ),
                     ),
                     new Flexible(
-                      child: new Container(
-                        alignment: FractionalOffset.center,
-                        decoration: new BoxDecoration(
-                          border: new Border(
-                              right: const BorderSide(
-                                  color: Colors.grey, width: 1.0)),
-                        ),
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            new Column(
-                              children: [
-                                new Text('1',
-                                    style: Theme
-                                        .of(context)
-                                        .primaryTextTheme
-                                        .title),
-                                new Text('需还贷款'),
+                      child: new InkWell(
+//                          splashColor: Colors.black,
+                          onTap: () {
+                            _handleClick(context, 0);
+                          },
+                          child: new Container(
+                            alignment: FractionalOffset.center,
+                            decoration: new BoxDecoration(
+                              border: new Border(
+                                  right: const BorderSide(
+                                      color: Colors.grey, width: 1.0)),
+                            ),
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                new Column(
+                                  children: [
+                                    new Text('1',
+                                        style: new TextStyle(fontSize: Theme
+                                            .of(context)
+                                            .primaryTextTheme
+                                            .title.fontSize,color: AppColors.primary)),
+                                    new Text('需还贷款'),
+                                  ],
+                                ),
+                                new Text('笔')
                               ],
                             ),
-                            new Text('笔')
-                          ],
-                        ),
-                      ),
+                          )),
                     ),
                     new Flexible(
-                      child: new Container(
-                        alignment: FractionalOffset.center,
-                        decoration: new BoxDecoration(
-                          border: new Border(
-                              right: new BorderSide(
-                                  color: Theme.of(context).dividerColor,
-                                  width: 1.0)),
-                        ),
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            new Column(
-                              children: [
-                                new Text('3',
-                                    style: Theme
-                                        .of(context)
-                                        .primaryTextTheme
-                                        .title),
-                                new Text('我的卡券'),
-                              ],
-                            ),
-                            new Text('张')
-                          ],
+                      child: new InkWell(
+                        onTap: (){_handleClick(context, 3);},
+                        child: new Container(
+                          alignment: FractionalOffset.center,
+                          decoration: new BoxDecoration(
+                            border: new Border(
+                                right: new BorderSide(
+                                    color: Theme.of(context).dividerColor,
+                                    width: 1.0)),
+                          ),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              new Column(
+                                children: [
+                                  new Text('3',
+                                      style: new TextStyle(fontSize: Theme
+                                          .of(context)
+                                          .primaryTextTheme
+                                          .title.fontSize,color: AppColors.primary)),
+                                  new Text('我的卡券'),
+                                ],
+                              ),
+                              new Text('张')
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -248,7 +252,10 @@ class _UserCenter extends State<UserCenter> {
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  new Icon(Icons.attach_money, color: Theme.of(context).primaryColor,),
+                  new Icon(
+                    Icons.attach_money,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   new Container(
                     padding: const EdgeInsets.only(left: 2.0),
                     child: new Text('借款记录'),
@@ -287,29 +294,64 @@ class _UserCenter extends State<UserCenter> {
     );
   }
 
-  void _showMessage(BuildContext context) {
-    Navigator.of(context).pushNamed('/message');
+  @override
+  void initState() {
+    super.initState();
+    _user = auth.currentUser;
+    _getUserInterface();
+  }
+
+  Future<Null> _doLogin() async {
+    await Navigator
+        .push(
+            context,
+            new MaterialPageRoute<FirebaseUser>(
+              builder: (BuildContext context) => new LoginEmail(),
+              fullscreenDialog: false,
+            ))
+        .then((user) {
+      if (user != null) {
+        _dosave(user);
+      }
+    });
+  }
+
+  _dosave(user) async {
+    setState(() {
+      _user = user;
+    });
+    bool _saveStaus = await _saveUserInterface();
+    print("保存数据成功：" + _saveStaus.toString());
+  }
+
+  Future<Null> _getUserInterface() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      print("获取保存的user uid:" + prefs.getString('userUid'));
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _handleClick(BuildContext context, int index) {
-    if(_user==null){
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: const Text('提示'),
-          content: const Text('请先点击头像登录'),
-          actions: [
-            new FlatButton(
-              child: const Text('OK'),
-              onPressed: (){
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
-        ),
-      );
-      return;
-    }
+//    if(_user==null){
+//      showDialog(
+//        context: context,
+//        child: new AlertDialog(
+//          title: const Text('提示'),
+//          content: const Text('请先点击头像登录'),
+//          actions: [
+//            new FlatButton(
+//              child: const Text('OK'),
+//              onPressed: (){
+//                Navigator.pop(context, true);
+//              },
+//            ),
+//          ],
+//        ),
+//      );
+//      return;
+//    }
     switch (index) {
       case 0:
         Navigator.pushNamed(context, '/borrowRecord');
@@ -338,34 +380,17 @@ class _UserCenter extends State<UserCenter> {
     if (account == null) await googleSignIn.signIn();
   }
 
-  Future<bool> _saveUserInterface() async{
+  Future<bool> _saveUserInterface() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('userUid', _user.uid);
     return true;
   }
 
-  Future<Null> _getUserInterface() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("获取保存的user uid:"+prefs.getString('userUid'));
-  }
-
-  Future<Null> _doLogin()async {
-//    FirebaseUser user = await Navigator.push(
-//        context,
-//        new MaterialPageRoute<FirebaseUser>(
-//          builder: (BuildContext context) => new Login(),
-//          fullscreenDialog: false,
-//        ));
-//    setState((){_user = user;});
-//    bool _saveStaus = await _saveUserInterface();
-//    print("保存数据成功："+ _saveStaus.toString());
-
-    String name = await Firebaseui.signin;
-    print(name);
+  void _showMessage(BuildContext context) {
+    Navigator.of(context).pushNamed('/message');
   }
 
   _signout() async {
     await Firebaseui.signout;
   }
-
 }

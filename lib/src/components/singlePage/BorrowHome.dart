@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:release_app/src/comm/Colors.dart';
+import 'package:release_app/src/logo/logo.dart';
 
 class BorrowHome extends StatefulWidget {
+  final String title;
+
   BorrowHome({
     Key key,
     this.title,
   })
       : super(key: key);
-
-  final String title;
 
 //  final BuildContext context;
 
@@ -49,7 +51,10 @@ class _BorrowHomeState extends State<BorrowHome> {
         centerTitle: true,
         actions: [
           new CupertinoButton(
-            child: new Text('消息', style: new TextStyle(color: Theme.of(context).buttonColor),),
+            child: new Text(
+              '消息',
+              style: new TextStyle(color: Theme.of(context).buttonColor),
+            ),
             onPressed: () {
               Navigator.of(context).pushNamed('/message');
             },
@@ -64,11 +69,24 @@ class _BorrowHomeState extends State<BorrowHome> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                new Image.asset(
-                  'images/ic_center_more_icon.png',
-                  height: 200.0,
-                  width: 200.0,
-                  fit: BoxFit.contain,
+//                new Image.asset(
+//                  'images/ic_center_more_icon.png',
+//                  height: 200.0,
+//                  width: 200.0,
+//                  fit: BoxFit.contain,
+//                ),
+//                new CashLogo(size: 200.0,colors: AppColors.primary,),
+                new Container(
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.primary,
+                  ),
+                    alignment: FractionalOffset.center,
+                  child: new Icon(
+                    Icons.attach_money,
+                    size: 200.0,
+                    color: AppColors.primary.shade100,
+                  ),
                 ),
                 new Container(
 //                decoration: defaultTargetPlatform == TargetPlatform.iOS
@@ -116,7 +134,8 @@ class _BorrowHomeState extends State<BorrowHome> {
                     children: [
                       new TextSpan(
                           text: '20',
-                          style: new TextStyle(color: Theme.of(context).primaryColor)),
+                          style: new TextStyle(
+                              color: Theme.of(context).primaryColor)),
                       new TextSpan(text: '分钟'),
                     ],
                     style: Theme.of(context).textTheme.body1,

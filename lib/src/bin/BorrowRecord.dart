@@ -40,10 +40,10 @@ class SingleRecord extends StatelessWidget {
                           child: new FlutterLogo(colors: AppColors.primary,),
                         ),
                         new Container(
-                          child: new Text('借款', style: Theme.of(context).primaryTextTheme.subhead),
+                          child: new Text('借款', style: new TextStyle(color: AppColors.primary.shade500)),
                         ),
                         new Flexible(
-                            child: new Text('ABC-1234564654', style: Theme.of(context).primaryTextTheme.subhead)
+                            child: new Text('ABC-1234564654', style: new TextStyle(color: AppColors.primary.shade500))
                         ),
                       ],
                     ),
@@ -54,12 +54,12 @@ class SingleRecord extends StatelessWidget {
                       children: [
                         new Container(
                           padding: const EdgeInsets.only(left: 5.0),
-                          child: new  Text('金额', style: Theme.of(context).primaryTextTheme.body1),
+                          child: new  Text('金额', style: new TextStyle(color: AppColors.primary.shade300)),
                         ),
-                        new Text('期限', style: Theme.of(context).primaryTextTheme.body1),
+                        new Text('期限', style: new TextStyle(color: AppColors.primary.shade300)),
                         new Container(
                           padding: const EdgeInsets.all(5.0),
-                          child: new Text('状态',style: Theme.of(context).primaryTextTheme.body1),
+                          child: new Text('状态',style: new TextStyle(color: AppColors.primary.shade300)),
                         ),
                       ],
                     ),
@@ -70,12 +70,12 @@ class SingleRecord extends StatelessWidget {
                       children: [
                         new Container(
                           padding: const EdgeInsets.only(left: 5.0),
-                          child: new Text(balance.toString()+'元',style: Theme.of(context).primaryTextTheme.body2),
+                          child: new Text(balance.toString()+'元',style: new TextStyle(color: AppColors.primary.shade500)),
                         ),
-                        new Text(term,style: Theme.of(context).primaryTextTheme.body2),
+                        new Text(term,style: new TextStyle(color: AppColors.primary.shade500)),
                         new Container(
                           padding: const EdgeInsets.all(5.0),
-                          child: new Text(status,style: Theme.of(context).primaryTextTheme.body2),
+                          child: new Text(status,style: new TextStyle(color: AppColors.primary.shade500)),
                         ),
                       ],
                     ),

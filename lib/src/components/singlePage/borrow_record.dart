@@ -44,7 +44,7 @@ class _BorrowRecordState extends State<BorrowRecord>
                     ),
                     new Container(
                       child: new Text('借款',
-                          style: Theme.of(context).primaryTextTheme.subhead),
+                          style: Theme.of(context).textTheme.subhead),
                     ),
                     new Flexible(
                         child: new Text('ABC-1234564654',
@@ -155,7 +155,7 @@ class _BorrowRecordState extends State<BorrowRecord>
         status: '通过',
         animationController: new AnimationController(
           vsync: this,
-          duration: new Duration(milliseconds: 800),
+          duration: new Duration(milliseconds: 500),
         ),
       ));
       _listRecord.add(new SingleRecord(
@@ -164,7 +164,7 @@ class _BorrowRecordState extends State<BorrowRecord>
         status: '通过',
         animationController: new AnimationController(
           vsync: this,
-          duration: new Duration(milliseconds: 800),
+          duration: new Duration(milliseconds: 500),
         ),
       ));
       _listRecord.add(new SingleRecord(
@@ -173,7 +173,7 @@ class _BorrowRecordState extends State<BorrowRecord>
         status: '未通过',
         animationController: new AnimationController(
           vsync: this,
-          duration: new Duration(milliseconds: 800),
+          duration: new Duration(milliseconds: 500),
         ),
       ));
     });
@@ -199,7 +199,7 @@ class _BorrowRecordState extends State<BorrowRecord>
           status: recs[i]['xx'],
           animationController: new AnimationController(
             vsync: this,
-            duration: new Duration(milliseconds: 800),
+            duration: new Duration(milliseconds: 500),
           ),
         ));
       }

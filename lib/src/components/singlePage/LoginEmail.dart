@@ -1,23 +1,19 @@
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-final FirebaseAuth auth = FirebaseAuth.instance;
-
-
-class Login extends StatefulWidget {
-  @override
-  _LoginState createState() => new _LoginState();
-}
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:release_app/src/comm/Colors.dart';
 
 /**
  * Created by zgx on 2017/5/24.
  */
-enum LoginStatus {
-  success,
-  fail,
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+
+class LoginEmail extends StatefulWidget {
+  @override
+  _LoginEmailState createState() => new _LoginEmailState();
 }
 
 class UserData {
@@ -26,25 +22,38 @@ class UserData {
   String confirmpassword = '';
 }
 
-class _LoginState extends State<Login> {
+class _LoginEmailState extends State<LoginEmail> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   TextEditingController _phoneController = new TextEditingController();
 
   UserData user = new UserData();
 
-  String userName;
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
 
+  void showInSnackBar(String s) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(s)));
+  }
 
+  String _email;
+  String _password;
 
-  String password;
   bool _autovalidate = false;
-
   bool _formWasEdited = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+//    -_emailController.addListener();
+  }
+
   @override
   Widget build(BuildContext context) {
 
     Future<bool> _handleSubmitted() async {
+
       final FormState form = _formKey.currentState;
       if (!form.validate()) {
         _autovalidate = true; // Start validating on every change.
@@ -53,13 +62,15 @@ class _LoginState extends State<Login> {
       } else {
 //        form.save();
 //      showInSnackBar('${user.phoneno}\'s phone number is ${user.phoneno}');
-        FirebaseUser user = auth.currentUser;
-        if (user == null) {
-          print('loging......');
-          user = await auth.signInAnonymously();
-          print('loging call complete...');
-        }
-
+      //匿名登录
+//        FirebaseUser user = auth.currentUser;
+//        if (user == null) {
+//          print('loging......');
+//          user = await auth.signInAnonymously();
+//          print('loging call complete...');
+//        }
+      //邮箱密码登录
+//        FirebaseUser user = auth
       }
     return user != null;
     }
@@ -80,19 +91,20 @@ class _LoginState extends State<Login> {
               new Container(
                 child: new TextFormField(
                   decoration: const InputDecoration(
-                    icon: const Icon(Icons.phone_iphone),
-                    hintText: '请输入手机号码',
-                    labelText: '手机号码',
+                    icon: const Icon(Icons.email),
+                    hintText: '请输入邮箱地址',
+                    labelText: '邮箱地址',
                   ),
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.text,
 //                  onSaved: (String value) {
 //                    //form.save时才会调用
 //                    user.phoneno = value;
 //                  },
-                  inputFormatters: [
-                    WhitelistingTextInputFormatter.digitsOnly,
-                  ],
-                  validator: _validatePhoneNumber,
+//                  inputFormatters: [
+//                    WhitelistingTextInputFormatter.digitsOnly,
+//                  ],
+                  validator: _validateEmailAddress,
+                  controller: _emailController,
                 ),
               ),
               new TextFormField(
@@ -102,9 +114,7 @@ class _LoginState extends State<Login> {
                     labelText: '密码'),
                 obscureText: true,
                 validator: _validatePassword,
-//                onSaved: (String value) {
-//                  user.phoneno = value;
-//                },
+                controller: _passwordController,
               ),
               new Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -173,9 +183,7 @@ class _LoginState extends State<Login> {
                   child: const Text('登录'),
                 ),
               ),
-              new Image.asset('images/ic_monetization_on_black_48px.svg',
-                  width: 150.0, height: 150.0,
-              color: Colors.red,),
+              new FlutterLogo(size: 100.0,colors: AppColors.primary,),
               new Align(),
             ]),
       ),
@@ -225,24 +233,25 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void showInSnackBar(String s) {
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(s)));
+  String _validateEmailAddress(String value) {
+    _formWasEdited = true;
+    if(value.length == 0){
+      return '请输入邮箱地址';
+    }
+//    final RegExp phoneExp = new RegExp(r'^\(\d\d\d\) \d\d\d\-\d\d\d\d$');
+    print('手机号是:'+ value);
+    final RegExp emailExp = new RegExp(
+        r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)");
+    if (!emailExp.hasMatch(value)) return '请检查邮箱地址格式.';
+//    setState((){_email=value;});
+    return null;
   }
 
   String _validatePassword(String value) {
     if (value.length == 0) {
       return '请输入密码';
     }
-    return null;
-  }
-
-  String _validatePhoneNumber(String value) {
-    _formWasEdited = true;
-//    final RegExp phoneExp = new RegExp(r'^\(\d\d\d\) \d\d\d\-\d\d\d\d$');
-    print('手机号是:'+ value);
-    final RegExp phoneExp = new RegExp(r'^\d\d\d\d\d\d\d\d\d\d\d$');
-    if (!phoneExp.hasMatch(value)) return '99999999999 - 请检查格式.';
-//      return '(###) ###-#### - 请检查格式.';
+//    setState((){_password=value;});
     return null;
   }
 }

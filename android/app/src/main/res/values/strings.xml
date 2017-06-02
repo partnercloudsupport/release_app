@@ -1,0 +1,58 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Common -->
+    <string name="progress_dialog_loading">加载中…</string>
+    <string name="sign_in_default">登录</string>
+    <string name="general_error">出错了...</string>
+
+    <!-- Auth method picker -->
+    <string name="sign_in_with_email">邮箱登录</string>
+
+    <!-- Email common-->
+    <string name="next_default">继续</string>
+    <string name="email_hint">邮箱</string>
+    <string name="password_hint">密码</string>
+    <string name="required_field">输入不能为空</string>
+    <string name="invalid_email_address">邮箱地址不正确</string>
+    <string name="missing_email_address">输入邮箱地址后继续</string>
+    <string name="progress_dialog_checking_accounts">检查现有账户…</string>
+
+    <!-- Email sign up -->
+    <string name="title_register_email">注册</string>
+    <string name="name_hint">行 &amp; last name</string>
+    <string name="button_text_save">保存</string>
+    <string name="progress_dialog_signing_up">注册…</string>
+    <plurals name="error_weak_password">
+        <item quantity="one">密码长度太弱. 请输入至少 %1$d 字母或数字组合</item>
+        <item quantity="other">密码长度太弱. 请输入至少 %1$d 字母或数字组合</item>
+    </plurals>
+    <string name="email_account_creation_error">邮箱账户注册失败</string>
+    <string name="error_user_collision">邮箱地址已注册</string>
+    <string name="create_account_preamble">"点击保存，表示您同意"</string>
+    <string name="terms_of_service">服务条款</string>
+
+    <!-- Idp/Email welcome back -->
+    <string name="title_welcome_back_idp_prompt">@string/sign_in_default</string>
+    <string name="title_welcome_back_password_prompt">@string/sign_in_default</string>
+    <string name="welcome_back_idp_header">您已经注册了账户</string>
+    <string name="welcome_back_email_header">欢迎回来!</string>
+    <string name="welcome_back_idp_prompt">
+        您已经使用 <xliff:g id="email_addr" example="jane.doe@example.com">%1$s</xliff:g>.
+        Sign in with <xliff:g id="provider_name" example="Google">%2$s</xliff:g> to continue.
+    </string>
+    <string name="welcome_back_password_prompt_body">
+        你已使用 <xliff:g id="email_addr" example="jane.doe@example.com">%1$s</xliff:g>
+        登录. 请输入您的密码.
+    </string>
+    <string name="progress_dialog_signing_in">登录…</string>
+    <string name="trouble_signing_in">遇到问题?</string>
+
+    <!-- Password recovery -->
+    <string name="title_recover_password_activity">重置密码</string>
+    <string name="title_confirm_recover_password">检查邮件</string>
+    <string name="password_recovery_body">查看发送给您的邮件，说明如何重置密码.</string>
+    <string name="button_text_send">发送</string>
+    <string name="confirm_recovery_body">按照指示发送邮件到 %1$s 重置密码.</string>
+    <string name="progress_dialog_sending">发送中…</string>
+    <string name="error_email_does_not_exist">邮箱地址不匹配</string>
+
+</resources>

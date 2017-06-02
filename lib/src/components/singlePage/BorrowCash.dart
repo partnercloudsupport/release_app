@@ -70,7 +70,12 @@ class _BorrowCashState extends State<BorrowCash> {
                                           .body2),
                                 ],
                               ),
-                              new Icon(Icons.help, color: Colors.white),
+                              new IconButton(
+                                icon: const Icon(Icons.help, color: Colors.white,),
+                                onPressed: (){
+
+                                },
+                              ),
                             ],
                           ),
                         ),
