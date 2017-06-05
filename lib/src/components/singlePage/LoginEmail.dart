@@ -60,15 +60,16 @@ class _LoginEmailState extends State<LoginEmail> {
         showInSnackBar('请按照提示修改输入内容.');
         return false;
       } else {
+
 //        form.save();
 //      showInSnackBar('${user.phoneno}\'s phone number is ${user.phoneno}');
       //匿名登录
-//        FirebaseUser user = auth.currentUser;
-//        if (user == null) {
-//          print('loging......');
-//          user = await auth.signInAnonymously();
-//          print('loging call complete...');
-//        }
+        FirebaseUser user = auth.currentUser;
+        if (user == null) {
+          print('loging......');
+          user = await auth.signInAnonymously();
+          print('loging call complete...');
+        }
       //邮箱密码登录
 //        FirebaseUser user = auth
       }

@@ -333,25 +333,26 @@ class _UserCenter extends State<UserCenter> {
     }
   }
 
-  void _handleClick(BuildContext context, int index) {
-//    if(_user==null){
-//      showDialog(
-//        context: context,
-//        child: new AlertDialog(
-//          title: const Text('提示'),
-//          content: const Text('请先点击头像登录'),
-//          actions: [
-//            new FlatButton(
-//              child: const Text('OK'),
-//              onPressed: (){
-//                Navigator.pop(context, true);
-//              },
-//            ),
-//          ],
-//        ),
-//      );
-//      return;
-//    }
+  _handleClick(BuildContext context, int index) async {
+//    await Firebaseui.signinstatus;
+    if(!await Firebaseui.signinstatus){
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: const Text('提示'),
+          content: const Text('请先点击头像登录'),
+          actions: [
+            new FlatButton(
+              child: const Text('OK'),
+              onPressed: (){
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        ),
+      );
+      return;
+    }
     switch (index) {
       case 0:
         Navigator.pushNamed(context, '/borrowRecord');
@@ -368,7 +369,7 @@ class _UserCenter extends State<UserCenter> {
       case 4:
         Navigator.pushNamed(context, '/borrowRecord');
         break;
-      case 4:
+      case 5:
         _signout();
         break;
     }
