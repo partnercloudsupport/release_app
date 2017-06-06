@@ -32,6 +32,8 @@ class _LoginEmailState extends State<LoginEmail> {
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
 
+  bool _isLogining = false;
+
   void showInSnackBar(String s) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(s)));
   }
@@ -42,38 +44,46 @@ class _LoginEmailState extends State<LoginEmail> {
   bool _autovalidate = false;
   bool _formWasEdited = false;
 
-
   @override
   void initState() {
     super.initState();
-//    -_emailController.addListener();
   }
 
   @override
   Widget build(BuildContext context) {
-
     Future<bool> _handleSubmitted() async {
-
+      setState(() {
+        _isLogining = true;
+      });
       final FormState form = _formKey.currentState;
       if (!form.validate()) {
         _autovalidate = true; // Start validating on every change.
         showInSnackBar('请按照提示修改输入内容.');
         return false;
       } else {
-
-//        form.save();
+        form.save(); //可以由此保存state
 //      showInSnackBar('${user.phoneno}\'s phone number is ${user.phoneno}');
-      //匿名登录
-        FirebaseUser user = auth.currentUser;
-        if (user == null) {
+        //匿名登录
+        FirebaseUser firebaseUser = auth.currentUser;
+        if (firebaseUser == null) {
           print('loging......');
-          user = await auth.signInAnonymously();
+//          user = await auth.signInAnonymously();
+          try {
+            firebaseUser = await auth.signInWithEmailAndPassword(
+                email: _email, password: _password);
+          } catch (e) {
+            print(e);
+            setState(() {_isLogining = false;});
+            return false;
+          }
           print('loging call complete...');
         }
-      //邮箱密码登录
+        setState(() {_isLogining = false;});
+        return auth.currentUser!= null;
+        //邮箱密码登录
 //        FirebaseUser user = auth
       }
-    return user != null;
+//      return user != null;
     }
 
     return new Scaffold(
@@ -106,6 +116,11 @@ class _LoginEmailState extends State<LoginEmail> {
 //                  ],
                   validator: _validateEmailAddress,
                   controller: _emailController,
+                  onSaved: (email) {
+                    setState(() {
+                      _email = email;
+                    });
+                  },
                 ),
               ),
               new TextFormField(
@@ -116,6 +131,11 @@ class _LoginEmailState extends State<LoginEmail> {
                 obscureText: true,
                 validator: _validatePassword,
                 controller: _passwordController,
+                onSaved: (pass) {
+                  setState(() {
+                    _password = pass;
+                  });
+                },
               ),
               new Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -142,8 +162,8 @@ class _LoginEmailState extends State<LoginEmail> {
                 child: new RaisedButton(
                   onPressed: () {
                     print('before press login');
-                    _handleSubmitted().then((status){
-                      print('返回状态：'+ status.toString());
+                    _handleSubmitted().then((status) {
+                      print('返回状态：' + status.toString());
                       if (status) {
                         print('登录成功.....');
 //                        showDialog(
@@ -161,22 +181,20 @@ class _LoginEmailState extends State<LoginEmail> {
 //                                ])) ??
 //                            false;
                         Navigator.pop(context, auth.currentUser);
-
-                      }
-                      else
+                      } else
                         showDialog(
-                            context: context,
-                            child: new AlertDialog(
-                                title: const Text('提示'),
-                                content: new Text('登录失败!'),
-                                actions: <Widget>[
-                                  new FlatButton(
-                                      child: const Text('OK'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop(
-                                            false); // Pops the confirmation dialog but not the page.
-                                      }),
-                                ])) ??
+                                context: context,
+                                child: new AlertDialog(
+                                    title: const Text('提示'),
+                                    content: new Text('登录失败!'),
+                                    actions: <Widget>[
+                                      new FlatButton(
+                                          child: const Text('OK'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(
+                                                false); // Pops the confirmation dialog but not the page.
+                                          }),
+                                    ])) ??
                             false;
                     });
                     print('after press login');
@@ -184,8 +202,14 @@ class _LoginEmailState extends State<LoginEmail> {
                   child: const Text('登录'),
                 ),
               ),
-              new FlutterLogo(size: 100.0,colors: AppColors.primary,),
+              new FlutterLogo(
+                size: 100.0,
+                colors: AppColors.primary,
+              ),
               new Align(),
+              new Center(
+                child: _isLogining ? new CircularProgressIndicator() : null,
+              ),
             ]),
       ),
 
@@ -236,15 +260,14 @@ class _LoginEmailState extends State<LoginEmail> {
 
   String _validateEmailAddress(String value) {
     _formWasEdited = true;
-    if(value.length == 0){
+    if (value.length == 0) {
       return '请输入邮箱地址';
     }
 //    final RegExp phoneExp = new RegExp(r'^\(\d\d\d\) \d\d\d\-\d\d\d\d$');
-    print('手机号是:'+ value);
-    final RegExp emailExp = new RegExp(
-        r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)");
+    print('手机号是:' + value);
+    final RegExp emailExp =
+        new RegExp(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)");
     if (!emailExp.hasMatch(value)) return '请检查邮箱地址格式.';
-//    setState((){_email=value;});
     return null;
   }
 
@@ -252,7 +275,6 @@ class _LoginEmailState extends State<LoginEmail> {
     if (value.length == 0) {
       return '请输入密码';
     }
-//    setState((){_password=value;});
     return null;
   }
 }

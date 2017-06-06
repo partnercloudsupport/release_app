@@ -76,11 +76,13 @@ class _UserCenter extends State<UserCenter> {
                       child: new Container(
                         height: 70.0,
                         width: 70.0,
-                        decoration: const BoxDecoration(
+                        decoration: new BoxDecoration(
                           shape: BoxShape.circle,
-                          image: const DecorationImage(
-                            image: const AssetImage(
-                                'images/ic_center_more_icon.png'), //登录后可替换为头像，待完善
+                          image: new DecorationImage(
+                            image: (_user == null || _user.photoUrl==null)
+                                ? const AssetImage(
+                                    'images/ic_center_more_icon.png') //登录后可替换为头像，待完善
+                                : new NetworkImage(_user.photoUrl),
                           ),
                         ),
                       ),
@@ -155,10 +157,13 @@ class _UserCenter extends State<UserCenter> {
                             new Column(
                               children: [
                                 new Text('525.00',
-                                    style: new TextStyle(fontSize: Theme
-                                        .of(context)
-                                        .primaryTextTheme
-                                        .title.fontSize,color: AppColors.primary)),
+                                    style: new TextStyle(
+                                        fontSize: Theme
+                                            .of(context)
+                                            .primaryTextTheme
+                                            .title
+                                            .fontSize,
+                                        color: AppColors.primary)),
                                 new Text('待还金额'),
                               ],
                             ),
@@ -187,10 +192,13 @@ class _UserCenter extends State<UserCenter> {
                                 new Column(
                                   children: [
                                     new Text('1',
-                                        style: new TextStyle(fontSize: Theme
-                                            .of(context)
-                                            .primaryTextTheme
-                                            .title.fontSize,color: AppColors.primary)),
+                                        style: new TextStyle(
+                                            fontSize: Theme
+                                                .of(context)
+                                                .primaryTextTheme
+                                                .title
+                                                .fontSize,
+                                            color: AppColors.primary)),
                                     new Text('需还贷款'),
                                   ],
                                 ),
@@ -201,7 +209,9 @@ class _UserCenter extends State<UserCenter> {
                     ),
                     new Flexible(
                       child: new InkWell(
-                        onTap: (){_handleClick(context, 3);},
+                        onTap: () {
+                          _handleClick(context, 3);
+                        },
                         child: new Container(
                           alignment: FractionalOffset.center,
                           decoration: new BoxDecoration(
@@ -217,10 +227,13 @@ class _UserCenter extends State<UserCenter> {
                               new Column(
                                 children: [
                                   new Text('3',
-                                      style: new TextStyle(fontSize: Theme
-                                          .of(context)
-                                          .primaryTextTheme
-                                          .title.fontSize,color: AppColors.primary)),
+                                      style: new TextStyle(
+                                          fontSize: Theme
+                                              .of(context)
+                                              .primaryTextTheme
+                                              .title
+                                              .fontSize,
+                                          color: AppColors.primary)),
                                   new Text('我的卡券'),
                                 ],
                               ),
@@ -297,8 +310,7 @@ class _UserCenter extends State<UserCenter> {
   @override
   void initState() {
     super.initState();
-    _user = auth.currentUser;
-    _getUserInterface();
+    setState((){_user = auth.currentUser;});
   }
 
   Future<Null> _doLogin() async {
@@ -311,7 +323,8 @@ class _UserCenter extends State<UserCenter> {
             ))
         .then((user) {
       if (user != null) {
-        _dosave(user);
+        setState((){_user=user;});
+        print(user);
       }
     });
   }
@@ -335,7 +348,8 @@ class _UserCenter extends State<UserCenter> {
 
   _handleClick(BuildContext context, int index) async {
 //    await Firebaseui.signinstatus;
-    if(!await Firebaseui.signinstatus){
+//    if(!await Firebaseui.signinstatus){
+    if (_user == null) {
       showDialog(
         context: context,
         child: new AlertDialog(
@@ -344,7 +358,7 @@ class _UserCenter extends State<UserCenter> {
           actions: [
             new FlatButton(
               child: const Text('OK'),
-              onPressed: (){
+              onPressed: () {
                 Navigator.pop(context, true);
               },
             ),
@@ -392,6 +406,8 @@ class _UserCenter extends State<UserCenter> {
   }
 
   _signout() async {
-    await Firebaseui.signout;
+//    await Firebaseui.signout;
+    await auth.signOut();
+    setState((){_user=null;});
   }
 }

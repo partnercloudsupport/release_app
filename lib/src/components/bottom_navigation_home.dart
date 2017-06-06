@@ -29,7 +29,7 @@ class NavigationIconView {
         ) {
     _animation = new CurvedAnimation(
       parent: controller,
-      curve: const Interval(0.1, 1.0, curve: Curves.fastOutSlowIn),
+      curve: const Interval(0.2, 0.5, curve: Curves.fastOutSlowIn),
     );
   }
 
