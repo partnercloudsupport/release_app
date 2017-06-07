@@ -172,7 +172,7 @@ class _LoginState extends State<Login> {
                   child: const Text('登录'),
                 ),
               ),
-              new Image.asset('images/ic_monetization_on_black_48px.svg',
+              new Image.asset('images/ic_center_more_icon.png',
                   width: 150.0, height: 150.0,
               color: Colors.red,),
               new Align(),
