@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math';
+
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:release_app/src/comm/CommBin.dart';
+import 'package:release_app/src/components/singlePage/JobInfoPage.dart';
 
 /**
  * Created by zgx on 2017/5/25.
@@ -19,15 +19,46 @@ class PersonalInfo extends StatefulWidget {
 }
 
 class _PersonalInfoState extends State<PersonalInfo> {
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  bool _autovalidate = false;
+  Jobinfo job = new Jobinfo(
+      'job', '10000', 'comp name', 'shenzhen', 'nan shan', '0755-0000000');
+
+  final DatabaseReference _rootRef = FirebaseDatabase.instance.reference();
+
+  String _userid;
+
   bool _saveNeeded = false;
   String _education = '';
   String _marriage = '';
   String _childencount = '';
   String _livetime = '';
+  String _qq = '';
+  String _email = '';
+  String _address = '';
+  List<Map<String, String>> _zhiyeinfo = [];
+  List<Map<String, String>> _contacts = [];
+  List<Map<String, String>> _bankcards = [];
 
-  String kTestString = 'Hello world';
+  StreamSubscription _infoSubscription;
 
-//  String _fileContents;
+  static TextEditingController _qqController;
+  static TextEditingController _emailController;
+  static TextEditingController _addressController;
+
+  List<TextEditingController> _controllers = <TextEditingController>[
+    null,
+    null,
+    null
+  ];
+
+//  String kTestString = 'Hello world';
+
+  @override
+  void initState() {
+    super.initState();
+    initValiable();
+  }
 
   Future<bool> _onWillPop() async {
     if (!_saveNeeded) return true;
@@ -67,7 +98,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
         child: child,
       ).then<Null>((String value) {
         // The value passed to Navigator.pop() or null.
-        print('序号:' + index.toString() + '返回数据:' + value);
+//        print('序号:' + index.toString() + '返回数据:' + value);
         setState(() {
           if (value != null) {
             _saveNeeded = true;
@@ -91,9 +122,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
     }
 
     Widget _textInputItem(
-        String label, String hintText, TextInputType inputType) {
+        String label, String hintText, TextInputType inputType, int i) {
       return new Container(
-        height: 45.0,
+//        height: 45.0,
         child: new Row(
           children: <Widget>[
             new Expanded(
@@ -107,7 +138,22 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   hideDivider: true,
                   hintText: hintText,
                 ),
+                controller: _controllers[i] != null ? _controllers[i] : null,
                 keyboardType: inputType,
+                onSaved: (value) {
+//                  setState((){o = value;});
+                  switch (i) {
+                    case 0:
+                      _qq = value;
+                      break;
+                    case 1:
+                      _email = value;
+                      break;
+                    case 2:
+                      _address = value;
+                      break;
+                  }
+                },
               ),
             ),
           ],
@@ -167,9 +213,23 @@ class _PersonalInfoState extends State<PersonalInfo> {
       );
     }
 
-    Widget _iconButtonItem(String label, String hintText, Icon icon) {
+    Widget _iconButtonItem(String label, Icon icon, int index) {
       return new InkWell(
-        onTap: () {},
+        onTap: () {
+          switch (index) {
+            case 0:
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute<Null>(
+                    builder: (BuildContext context) => new JobInfoPage(),
+                  )).then((v){});
+              break;
+            case 1:
+              break;
+            case 2:
+              break;
+          }
+        },
         child: new Container(
           height: 45.0,
           child: new Row(
@@ -214,6 +274,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
         centerTitle: true,
       ),
       body: new Form(
+          key: _formKey,
           onWillPop: _onWillPop,
           child: new ListView(padding: const EdgeInsets.all(16.0), children: <
               Widget>[
@@ -226,9 +287,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           width: 1.0, color: theme.dividerColor))),
               child: new Column(
                 children: <Widget>[
-                  _textInputItem('QQ', '请输入QQ号码', TextInputType.number),
+                  _textInputItem('QQ', '请输入QQ号码', TextInputType.number, 0),
                   new Divider(),
-                  _textInputItem('电子邮箱', '输入电子邮箱', TextInputType.text),
+                  _textInputItem('电子邮箱', '输入电子邮箱', TextInputType.text, 1),
                   new Divider(),
                   _dropdownInputItem('学历', 0),
                   new Divider(),
@@ -236,7 +297,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   new Divider(),
                   _dropdownInputItem('子女个数', 2),
                   new Divider(),
-                  _textInputItem('常住地址', '请输入常住地址', TextInputType.text),
+                  _textInputItem('常住地址', '请输入常住地址', TextInputType.text, 2),
                   new Divider(),
                   _dropdownInputItem('居住时长', 3),
                 ],
@@ -254,27 +315,27 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 children: <Widget>[
                   _iconButtonItem(
                       '职业信息',
-                      '',
                       new Icon(
                         Icons.work,
                         color: theme.primaryColor,
-                      )),
+                      ),
+                      0),
                   new Divider(),
                   _iconButtonItem(
                       '紧急联系人',
-                      '',
                       new Icon(
                         Icons.contact_phone,
                         color: theme.primaryColor,
-                      )),
+                      ),
+                      1),
                   new Divider(),
                   _iconButtonItem(
                       '银行卡信息',
-                      '',
                       new Icon(
                         Icons.credit_card,
                         color: theme.primaryColor,
-                      )),
+                      ),
+                      2),
                 ],
               ),
             ),
@@ -284,7 +345,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
               child: new RaisedButton(
                 color: Theme.of(context).primaryColor,
-                onPressed: () {},
+                onPressed: () {
+                  _handleSubmit();
+                },
                 child: const Text('提交'),
               ),
             ),
@@ -294,6 +357,67 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   void _handleClick(BuildContext context, int i) {}
 
+  _handleSubmit() async {
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
+      _autovalidate = true;
+    } else {
+      form.save();
+      print("qq:" + _qq);
+      print("email:" + _email);
+      print("address:" + _address);
+      await _rootRef.child(_userid).child('person_info').set({
+        "qq": _qq,
+        "email": _email,
+        "address": _address,
+        "education": _education,
+        "livetime": _livetime,
+        "childCount": _childencount,
+        "marriage": _marriage,
+        "job": {'jobname': 'name', 'income': 10000, 'comp name': 'slys'}
+      }).then((v) {});
+    }
+  }
+
+  //新起一个线程获取登录用户
+  initValiable() async {
+    await Firebaseui.currentUser.then((user) {
+      _userid = user.uid;
+      _infoSubscription = _rootRef
+          .child(_userid)
+          .child('person_info')
+          .onValue
+          .listen((Event event) {
+        setState(() {
+          Map<String, String> maps = event.snapshot.value;
+          setState(() {
+            print('开始setState....');
+            _qqController = new TextEditingController(text: maps['qq']);
+            _emailController = new TextEditingController(text: maps['email']);
+            _addressController =
+                new TextEditingController(text: maps['address']);
+            _controllers[0] = _qqController;
+            _controllers[1] = _emailController;
+            _controllers[2] = _addressController;
+            print('结束setState....');
+          });
+//          _qq = list['qq'];
+//          _email = list['email'];
+//          _address = list['address'];
+          _education = maps['education'];
+          _livetime = maps['livetime'];
+          _childencount = maps['childCount'];
+          _marriage = maps['marriage'];
+        });
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _infoSubscription.cancel();
+  }
 }
 
 //'学历'弹出对话框
@@ -447,7 +571,8 @@ class DialogItem extends StatelessWidget {
         children: <Widget>[
 //          new Icon(icon, size: 36.0, color: color),
           new Padding(
-            padding: const EdgeInsets.only(left: 16.0),
+            padding: const EdgeInsets.all(5.0),
+//            padding: const EdgeInsets.only(left: 16.0),
             child: new Text(text),
           ),
         ],

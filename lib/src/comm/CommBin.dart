@@ -22,4 +22,15 @@ class Message {
   Message(this.title, this.body, this.time, this.animationController);
 
 }
+
+class Jobinfo {
+  String job = '';
+  String monIncome = '';
+  String compName = '';
+  String cities= '';
+  String compAdd='';
+  String compPhone='';
+
+  Jobinfo(this.job, this.monIncome, this.compName, this.cities, this.compAdd, this.compPhone);
+}
  
