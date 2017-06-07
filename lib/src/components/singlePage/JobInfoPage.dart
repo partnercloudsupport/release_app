@@ -119,10 +119,12 @@ class _JobInfoPageState extends State<JobInfoPage> {
   void _handleClick() {
     showModalBottomSheet<String>(context: context,builder: (BuildContext context){
       return new Container(
+//        height: 200.0,
         child: new Padding(
-          padding: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.all(5.0),
           child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               new InkWell(
                 child: new Text('程序员'),
