@@ -22,7 +22,11 @@ class UserCenter extends StatefulWidget {
 }
 
 class _UserCenter extends State<UserCenter> {
+  UiFirebaseUser _uiuser;
   FirebaseUser _user;
+  bool _islogin = false;
+  String _userName='';
+  String _photoUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -62,42 +66,41 @@ class _UserCenter extends State<UserCenter> {
           height: 200.0,
 //          color: Theme.of(context).primaryColor,
           child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Container(
                 color: AppColors.primary,
                 padding: const EdgeInsets.only(bottom: 10.0, left: 10.0),
-                height: 150.0,
+                height: 140.0,
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     new InkWell(
                       child: new Container(
-                        height: 70.0,
-                        width: 70.0,
+                        height: 50.0,
+                        width: 50.0,
                         decoration: new BoxDecoration(
                           shape: BoxShape.circle,
                           image: new DecorationImage(
-                            image: (_user == null || _user.photoUrl==null)
+                            image: (_uiuser == null)
                                 ? const AssetImage(
                                     'images/ic_center_more_icon.png') //登录后可替换为头像，待完善
-                                : new NetworkImage(_user.photoUrl),
+                                : new NetworkImage(_photoUrl),
                           ),
                         ),
                       ),
                       onTap: () {
-                        print(_user);
-                        if (_user != null) {
+                        print(_uiuser);
+                        if (_uiuser != null) {
                           showDialog(
                             context: context,
                             child: defaultTargetPlatform == TargetPlatform.iOS
                                 ? new CupertinoAlertDialog(
                                     title: const Text('提示'),
-                                    content: new Text('你好,UID:' + _user.uid),
+                                    content: new Text('你好,UID:' + _uiuser.uid),
                                   )
                                 : new AlertDialog(
-                                    content: new Text('您已登录,UID:' + _user.uid),
+                                    content: new Text('您已登录:' + _userName),
                                     actions: <Widget>[
                                       new FlatButton(
                                         child: const Text('OK'),
@@ -111,21 +114,20 @@ class _UserCenter extends State<UserCenter> {
                         } else {
                           _doLogin();
                         }
-//                        _handleSubmitted();
                       },
                     ),
                     new Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 5.0),
+                          vertical: 5.0, horizontal: 5.0),
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           new Text(
-                            _user == null ? '  ' : '您好',
+                            _uiuser == null ? '  ' : '您好',
                           ),
                           new Text(
-                            _user == null ? '  ' : _user.uid,
+                            _uiuser == null ? '  ' : _userName,
                           ),
                         ],
                       ),
@@ -134,7 +136,7 @@ class _UserCenter extends State<UserCenter> {
                 ),
               ),
               new Container(
-                height: 50.0,
+                height: 60.0,
                 decoration: new BoxDecoration(
                   border: new Border.all(
                       width: 1.0, color: Theme.of(context).dividerColor),
@@ -299,7 +301,9 @@ class _UserCenter extends State<UserCenter> {
               new Divider(height: 1.0, indent: 40.0),
               _itemLine('设置', Icons.settings, 4),
               new Divider(height: 1.0, indent: 40.0),
-              _itemLine('退出', Icons.all_out, 5),
+              _islogin?
+              _itemLine('退出', Icons.all_out, 5)
+              :new Align()
             ],
           ),
         ),
@@ -310,7 +314,28 @@ class _UserCenter extends State<UserCenter> {
   @override
   void initState() {
     super.initState();
-    setState((){_user = auth.currentUser;});
+    _initUser();
+  }
+
+  _initUser() async{
+    try {
+      UiFirebaseUser user = await Firebaseui.currentUser;
+      if (user != null) {
+        setState(() {
+          _uiuser = user;
+          _islogin = true;
+          if(user.providerData.length>1){
+            _userName = user.providerData[1].displayName;
+            _photoUrl = user.providerData[1].photoUrl;
+          }
+        });
+      }else{
+        setState((){_islogin = false;});
+      }
+    }catch (e){
+      print(e);
+      setState((){_islogin=false;});
+    }
   }
 
   Future<Null> _doLogin() async {
@@ -319,19 +344,25 @@ class _UserCenter extends State<UserCenter> {
             context,
             new MaterialPageRoute<FirebaseUser>(
               builder: (BuildContext context) => new LoginEmail(),
-              fullscreenDialog: false,
+//              fullscreenDialog: false,
             ))
         .then((user) {
       if (user != null) {
-        setState((){_user=user;});
+        _initUser();
         print(user);
       }
     });
+//    try {
+//      String name = await Firebaseui.signin;
+//      _initUser();
+//    }catch(e){
+//      print(e.message);
+//    }
   }
 
   _dosave(user) async {
     setState(() {
-      _user = user;
+      _uiuser = user;
     });
     bool _saveStaus = await _saveUserInterface();
     print("保存数据成功：" + _saveStaus.toString());
@@ -349,7 +380,7 @@ class _UserCenter extends State<UserCenter> {
   _handleClick(BuildContext context, int index) async {
 //    await Firebaseui.signinstatus;
 //    if(!await Firebaseui.signinstatus){
-    if (_user == null) {
+    if (_uiuser == null) {
       showDialog(
         context: context,
         child: new AlertDialog(
@@ -397,7 +428,7 @@ class _UserCenter extends State<UserCenter> {
 
   Future<bool> _saveUserInterface() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('userUid', _user.uid);
+    prefs.setString('userUid', _uiuser.uid);
     return true;
   }
 
@@ -408,6 +439,6 @@ class _UserCenter extends State<UserCenter> {
   _signout() async {
 //    await Firebaseui.signout;
     await auth.signOut();
-    setState((){_user=null;});
+    setState((){_uiuser=null;_islogin=false;});
   }
 }

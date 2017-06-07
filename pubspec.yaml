@@ -10,6 +10,7 @@ dependencies:
   google_sign_in: "^0.0.2"
   firebase_storage: "^0.0.2"
   shared_preferences: "^0.2.0+1"
+  firebase_database: "^0.0.6"
   firebaseui:
     git:
       url: git://github.com/yiyisf/firebaseui
@@ -31,7 +32,10 @@ flutter:
   assets:
      - images/lake.jpg
      - images/ic_center_more_icon.png
-  #  - images/a_dot_ham.jpeg
+     - images/Google.png
+     - images/facebook_online_social_media.png
+     - images/Facebook.png
+     - images/wechat.png
 
   # To add assets from package dependencies, first ensure the asset
   # is in the lib/ directory of the dependency. Then,

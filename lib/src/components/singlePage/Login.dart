@@ -150,7 +150,6 @@ class _LoginState extends State<Login> {
 //                                ])) ??
 //                            false;
                         Navigator.pop(context, auth.currentUser);
-
                       }
                       else
                         showDialog(

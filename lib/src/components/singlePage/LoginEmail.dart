@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:release_app/src/comm/Colors.dart';
 
 /**
@@ -40,6 +41,7 @@ class _LoginEmailState extends State<LoginEmail> {
 
   String _email;
   String _password;
+  String _errmessage;
 
   bool _autovalidate = false;
   bool _formWasEdited = false;
@@ -58,7 +60,8 @@ class _LoginEmailState extends State<LoginEmail> {
       final FormState form = _formKey.currentState;
       if (!form.validate()) {
         _autovalidate = true; // Start validating on every change.
-        showInSnackBar('请按照提示修改输入内容.');
+        setState((){_isLogining = false;});
+//        showInSnackBar('请按照提示修改输入内容.');
         return false;
       } else {
         form.save(); //可以由此保存state
@@ -67,13 +70,13 @@ class _LoginEmailState extends State<LoginEmail> {
         FirebaseUser firebaseUser = auth.currentUser;
         if (firebaseUser == null) {
           print('loging......');
-//          user = await auth.signInAnonymously();
+//          user = await auth.signInAnonymously(); //匿名登录
           try {
             firebaseUser = await auth.signInWithEmailAndPassword(
                 email: _email, password: _password);
           } catch (e) {
-            print(e);
-            setState(() {_isLogining = false;});
+            print(e.message);
+            setState(() {_isLogining = false;_errmessage=e.message;});
             return false;
           }
           print('loging call complete...');
@@ -186,13 +189,14 @@ class _LoginEmailState extends State<LoginEmail> {
                                 context: context,
                                 child: new AlertDialog(
                                     title: const Text('提示'),
-                                    content: new Text('登录失败!'),
+                                    content: new Text('登录失败!'+_errmessage),
                                     actions: <Widget>[
                                       new FlatButton(
                                           child: const Text('OK'),
                                           onPressed: () {
                                             Navigator.of(context).pop(
                                                 false); // Pops the confirmation dialog but not the page.
+                                            setState((){_errmessage='';});
                                           }),
                                     ])) ??
                             false;
@@ -209,6 +213,28 @@ class _LoginEmailState extends State<LoginEmail> {
               new Align(),
               new Center(
                 child: _isLogining ? new CircularProgressIndicator() : null,
+              ),
+              new Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    new IconButton(
+                      onPressed: (){
+                        _handleGoogleSingn();
+                      },
+                      icon: new ImageIcon(new AssetImage('images/Google.png'),color: Colors.blue,),
+                    ),
+                    new IconButton(
+                      onPressed: (){},
+                      icon: new ImageIcon(new AssetImage('images/Facebook.png'),color: Colors.black,),
+                    ),
+                    new IconButton(
+                      onPressed: (){},
+                      icon: new ImageIcon(new AssetImage('images/wechat.png'),color: Colors.green,),
+                    ),
+                  ],
+                ),
               ),
             ]),
       ),
@@ -256,6 +282,22 @@ class _LoginEmailState extends State<LoginEmail> {
 //        ],
 //      ),
     );
+  }
+
+  _handleGoogleSingn() async {
+    GoogleSignIn _googleSignIn = new GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    await auth.signInWithGoogle(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    Navigator.pop(context, auth.currentUser);
   }
 
   String _validateEmailAddress(String value) {

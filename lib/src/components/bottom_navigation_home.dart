@@ -189,6 +189,7 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
     );
 
     return new Scaffold(
+//      appBar: new AppBar(),
 //      appBar: new AppBar(
 //        title: const Text('Bottom navigation'),
 //        actions: <Widget>[

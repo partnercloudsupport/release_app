@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
  * 身份认证
  */
 
-enum DismissDialogAction {
+enum IdentityDialogAction {
   cancel,
   discard,
   save,
@@ -86,7 +87,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                 child: new Text('保存',
                     style: theme.textTheme.body1.copyWith(color: Colors.white)),
                 onPressed: () {
-                  Navigator.pop(context, DismissDialogAction.save);
+                  _uploadFile();
                 })
           ]),
       body: new Form(
@@ -106,6 +107,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                           onTap: (){
                             setState((){
                               imageFile1 = getImage();
+                              _saveNeeded = true;
                             });
                           },
                           child: new Container(
@@ -152,6 +154,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                           onTap: (){
                             setState((){
                               imageFile2 = getImage();
+                              _saveNeeded = true;
                             });
                           },
                           child: new Container(
@@ -271,9 +274,9 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
       return;
     }
 
-    FirebaseUser user = auth.currentUser;
+    UiFirebaseUser user = await Firebaseui.currentUser;
 
-    if (auth.currentUser == null) {
+    if (user == null) {
       print("未登录");
       return;
     }
@@ -313,10 +316,6 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
       _saveNeeded = false;
       _uploadSuccess = true;
     });
-
-//    http.Response downloadData = await http.get(downloadUrl);
-//    setState(() {
-//      _fileContents = downloadData.body;
-//    });
+    Navigator.pop(context, IdentityDialogAction.save);
   }
 }

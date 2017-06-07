@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:release_app/src/comm/Colors.dart';
 import 'package:release_app/src/components/singlePage/IdentityCertificate.dart';
 import 'package:release_app/src/components/singlePage/PersonalInfo.dart';
 import 'package:share/share.dart';
@@ -14,6 +15,9 @@ class Approve extends StatefulWidget {
 }
 
 class _ApproveState extends State<Approve> {
+
+  List<bool> _checkStatus= <bool>[false,false,false,false];
+
   @override
   Widget build(BuildContext context) {
 //    final List<Widget> actions = <Widget>[
@@ -31,12 +35,7 @@ class _ApproveState extends State<Approve> {
     void _handlePress(int index) {
       switch (index) {
         case 0:
-          Navigator.push(
-              context,
-              new MaterialPageRoute<DismissDialogAction>(
-                builder: (BuildContext context) => new IdentityCertificate(),
-                fullscreenDialog: true,
-              ));
+          _showIdentity(context);
           break;
         case 1:
           Navigator.of(context).push(new MaterialPageRoute(
@@ -69,7 +68,7 @@ class _ApproveState extends State<Approve> {
                 new Expanded(
                   child: new Container(
                     alignment: FractionalOffset.centerRight,
-                    child: const Icon(Icons.done),
+                    child: _checkStatus[index]?const Icon(Icons.check_circle, color: Colors.green,):const Icon(Icons.cancel),
                   ),
 //                child: const Icon(Icons.done),
                 ),
@@ -176,6 +175,18 @@ class _ApproveState extends State<Approve> {
         ),
       ],
     );
+  }
+
+  _showIdentity(BuildContext context) async{
+    Object o = await Navigator.push(
+        context,
+        new MaterialPageRoute<IdentityDialogAction>(
+          builder: (BuildContext context) => new IdentityCertificate(),
+          fullscreenDialog: true,
+        ));
+    if (o == IdentityDialogAction.save){
+      setState((){_checkStatus[0]=true;});
+    }
   }
 
   void _showMessage(BuildContext context) {
