@@ -61,7 +61,7 @@ class _UserCenter extends State<UserCenter> {
     }
 
     return new Scaffold(
-      body: new Column(
+      body: new ListView(
         children: [
           new Container(
 //            height: 200.0,
@@ -307,7 +307,7 @@ class _UserCenter extends State<UserCenter> {
 //                new Divider(height: 1.0, indent: 40.0),
                 _islogin?
                 _itemLine('退出', Icons.all_out, 5)
-                    :new Align()
+                    :new Align(),
               ],
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/CommBin.dart';
+import 'package:release_app/src/components/singlePage/ContactsPage.dart';
 import 'package:release_app/src/components/singlePage/JobInfoPage.dart';
 
 /**
@@ -21,9 +22,6 @@ class PersonalInfo extends StatefulWidget {
 class _PersonalInfoState extends State<PersonalInfo> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   bool _autovalidate = false;
-  Jobinfo job = new Jobinfo(
-      'job', '10000', 'comp name', 'shenzhen', 'nan shan', '0755-0000000');
-
   final DatabaseReference _rootRef = FirebaseDatabase.instance.reference();
 
   String _userid;
@@ -33,10 +31,11 @@ class _PersonalInfoState extends State<PersonalInfo> {
   String _marriage = '';
   String _childencount = '';
   String _livetime = '';
-  String _qq = '';
-  String _email = '';
-  String _address = '';
-  List<Map<String, String>> _zhiyeinfo = [];
+//  String _qq = '';
+//  String _email = '';
+//  String _address = '';
+  Jobinfo _jobinfo;
+  Contacts _contactsinfo;
   List<Map<String, String>> _contacts = [];
   List<Map<String, String>> _bankcards = [];
 
@@ -140,20 +139,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 ),
                 controller: _controllers[i] != null ? _controllers[i] : null,
                 keyboardType: inputType,
-                onSaved: (value) {
-//                  setState((){o = value;});
-                  switch (i) {
-                    case 0:
-                      _qq = value;
-                      break;
-                    case 1:
-                      _email = value;
-                      break;
-                    case 2:
-                      _address = value;
-                      break;
-                  }
-                },
               ),
             ),
           ],
@@ -218,13 +203,38 @@ class _PersonalInfoState extends State<PersonalInfo> {
         onTap: () {
           switch (index) {
             case 0:
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute<Null>(
-                    builder: (BuildContext context) => new JobInfoPage(),
-                  )).then((v){});
+              Navigator
+                  .push(
+                      context,
+                      new MaterialPageRoute<Jobinfo>(
+                        builder: (BuildContext context) =>
+                            new JobInfoPage(_jobinfo),
+                        fullscreenDialog: true,
+                      ))
+                  .then((job) {
+                if (job != null) {
+                  setState(() {
+                    _jobinfo = job;
+                  });
+                }
+              });
               break;
             case 1:
+              Navigator
+                  .push(
+                      context,
+                      new MaterialPageRoute<Contacts>(
+                        builder: (BuildContext context) =>
+                            new ContactsInfoPage(_contactsinfo),
+                        fullscreenDialog: true,
+                      ))
+                  .then((contacts) {
+                if (contacts != null) {
+                  setState(() {
+                    _contactsinfo = contacts;
+                  });
+                }
+              });
               break;
             case 2:
               break;
@@ -362,24 +372,44 @@ class _PersonalInfoState extends State<PersonalInfo> {
     if (!form.validate()) {
       _autovalidate = true;
     } else {
-      form.save();
-      print("qq:" + _qq);
-      print("email:" + _email);
-      print("address:" + _address);
       await _rootRef.child(_userid).child('person_info').set({
-        "qq": _qq,
-        "email": _email,
-        "address": _address,
+        "qq": _controllers[0].value.text,
+        "email": _controllers[1].value.text,
+        "address": _controllers[2].value.text,
         "education": _education,
         "livetime": _livetime,
         "childCount": _childencount,
         "marriage": _marriage,
-        "job": {'jobname': 'name', 'income': 10000, 'comp name': 'slys'}
-      }).then((v) {});
+        "job": {
+          'job': _jobinfo.job,
+          'monIncome': _jobinfo.monIncome,
+          'compName': _jobinfo.compName,
+          'cities': _jobinfo.cities,
+          'compAdd': _jobinfo.compAdd,
+          'compPhone': _jobinfo.compPhone,
+        },
+        "contacts": {
+          'contact1': {
+            'type': _contactsinfo.type1,
+            'phoneNo': _contactsinfo.phoneNo1
+          },
+          'contact2': {
+            'type': _contactsinfo.type2,
+            'phoneNo': _contactsinfo.phoneNo2
+          }
+        },
+      }).then((v) {
+        setState(() {
+          _saveNeeded = false;
+        });
+        Navigator.pop(context, true);
+      }, onError: () {
+        Navigator.pop(context, false);
+      });
     }
   }
 
-  //新起一个线程获取登录用户
+  //新起一个线程获取登录用户认证信息
   initValiable() async {
     await Firebaseui.currentUser.then((user) {
       _userid = user.uid;
@@ -389,25 +419,47 @@ class _PersonalInfoState extends State<PersonalInfo> {
           .onValue
           .listen((Event event) {
         setState(() {
-          Map<String, String> maps = event.snapshot.value;
+          Map<String, dynamic> maps = event.snapshot.value;
           setState(() {
             print('开始setState....');
-            _qqController = new TextEditingController(text: maps['qq']);
-            _emailController = new TextEditingController(text: maps['email']);
-            _addressController =
-                new TextEditingController(text: maps['address']);
+            _qqController =
+                new TextEditingController(text: maps != null ? maps['qq'] : '');
+            _emailController = new TextEditingController(
+                text: maps != null ? maps['email'] : '');
+            _addressController = new TextEditingController(
+                text: maps != null ? maps['address'] : '');
             _controllers[0] = _qqController;
             _controllers[1] = _emailController;
             _controllers[2] = _addressController;
             print('结束setState....');
           });
-//          _qq = list['qq'];
-//          _email = list['email'];
-//          _address = list['address'];
-          _education = maps['education'];
-          _livetime = maps['livetime'];
-          _childencount = maps['childCount'];
-          _marriage = maps['marriage'];
+          _education = maps != null ? maps['education'] : '';
+          _livetime = maps != null ? maps['livetime'] : '';
+          _childencount = maps != null ? maps['childCount'] : '';
+          _marriage = maps != null ? maps['marriage'] : '';
+          Map<String, String> job = maps != null ? maps['job'] : null;
+          if (job == null) {
+            _jobinfo = new Jobinfo('', '', '', '', '', '');
+          } else {
+            _jobinfo = new Jobinfo(
+                job['job'],
+                job['monIncome'],
+                job['compName'],
+                job['cities'],
+                job['compAdd'],
+                job['compPhone']);
+          }
+          Map<String, Map<String, dynamic>> contacts = maps['contacts'];
+          if(contacts==null){
+            _contactsinfo = new Contacts('','','','');
+          }else{
+            _contactsinfo = new Contacts(
+              contacts['contact1']['type'],
+              contacts['contact1']['phoneNo'],
+              contacts['contact2']['type'],
+              contacts['contact2']['phoneNo']
+            );
+          }
         });
       });
     });

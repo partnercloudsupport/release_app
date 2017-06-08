@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:release_app/src/comm/Colors.dart';
 import 'package:release_app/src/components/singlePage/IdentityCertificate.dart';
 import 'package:release_app/src/components/singlePage/PersonalInfo.dart';
 import 'package:share/share.dart';
@@ -38,10 +35,7 @@ class _ApproveState extends State<Approve> {
           _showIdentity(context);
           break;
         case 1:
-          Navigator.of(context).push(new MaterialPageRoute(
-            builder: (BuildContext context) => new PersonalInfo(),
-            fullscreenDialog: true,
-          ));
+          _verPersonInfo(context);
           break;
         default:
           share('check out my website https://example.com');
@@ -191,5 +185,15 @@ class _ApproveState extends State<Approve> {
 
   void _showMessage(BuildContext context) {
     Navigator.of(context).pushNamed('/message');
+  }
+
+  _verPersonInfo(BuildContext context)async {
+    bool reslut = await Navigator.of(context).push(new MaterialPageRoute(
+      builder: (BuildContext context) => new PersonalInfo(),
+      fullscreenDialog: true,
+    ));
+    if (reslut!=null && reslut){
+      setState((){_checkStatus[1]=true;});
+    }
   }
 }
