@@ -40,3 +40,12 @@ class Contacts {
 
   Contacts(this.type1, this.phoneNo1, this.type2, this.phoneNo2);
 }
+
+class BankCard {
+  String openBank = '';
+  String opencity = '';
+  String phoneNo = '';
+  String cardNo = '';
+
+  BankCard(this.openBank, this.opencity, this.phoneNo, this.cardNo);
+}

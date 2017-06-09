@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/CommBin.dart';
+import 'package:release_app/src/components/singlePage/BankCardValiPage.dart';
 import 'package:release_app/src/components/singlePage/ContactsPage.dart';
 import 'package:release_app/src/components/singlePage/JobInfoPage.dart';
 
@@ -36,6 +37,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 //  String _address = '';
   Jobinfo _jobinfo;
   Contacts _contactsinfo;
+  BankCard _bankcard;
   List<Map<String, String>> _contacts = [];
   List<Map<String, String>> _bankcards = [];
 
@@ -237,6 +239,21 @@ class _PersonalInfoState extends State<PersonalInfo> {
               });
               break;
             case 2:
+              Navigator
+                  .push(
+                  context,
+                  new MaterialPageRoute<BankCard>(
+                    builder: (BuildContext context) =>
+                    new BankCardValidPage(_bankcard),
+                    fullscreenDialog: true,
+                  ))
+                  .then((bankcard) {
+                if (bankcard != null) {
+                  setState(() {
+                    _bankcard = bankcard;
+                  });
+                }
+              });
               break;
           }
         },
@@ -372,7 +389,18 @@ class _PersonalInfoState extends State<PersonalInfo> {
     if (!form.validate()) {
       _autovalidate = true;
     } else {
-      await _rootRef.child(_userid).child('person_info').set({
+      /**
+       * TODO 添加部分检查逻辑
+       */
+
+
+      /**
+       * TODO 后面将扩展支持提交多份信息(如:联系人/银行卡等)
+       */
+      /**
+       * 更新数据库
+       */
+      await _rootRef.child('person_info').child(_userid).set({
         "qq": _controllers[0].value.text,
         "email": _controllers[1].value.text,
         "address": _controllers[2].value.text,
@@ -398,12 +426,21 @@ class _PersonalInfoState extends State<PersonalInfo> {
             'phoneNo': _contactsinfo.phoneNo2
           }
         },
+        "bankcards":{
+          "openBank":_bankcard.openBank,
+          "opencity":_bankcard.opencity,
+          "phoneNo":_bankcard.phoneNo,
+          "cardNo":_bankcard.cardNo,
+        }
       }).then((v) {
         setState(() {
           _saveNeeded = false;
         });
         Navigator.pop(context, true);
       }, onError: () {
+        /**
+         * 更新失败
+         */
         Navigator.pop(context, false);
       });
     }
@@ -414,8 +451,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
     await Firebaseui.currentUser.then((user) {
       _userid = user.uid;
       _infoSubscription = _rootRef
-          .child(_userid)
           .child('person_info')
+          .child(_userid)
           .onValue
           .listen((Event event) {
         setState(() {
@@ -437,6 +474,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
           _livetime = maps != null ? maps['livetime'] : '';
           _childencount = maps != null ? maps['childCount'] : '';
           _marriage = maps != null ? maps['marriage'] : '';
+          /**
+           * 职业
+           */
           Map<String, String> job = maps != null ? maps['job'] : null;
           if (job == null) {
             _jobinfo = new Jobinfo('', '', '', '', '', '');
@@ -449,7 +489,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 job['compAdd'],
                 job['compPhone']);
           }
-          Map<String, Map<String, dynamic>> contacts = maps['contacts'];
+          /**
+           * 紧急联系人
+           */
+          Map<String, Map<String, dynamic>> contacts = maps!=null?maps['contacts']:null;
           if(contacts==null){
             _contactsinfo = new Contacts('','','','');
           }else{
@@ -458,6 +501,20 @@ class _PersonalInfoState extends State<PersonalInfo> {
               contacts['contact1']['phoneNo'],
               contacts['contact2']['type'],
               contacts['contact2']['phoneNo']
+            );
+          }
+          /**
+           * 银行卡
+           */
+          Map<String, String> cards = maps!=null?maps['bankcards']:null;
+          if(cards==null){
+            _bankcard = new BankCard('','','','');
+          }else{
+            _bankcard = new BankCard(
+                cards['openBank'],
+                cards['opencity'],
+                cards['phoneNo'],
+                cards['cardNo']
             );
           }
         });
