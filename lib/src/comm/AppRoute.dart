@@ -4,7 +4,7 @@ import 'package:release_app/src/components/MyHomePage.dart';
 import 'package:release_app/src/components/singlePage/BorrowCash.dart';
 import 'package:release_app/src/components/singlePage/Login.dart';
 import 'package:release_app/src/components/singlePage/MessagePage.dart';
-import 'package:release_app/src/components/singlePage/borrow_record.dart';
+import 'package:release_app/src/components/UserCenter/borrow_record.dart';
 
 
 /**

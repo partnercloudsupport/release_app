@@ -115,23 +115,25 @@ class _MessagePageState extends State<MessagePage> with TickerProviderStateMixin
     print(data['data']);
     List<Map> msgs = data['data'];
 //    _listMessage.clear();
-    setState(() {
-      for (int i = 0; i < msgs.length; i++) {
-        Message message = new Message(
-            msgs[i]['post_title'],
-            msgs[i]['post_excerpt'],
-            msgs[i]['post_modified'],
-            new AnimationController(
-              vsync: this,
-              duration: new Duration(milliseconds: 800),
-            )
-        );
-        _listMessage.add(
-            new MessageItem(
-              message: message,
-            ));
-      }
-    });
+    if(mounted) {
+      setState(() {
+        for (int i = 0; i < msgs.length; i++) {
+          Message message = new Message(
+              msgs[i]['post_title'],
+              msgs[i]['post_excerpt'],
+              msgs[i]['post_modified'],
+              new AnimationController(
+                vsync: this,
+                duration: new Duration(milliseconds: 800),
+              )
+          );
+          _listMessage.add(
+              new MessageItem(
+                message: message,
+              ));
+        }
+      });
+    }
 
     for (var i = 0; i < _listMessage.length; ++i) {
       _listMessage[i].message.animationController.forward();

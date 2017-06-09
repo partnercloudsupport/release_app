@@ -10,7 +10,7 @@ class BorrowCash extends StatefulWidget {
 }
 
 class _BorrowCashState extends State<BorrowCash> {
-  double _sliderValue = 200.0;
+  double _sliderValue = 0.00;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _BorrowCashState extends State<BorrowCash> {
                       text: '申请金额 ',
                       children: [
                         new TextSpan(
-                            text: '500',
+                            text: '${_sliderValue.floor()}',
                             style: const TextStyle(fontSize: 30.0)),
                         new TextSpan(text: ' .00元'),
                       ],
@@ -105,25 +105,25 @@ class _BorrowCashState extends State<BorrowCash> {
           new Container(
             padding: const EdgeInsets.only(left: 20.0, right: 20.0),
             height: 180.0,
-            color:Theme.of(context).backgroundColor,
+//            color:Theme.of(context).backgroundColor,
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 new Container(
                   margin: const EdgeInsets.only(top: 10.0),
-                  child: new Text('借款金额'),
+                  child: new Text('借款金额${_sliderValue}'),
                 ),
                 new Slider(
                   onChanged: (value) {
-                    print('变化值:' + value.toString());
                     setState(() {
                       _sliderValue = value;
                     });
                   },
                   value: _sliderValue,
-                  min: 100.0,
-                  max: 3000.0,
-//                  label: '金额${_sliderValue}',
+                  min: 0.00,
+                  max: 3000.00,
+                  divisions: 30,
+                  label: '${_sliderValue}',
 //                  divisions: 100,
                 ),
                 new Container(

@@ -5,8 +5,8 @@ import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/CommBin.dart';
 import 'package:release_app/src/components/singlePage/BankCardValiPage.dart';
-import 'package:release_app/src/components/singlePage/ContactsPage.dart';
-import 'package:release_app/src/components/singlePage/JobInfoPage.dart';
+import 'package:release_app/src/components/Approve/ContactsPage.dart';
+import 'package:release_app/src/components/Approve/JobInfoPage.dart';
 
 /**
  * Created by zgx on 2017/5/25.

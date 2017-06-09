@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:release_app/src/components/singlePage/IdentityCertificate.dart';
-import 'package:release_app/src/components/singlePage/PersonalInfo.dart';
+import 'package:release_app/src/components/Approve/IdentityCertificate.dart';
+import 'package:release_app/src/components/Approve/PersonalInfo.dart';
 import 'package:share/share.dart';
 
 

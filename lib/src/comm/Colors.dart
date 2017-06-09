@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
  */
 class AppColors {
   static MaterialColor primary = Colors.deepOrange;
-
+  static Color bankCardCorlor = Colors.orangeAccent;
+  static Color bankCardTextCorlor = Colors.white;
 }
 
  

@@ -84,7 +84,7 @@ class _BorrowHomeState extends State<BorrowHome> {
                     alignment: FractionalOffset.center,
                   child: new Icon(
                     Icons.attach_money,
-                    size: 200.0,
+                    size: 150.0,
                     color: AppColors.primary.shade100,
                   ),
                 ),
@@ -108,7 +108,7 @@ class _BorrowHomeState extends State<BorrowHome> {
                           child: const Text(
                             '我要借钱',
                             style: const TextStyle(
-                              fontSize: 15.0,
+//                              fontSize: 15.0,
                               fontWeight: FontWeight.bold,
 //                              color: Colors.white,
                             ),
@@ -123,7 +123,7 @@ class _BorrowHomeState extends State<BorrowHome> {
                           child: const Text(
                             '我要借钱',
                           ),
-                          color: Theme.of(context).primaryColor,
+//                          color: Theme.of(context).primaryColor,
                         ),
                   height: 45.0,
                   width: 200.0,
