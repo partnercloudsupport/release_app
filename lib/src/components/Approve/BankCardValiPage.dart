@@ -27,8 +27,11 @@ class _BankCardValidPageState extends State<BankCardValidPage> {
   TextEditingController _cardController;
   TextEditingController _confirmCardController;
 
-  SliverChildListDelegate _incomeSlivertList =
+  SliverChildListDelegate _bankSlivertList =
       new SliverChildListDelegate(<Widget>[]);
+  SliverChildListDelegate _citySlivertList =
+  new SliverChildListDelegate(<Widget>[]);
+
 
   int _index =0;
 
@@ -234,7 +237,7 @@ class _BankCardValidPageState extends State<BankCardValidPage> {
         builder: (BuildContext context) {
           return new CustomScrollView(slivers: <Widget>[
             new SliverList(
-              delegate: _incomeSlivertList,
+              delegate: index==0?_bankSlivertList:_citySlivertList,
             ),
           ]);
         }).then((value) {
@@ -242,13 +245,16 @@ class _BankCardValidPageState extends State<BankCardValidPage> {
     });
   }
 
+  /**
+   * 初始化底部弹出框内容
+   */
   _initValiable() async {
-    _rootRef.child('comm/kind_type').once().then((data) {
+    _rootRef.child('comm/banks').once().then((data) {
       print("key:" + data.key + " Value:" + data.value.toString());
-      Map<String, String> maps = data.value;
+      Map<String, dynamic> maps = data.value;
       setState(() {
         for (var key in maps.keys) {
-          _incomeSlivertList.children.add(_bottomModel(maps[key]));
+          _bankSlivertList.children.add(_bottomModel(key));
         }
       });
     });

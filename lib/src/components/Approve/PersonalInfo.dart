@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/CommBin.dart';
-import 'package:release_app/src/components/singlePage/BankCardValiPage.dart';
+import 'package:release_app/src/components/Approve/BankCardValiPage.dart';
 import 'package:release_app/src/components/Approve/ContactsPage.dart';
 import 'package:release_app/src/components/Approve/JobInfoPage.dart';
 
