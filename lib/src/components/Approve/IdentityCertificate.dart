@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:firebaseui/firebaseui.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -55,22 +57,39 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
 
     return await showDialog<bool>(
             context: context,
-            child: new AlertDialog(
-                content: new Text('放弃此次修改?', style: dialogTextStyle),
-                actions: <Widget>[
-                  new FlatButton(
-                      child: const Text('取消'),
-                      onPressed: () {
-                        Navigator.of(context).pop(
-                            false); // Pops the confirmation dialog but not the page.
-                      }),
-                  new FlatButton(
-                      child: const Text('放弃'),
-                      onPressed: () {
-                        Navigator.of(context).pop(
-                            true); // Returning true to _onWillPop will pop again.
-                      })
-                ])) ??
+            child: defaultTargetPlatform == TargetPlatform.iOS
+                ? new CupertinoAlertDialog(
+                    content: new Text('放弃此次修改?', style: dialogTextStyle),
+                    actions: <Widget>[
+                        new CupertinoButton(
+                            child: const Text('取消'),
+                            onPressed: () {
+                              Navigator.of(context).pop(
+                                  false); // Pops the confirmation dialog but not the page.
+                            }),
+                        new CupertinoButton(
+                            child: const Text('放弃'),
+                            onPressed: () {
+                              Navigator.of(context).pop(
+                                  true); // Returning true to _onWillPop will pop again.
+                            })
+                      ])
+                : new AlertDialog(
+                    content: new Text('放弃此次修改?', style: dialogTextStyle),
+                    actions: <Widget>[
+                        new FlatButton(
+                            child: const Text('取消'),
+                            onPressed: () {
+                              Navigator.of(context).pop(
+                                  false); // Pops the confirmation dialog but not the page.
+                            }),
+                        new FlatButton(
+                            child: const Text('放弃'),
+                            onPressed: () {
+                              Navigator.of(context).pop(
+                                  true); // Returning true to _onWillPop will pop again.
+                            })
+                      ])) ??
         false;
   }
 
@@ -104,8 +123,8 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                     children: <Widget>[
                       new Expanded(
                         child: new InkWell(
-                          onTap: (){
-                            setState((){
+                          onTap: () {
+                            setState(() {
                               imageFile1 = getImage();
                               _saveNeeded = true;
                             });
@@ -121,38 +140,40 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                             height: 95.0,
                             margin: const EdgeInsets.all(15.0),
                             child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                new FutureBuilder(
-                                  future: imageFile1,
-                                  builder: (BuildContext context, AsyncSnapshot<File> snapshot){
-                                    if (snapshot.connectionState == ConnectionState.done && snapshot.data != null){
-                                      return new Expanded(
-                                        child: new Image.file(snapshot.data),
-                                      );
-                                    }else{
-                                      return new Column(
-                                        children: <Widget>[
-                                          new Icon(
-                                            Icons.photo_camera,
-                                            color: Colors.green[500],
-                                          ),
-                                          new Text('身份证正面'),
-                                        ],
-                                      );
-                                    }
-                                  },
-                                ),
-                              ]
-                            ),
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  new FutureBuilder(
+                                    future: imageFile1,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<File> snapshot) {
+                                      if (snapshot.connectionState ==
+                                              ConnectionState.done &&
+                                          snapshot.data != null) {
+                                        return new Expanded(
+                                          child: new Image.file(snapshot.data),
+                                        );
+                                      } else {
+                                        return new Column(
+                                          children: <Widget>[
+                                            new Icon(
+                                              Icons.photo_camera,
+                                              color: Colors.green[500],
+                                            ),
+                                            new Text('身份证正面'),
+                                          ],
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ]),
                           ),
                         ),
                       ),
                       new Expanded(
                         child: new InkWell(
-                          onTap: (){
-                            setState((){
+                          onTap: () {
+                            setState(() {
                               imageFile2 = getImage();
                               _saveNeeded = true;
                             });
@@ -164,31 +185,33 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                             ),
                             margin: const EdgeInsets.all(15.0),
                             child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                new FutureBuilder(
-                                  future: imageFile2,
-                                  builder: (BuildContext context, AsyncSnapshot<File> snapshot){
-                                    if (snapshot.connectionState == ConnectionState.done && snapshot.data != null){
-                                      return new Expanded(
-                                        child: new Image.file(snapshot.data),
-                                      );
-                                    }else{
-                                      return new Column(
-                                        children: <Widget>[
-                                          new Icon(
-                                            Icons.photo_camera,
-                                            color: Colors.green[500],
-                                          ),
-                                          new Text('身份证反面'),
-                                        ],
-                                      );
-                                    }
-                                  },
-                                ),
-                              ]
-                            ),
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  new FutureBuilder(
+                                    future: imageFile2,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<File> snapshot) {
+                                      if (snapshot.connectionState ==
+                                              ConnectionState.done &&
+                                          snapshot.data != null) {
+                                        return new Expanded(
+                                          child: new Image.file(snapshot.data),
+                                        );
+                                      } else {
+                                        return new Column(
+                                          children: <Widget>[
+                                            new Icon(
+                                              Icons.photo_camera,
+                                              color: Colors.green[500],
+                                            ),
+                                            new Text('身份证反面'),
+                                          ],
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ]),
                           ),
                         ),
                       ),
@@ -234,17 +257,18 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                 ),
                 new Container(
                   margin: const EdgeInsets.only(top: 15.0),
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
-                  child:new Column(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 30.0),
+                  child: new Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      !_uploadSuccess?
-                      new Text('选择好照片后，请点击提交按钮！') :
-                      new Text(
-                        '上传成功!',
-                        style: const TextStyle(color: const Color.fromARGB(255, 0, 155, 0)),
-                      )
+                      !_uploadSuccess
+                          ? new Text('选择好照片后，请点击提交按钮！')
+                          : new Text(
+                              '上传成功!',
+                              style: const TextStyle(
+                                  color: const Color.fromARGB(255, 0, 155, 0)),
+                            )
                     ],
                   ),
                 ),
@@ -287,7 +311,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
     print('start uploading....');
     String xx;
     File imagefile;
-    await imageFile1.then((file){
+    await imageFile1.then((file) {
       imagefile = file;
       xx = file.path.split('.')[1];
     });
@@ -298,7 +322,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
 
     Uri downloadUrl = (await uploadTask.future).downloadUrl;
 
-    await imageFile2.then((file){
+    await imageFile2.then((file) {
       imagefile = file;
       xx = file.path.split('.')[1];
     });

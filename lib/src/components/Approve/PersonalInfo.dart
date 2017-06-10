@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebaseui/firebaseui.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/CommBin.dart';
 import 'package:release_app/src/components/Approve/BankCardValiPage.dart';
@@ -70,7 +72,24 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
     return await showDialog<bool>(
             context: context,
-            child: new AlertDialog(
+            child: defaultTargetPlatform == TargetPlatform.iOS
+                ? new CupertinoAlertDialog(
+                content: new Text('放弃此次修改?', style: dialogTextStyle),
+                actions: <Widget>[
+                  new CupertinoButton(
+                      child: const Text('取消'),
+                      onPressed: () {
+                        Navigator.of(context).pop(
+                            false); // Pops the confirmation dialog but not the page.
+                      }),
+                  new CupertinoButton(
+                      child: const Text('放弃'),
+                      onPressed: () {
+                        Navigator.of(context).pop(
+                            true); // Returning true to _onWillPop will pop again.
+                      })
+                ])
+                : new AlertDialog(
                 content: new Text('放弃此次修改?', style: dialogTextStyle),
                 actions: <Widget>[
                   new FlatButton(
@@ -449,6 +468,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
   //新起一个线程获取登录用户认证信息
   initValiable() async {
     await Firebaseui.currentUser.then((user) {
+      if(user==null){
+
+        return;
+      }
       _userid = user.uid;
       _infoSubscription = _rootRef
           .child('person_info')

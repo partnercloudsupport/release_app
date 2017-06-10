@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /**
@@ -18,6 +20,7 @@ class _BorrowCashState extends State<BorrowCash> {
       appBar: new AppBar(
         title: const Text('现金口贷'),
         centerTitle: true,
+        elevation:0.0,
       ),
       body: new ListView(
         children: [
@@ -71,10 +74,11 @@ class _BorrowCashState extends State<BorrowCash> {
                                 ],
                               ),
                               new IconButton(
-                                icon: const Icon(Icons.help, color: Colors.white,),
-                                onPressed: (){
-
-                                },
+                                icon: const Icon(
+                                  Icons.help,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {},
                               ),
                             ],
                           ),
@@ -113,18 +117,32 @@ class _BorrowCashState extends State<BorrowCash> {
                   margin: const EdgeInsets.only(top: 10.0),
                   child: new Text('借款金额${_sliderValue}'),
                 ),
-                new Slider(
-                  onChanged: (value) {
-                    setState(() {
-                      _sliderValue = value;
-                    });
-                  },
-                  value: _sliderValue,
-                  min: 0.00,
-                  max: 3000.00,
-                  divisions: 30,
-                  label: '${_sliderValue}',
-//                  divisions: 100,
+                new Container(
+                  width: 300.0,
+                  child: defaultTargetPlatform == TargetPlatform.iOS
+                      ? new CupertinoSlider(
+                    onChanged: (value) {
+                      setState(() {
+                        _sliderValue = value;
+                      });
+                    },
+                    value: _sliderValue,
+                    min: 0.00,
+                    max: 3000.00,
+                    divisions: 30,
+                  )
+                      : new Slider(
+                    onChanged: (value) {
+                      setState(() {
+                        _sliderValue = value;
+                      });
+                    },
+                    value: _sliderValue,
+                    min: 0.00,
+                    max: 3000.00,
+                    divisions: 30,
+                    label: '${_sliderValue}',
+                  ),
                 ),
                 new Container(
                   margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),

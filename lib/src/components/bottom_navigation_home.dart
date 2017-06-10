@@ -2,7 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:release_app/src/components/singlePage/Approve.dart';
 import 'package:release_app/src/components/singlePage/BorrowHome.dart';
 import 'package:release_app/src/components/singlePage/UserCenter.dart';
@@ -100,7 +102,6 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
   BottomNavigationBarType _type = BottomNavigationBarType.shifting;
   List<NavigationIconView> _navigationViews;
 
-
   @override
   void initState() {
     super.initState();
@@ -188,6 +189,20 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
       },
     );
 
+    final CupertinoTabBar iosTabbar = new CupertinoTabBar(
+      items: _navigationViews
+          .map((NavigationIconView navigationView) => navigationView.item)
+          .toList(),
+      currentIndex: _currentIndex,
+      onTap: (int index) {
+        setState(() {
+          _navigationViews[_currentIndex].controller.reverse();
+          _currentIndex = index;
+          _navigationViews[_currentIndex].controller.forward();
+        });
+      },
+    );
+
     return new Scaffold(
 //      appBar: new AppBar(),
 //      appBar: new AppBar(
@@ -213,7 +228,8 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
 //        ],
 //      ),
       body: new Center(child: _buildTransitionsStack()),
-      bottomNavigationBar: botNavBar,
+      bottomNavigationBar: defaultTargetPlatform ==
+          TargetPlatform.iOS?iosTabbar:botNavBar,
     );
   }
 }

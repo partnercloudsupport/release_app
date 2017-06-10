@@ -26,7 +26,7 @@ class _UserCenter extends State<UserCenter> {
   UiFirebaseUser _uiuser;
   FirebaseUser _user;
   bool _islogin = false;
-  String _userName='';
+  String _userName = '';
   String _photoUrl;
 
   @override
@@ -86,7 +86,7 @@ class _UserCenter extends State<UserCenter> {
                             image: new DecorationImage(
                               image: (_photoUrl == null)
                                   ? const AssetImage(
-                                  'images/Google.png') //登录后可替换为头像，待完善
+                                      'images/Google.png') //登录后可替换为头像，待完善
                                   : new NetworkImage(_photoUrl),
                             ),
                           ),
@@ -98,20 +98,20 @@ class _UserCenter extends State<UserCenter> {
                               context: context,
                               child: defaultTargetPlatform == TargetPlatform.iOS
                                   ? new CupertinoAlertDialog(
-                                title: const Text('提示'),
-                                content: new Text('你好,UID:' + _uiuser.uid),
-                              )
+                                      title: const Text('提示'),
+                                      content: new Text('你好:' + _userName),
+                                    )
                                   : new AlertDialog(
-                                content: new Text('您已登录:' + _userName),
-                                actions: <Widget>[
-                                  new FlatButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop(null);
-                                    },
-                                  ),
-                                ],
-                              ),
+                                      content: new Text('您已登录:' + _userName),
+                                      actions: <Widget>[
+                                        new FlatButton(
+                                          child: const Text('OK'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(null);
+                                          },
+                                        ),
+                                      ],
+                                    ),
                             );
                           } else {
                             _doLogin();
@@ -265,30 +265,29 @@ class _UserCenter extends State<UserCenter> {
               ),
               child: new Container(
                   child: new InkWell(
-                    onTap: () {
-                      _handleClick(context, 0);
-                    },
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        new Icon(
-                          Icons.attach_money,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        new Container(
-                          padding: const EdgeInsets.only(left: 2.0),
-                          child: new Text('借款记录'),
-                        ),
-                        new Expanded(
-                          child: new Container(
-                            alignment: FractionalOffset.centerRight,
-                            child: const Icon(Icons.keyboard_arrow_right),
-                          ),
-                        ),
-                      ],
+                onTap: () {
+                  _handleClick(context, 0);
+                },
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    new Icon(
+                      Icons.attach_money,
+                      color: Theme.of(context).primaryColor,
                     ),
-                  ))
-          ),
+                    new Container(
+                      padding: const EdgeInsets.only(left: 2.0),
+                      child: new Text('借款记录'),
+                    ),
+                    new Expanded(
+                      child: new Container(
+                        alignment: FractionalOffset.centerRight,
+                        child: const Icon(Icons.keyboard_arrow_right),
+                      ),
+                    ),
+                  ],
+                ),
+              ))),
           new Container(
 //            decoration: new BoxDecoration(
 //              border: new Border.all(
@@ -306,9 +305,7 @@ class _UserCenter extends State<UserCenter> {
 //                new Divider(height: 1.0, indent: 40.0),
                 _itemLine('设置', Icons.settings, 4),
 //                new Divider(height: 1.0, indent: 40.0),
-                _islogin?
-                _itemLine('退出', Icons.all_out, 5)
-                    :new Align(),
+                _islogin ? _itemLine('退出', Icons.all_out, 5) : new Align(),
               ],
             ),
           ),
@@ -323,24 +320,31 @@ class _UserCenter extends State<UserCenter> {
     _initUser();
   }
 
-  _initUser() async{
+  _initUser() async {
     try {
       UiFirebaseUser user = await Firebaseui.currentUser;
       if (user != null) {
         setState(() {
           _uiuser = user;
           _islogin = true;
-          if(user.providerData.length>1){
+          if (user.providerData.length > 1) {
             _userName = user.providerData[1].displayName;
             _photoUrl = user.providerData[1].photoUrl;
+          } else {
+            _userName = user.displayName;
+            _photoUrl = user.photoUrl;
           }
         });
-      }else{
-        setState((){_islogin = false;});
+      } else {
+        setState(() {
+          _islogin = false;
+        });
       }
-    }catch (e){
+    } catch (e) {
       print(e);
-      setState((){_islogin=false;});
+      setState(() {
+        _islogin = false;
+      });
     }
   }
 
@@ -356,6 +360,23 @@ class _UserCenter extends State<UserCenter> {
       if (user != null) {
         _initUser();
         print(user);
+//        if (user != null) {
+//          setState(() {
+//            _uiuser = user;
+//            _islogin = true;
+//            if (user.providerData.length > 1) {
+//              _userName = user.providerData[1].displayName;
+//              _photoUrl = user.providerData[1].photoUrl;
+//            } else {
+//              _userName = user.displayName;
+//              _photoUrl = user.photoUrl;
+//            }
+//          });
+//        } else {
+//          setState(() {
+//            _islogin = false;
+//          });
+//        }
       }
     });
 //    try {
@@ -389,18 +410,31 @@ class _UserCenter extends State<UserCenter> {
     if (_uiuser == null) {
       showDialog(
         context: context,
-        child: new AlertDialog(
-          title: const Text('提示'),
-          content: const Text('请先点击头像登录'),
-          actions: [
-            new FlatButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
-        ),
+        child: defaultTargetPlatform == TargetPlatform.iOS
+            ? new CupertinoAlertDialog(
+                title: const Text('提示'),
+                content: const Text('请先点击头像登录'),
+                actions: [
+                  new CupertinoButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                  ),
+                ],
+              )
+            : new AlertDialog(
+                title: const Text('提示'),
+                content: const Text('请先点击头像登录'),
+                actions: [
+                  new FlatButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                  ),
+                ],
+              ),
       );
       return;
     }
@@ -410,12 +444,10 @@ class _UserCenter extends State<UserCenter> {
         break;
       case 1:
 //        Navigator.pushNamed(context, '/borrowRecord');
-        Navigator
-            .push(
+        Navigator.push(
             context,
             new MaterialPageRoute<Null>(
-              builder: (BuildContext context) =>
-              new UserProfile(),
+              builder: (BuildContext context) => new UserProfile(),
             ));
         break;
       case 2:
@@ -452,6 +484,9 @@ class _UserCenter extends State<UserCenter> {
   _signout() async {
 //    await Firebaseui.signout;
     await auth.signOut();
-    setState((){_uiuser=null;_islogin=false;});
+    setState(() {
+      _uiuser = null;
+      _islogin = false;
+    });
   }
 }

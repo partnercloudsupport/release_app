@@ -60,7 +60,9 @@ class _LoginEmailState extends State<LoginEmail> {
       final FormState form = _formKey.currentState;
       if (!form.validate()) {
         _autovalidate = true; // Start validating on every change.
-        setState((){_isLogining = false;});
+        setState(() {
+          _isLogining = false;
+        });
 //        showInSnackBar('请按照提示修改输入内容.');
         return false;
       } else {
@@ -72,17 +74,39 @@ class _LoginEmailState extends State<LoginEmail> {
           print('loging......');
 //          user = await auth.signInAnonymously(); //匿名登录
           try {
-            firebaseUser = await auth.signInWithEmailAndPassword(
-                email: _email, password: _password);
-          } catch (e) {
-            print(e.message);
-            setState(() {_isLogining = false;_errmessage=e.message;});
-            return false;
+            await auth
+                .signInWithEmailAndPassword(email: _email, password: _password)
+                .then((user) {
+              setState(() {
+                _isLogining = false;
+              });
+              return auth.currentUser != null;
+            }, onError: (e) {
+              print(e.message);
+              setState(() {
+                _isLogining = false;
+                _errmessage = e.message;
+              });
+              return false;
+            });
+          }catch(e){
+            print(e);
           }
-          print('loging call complete...');
+
+//          try {
+//            firebaseUser = await auth.signInWithEmailAndPassword(
+//                email: _email, password: _password);
+//          } catch (e) {
+//            print(e.message);
+//            setState(() {_isLogining = false;_errmessage=e.message;});
+//            return false;
+//          }
+//          print('loging call complete...');
         }
-        setState(() {_isLogining = false;});
-        return auth.currentUser!= null;
+//        setState(() {
+//          _isLogining = false;
+//        });
+        return auth.currentUser != null;
         //邮箱密码登录
 //        FirebaseUser user = auth
       }
@@ -189,14 +213,16 @@ class _LoginEmailState extends State<LoginEmail> {
                                 context: context,
                                 child: new AlertDialog(
                                     title: const Text('提示'),
-                                    content: new Text('登录失败!'+_errmessage),
+                                    content: new Text('登录失败!' + _errmessage),
                                     actions: <Widget>[
                                       new FlatButton(
                                           child: const Text('OK'),
                                           onPressed: () {
                                             Navigator.of(context).pop(
                                                 false); // Pops the confirmation dialog but not the page.
-                                            setState((){_errmessage='';});
+                                            setState(() {
+                                              _errmessage = '';
+                                            });
                                           }),
                                     ])) ??
                             false;
@@ -220,18 +246,27 @@ class _LoginEmailState extends State<LoginEmail> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     new IconButton(
-                      onPressed: (){
+                      onPressed: () {
                         _handleGoogleSingn();
                       },
-                      icon: new ImageIcon(new AssetImage('images/Google.png'),color: Colors.blue,),
+                      icon: new ImageIcon(
+                        new AssetImage('images/Google.png'),
+                        color: Colors.blue,
+                      ),
                     ),
                     new IconButton(
-                      onPressed: (){},
-                      icon: new ImageIcon(new AssetImage('images/Facebook.png'),color: Colors.black,),
+                      onPressed: () {},
+                      icon: new ImageIcon(
+                        new AssetImage('images/Facebook.png'),
+                        color: Colors.black,
+                      ),
                     ),
                     new IconButton(
-                      onPressed: (){},
-                      icon: new ImageIcon(new AssetImage('images/wechat.png'),color: Colors.green,),
+                      onPressed: () {},
+                      icon: new ImageIcon(
+                        new AssetImage('images/wechat.png'),
+                        color: Colors.green,
+                      ),
                     ),
                   ],
                 ),

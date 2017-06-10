@@ -14,7 +14,8 @@ class MessagePage extends StatefulWidget {
   _MessagePageState createState() => new _MessagePageState();
 }
 
-class _MessagePageState extends State<MessagePage> with TickerProviderStateMixin {
+class _MessagePageState extends State<MessagePage>
+    with TickerProviderStateMixin {
   final List<MessageItem> _listMessage = <MessageItem>[];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
@@ -99,23 +100,28 @@ class _MessagePageState extends State<MessagePage> with TickerProviderStateMixin
     await http
         .get(url)
         .then((res) {
+          print('标记4');
           _initList(res);
 //          print("刷新完成");
           print(_listMessage.length);
         })
         .timeout(const Duration(seconds: 30))
         .whenComplete(() {
+          print('标记5');
           completer.complete(null);
         });
   }
 
   void _initList(http.Response res) {
     print(res.body);
-    Map data = JSON.decode(res.body);
+    Map<String, dynamic> data = JSON.decode(res.body);
+    print('标记3');
     print(data['data']);
+    print('标记0');
     List<Map> msgs = data['data'];
+    print('标记1');
 //    _listMessage.clear();
-    if(mounted) {
+    if (mounted) {
       setState(() {
         for (int i = 0; i < msgs.length; i++) {
           Message message = new Message(
@@ -125,19 +131,16 @@ class _MessagePageState extends State<MessagePage> with TickerProviderStateMixin
               new AnimationController(
                 vsync: this,
                 duration: new Duration(milliseconds: 800),
-              )
-          );
-          _listMessage.add(
-              new MessageItem(
-                message: message,
               ));
+          _listMessage.add(new MessageItem(
+            message: message,
+          ));
         }
       });
     }
-
+    print('标记2');
     for (var i = 0; i < _listMessage.length; ++i) {
       _listMessage[i].message.animationController.forward();
-
     }
   }
 
@@ -161,11 +164,9 @@ class _MessagePageState extends State<MessagePage> with TickerProviderStateMixin
 
   @override
   void dispose() {
-    for(MessageItem msg in _listMessage){
+    for (MessageItem msg in _listMessage) {
       msg.message.animationController.dispose();
     }
     super.dispose();
   }
-
-
 }
