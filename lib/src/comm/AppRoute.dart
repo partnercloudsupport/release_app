@@ -14,8 +14,6 @@ import 'package:release_app/src/components/UserCenter/borrow_record.dart';
 class AppRoute {
 
   static  Map<String, WidgetBuilder> routes = {
-    '/a': (BuildContext context) => new MyHomePage(title: '我要借钱'),
-    '/b': (BuildContext context) => new Home(title: '口贷'),
     '/cash': (BuildContext context) => new BorrowCash(),
     '/message': (BuildContext context) => new MessagePage(),
     '/login': (BuildContext context) => new Login(),

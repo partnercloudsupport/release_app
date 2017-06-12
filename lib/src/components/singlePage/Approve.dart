@@ -1,8 +1,9 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/components/Approve/IdentityCertificate.dart';
 import 'package:release_app/src/components/Approve/PersonalInfo.dart';
 import 'package:share/share.dart';
-
 
 class Approve extends StatefulWidget {
   Approve({Key key}) : super(key: key);
@@ -12,8 +13,16 @@ class Approve extends StatefulWidget {
 }
 
 class _ApproveState extends State<Approve> {
+//  List<bool> _checkStatus= <bool>[false,false,false,false];
+  int _checkStatus = -1;
 
-  List<bool> _checkStatus= <bool>[false,false,false,false];
+  final DatabaseReference _rootRef = FirebaseDatabase.instance.reference();
+
+  @override
+  void initState() {
+    super.initState();
+    initCheckStatus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +44,21 @@ class _ApproveState extends State<Approve> {
           _showIdentity(context);
           break;
         case 1:
+          if (_checkStatus < 0) {
+            showDialog(
+                context: context,
+                child: new AlertDialog(
+                  title: const Text('提示'),
+                  content: const Text('请先完成身份认证!'),
+                  actions: [
+                    new FlatButton(
+                      child: const Text('OK'),
+                      onPressed: (){Navigator.pop(context,null);},
+                    ),
+                  ],
+                ));
+            break;
+          }
           _verPersonInfo(context);
           break;
         default:
@@ -54,7 +78,10 @@ class _ApproveState extends State<Approve> {
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                new Icon(icon,color: Theme.of(context).primaryColor,),
+                new Icon(
+                  icon,
+                  color: Theme.of(context).primaryColor,
+                ),
                 new Container(
                   padding: const EdgeInsets.only(left: 2.0),
                   child: new Text(lable),
@@ -62,9 +89,13 @@ class _ApproveState extends State<Approve> {
                 new Expanded(
                   child: new Container(
                     alignment: FractionalOffset.centerRight,
-                    child: _checkStatus[index]?const Icon(Icons.check_circle, color: Colors.green,):const Icon(Icons.cancel),
+                    child: _checkStatus >= index
+                        ? const Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                          )
+                        : const Icon(Icons.cancel),
                   ),
-//                child: const Icon(Icons.done),
                 ),
               ],
             ),
@@ -95,43 +126,49 @@ class _ApproveState extends State<Approve> {
 //      );
     }
 
-    return new ListView(
-      children: [
-        new Container(
-          height: 200.0,
-          color: Theme.of(context).primaryColor,
-          child: new Center(
-            child: new Container(
-              height: 120.0,
-              width: 120.0,
-              decoration: new BoxDecoration(
-                shape: BoxShape.circle,
+    return new Scaffold(
+      appBar: new AppBar(
+        title: const Text('认证'),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: new ListView(
+        children: [
+          new Container(
+//            height: 100.0,
+            color: Theme.of(context).primaryColor,
+            child: new Center(
+              child: new Container(
+                height: 120.0,
+                width: 120.0,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
 //                borderRadius: new BorderRadius.circular(100.0),
 //              color: Colors.white,
-                border: new Border.all(color: Colors.white, width: 2.0),
-              ),
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  new Text("可用额度/元"),
-                  new RichText(
-                    text: new TextSpan(
-                      text: '',
-                      style: DefaultTextStyle.of(context).style,
-                      children: [
+                  border: new Border.all(color: Colors.white, width: 2.0),
+                ),
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    new Text("可用额度/元"),
+                    new RichText(
+                      text: new TextSpan(
+                        text: '',
+                        style: DefaultTextStyle.of(context).style,
+                        children: [
 //                          new TextSpan(text: '5000', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0,color: Colors.white),
-                        new TextSpan(
-                            text: '5000',
-                            style: Theme.of(context).primaryTextTheme.title),
-                        new TextSpan(text: ' .00'),
-                      ],
+                          new TextSpan(
+                              text: '5000',
+                              style: Theme.of(context).primaryTextTheme.title),
+                          new TextSpan(text: ' .00'),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
 //          child: new Center(
 //            child: const Icon(Icons.panorama_fish_eye, size: 150.0, color: Colors.white),
 ////            child: new Text(
@@ -143,43 +180,46 @@ class _ApproveState extends State<Approve> {
 ////                softWrap: true
 ////            ),
 //          ),
-        ),
-        new Container(
-          padding: const EdgeInsets.only(left: 10.0),
-          alignment: FractionalOffset.centerLeft,
-          height: 40.0,
-          color: Colors.grey[300],
-          child: const Text('基本信息',
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-        ),
-        new Container(
+          ),
+          new Container(
+            padding: const EdgeInsets.only(left: 10.0),
+            alignment: FractionalOffset.centerLeft,
+            height: 40.0,
+            color: Colors.grey[300],
+            child: const Text('基本信息',
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          new Container(
 //          color: Colors.green,
 //          height: 100.0,
-          child: new Column(
-            children: [
-              _itemLine('身份认证', Icons.account_circle, 0),
-              new Divider(height: 1.0, indent: 40.0),
-              _itemLine('个人信息', Icons.person, 1),
-              new Divider(height: 1.0, indent: 40.0),
-              _itemLine('信用认证', Icons.card_membership, 2),
-              new Divider(height: 1.0, indent: 40.0),
-              _itemLine('手机认证', Icons.phone_android, 3),
-            ],
+            child: new Column(
+              children: [
+                _itemLine('身份认证', Icons.account_circle, 0),
+                new Divider(height: 1.0, indent: 40.0),
+                _itemLine('个人信息', Icons.person, 1),
+                new Divider(height: 1.0, indent: 40.0),
+                _itemLine('信用认证', Icons.card_membership, 2),
+                new Divider(height: 1.0, indent: 40.0),
+                _itemLine('手机认证', Icons.phone_android, 3),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  _showIdentity(BuildContext context) async{
+  _showIdentity(BuildContext context) async {
     Object o = await Navigator.push(
         context,
         new MaterialPageRoute<IdentityDialogAction>(
           builder: (BuildContext context) => new IdentityCertificate(),
           fullscreenDialog: true,
         ));
-    if (o == IdentityDialogAction.save){
-      setState((){_checkStatus[0]=true;});
+    if (o == IdentityDialogAction.save) {
+      setState(() {
+        _checkStatus += 1;
+      });
     }
   }
 
@@ -187,13 +227,30 @@ class _ApproveState extends State<Approve> {
     Navigator.of(context).pushNamed('/message');
   }
 
-  _verPersonInfo(BuildContext context)async {
+  _verPersonInfo(BuildContext context) async {
     bool reslut = await Navigator.of(context).push(new MaterialPageRoute(
-      builder: (BuildContext context) => new PersonalInfo(),
-      fullscreenDialog: true,
-    ));
-    if (reslut!=null && reslut){
-      setState((){_checkStatus[1]=true;});
+          builder: (BuildContext context) => new PersonalInfo(),
+          fullscreenDialog: true,
+        ));
+    if (reslut != null && reslut) {
+      setState(() {
+        _checkStatus += 1;
+      });
     }
+  }
+
+  initCheckStatus() async {
+    String uid;
+    await Firebaseui.currentUser.then((user) {
+      uid = user.uid;
+    });
+    _rootRef.child('person_info/${uid}/checkStatus').once().then((status) {
+      if (status.value != null) {
+        print('认证状态：${status.key} ${status.value}');
+        setState(() {
+          _checkStatus = status.value;
+        });
+      }
+    });
   }
 }

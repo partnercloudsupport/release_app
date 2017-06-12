@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:release_app/src/components/singlePage/Approve.dart';
+import 'package:release_app/src/components/singlePage/BorrowCash.dart';
 import 'package:release_app/src/components/singlePage/BorrowHome.dart';
 import 'package:release_app/src/components/singlePage/UserCenter.dart';
 

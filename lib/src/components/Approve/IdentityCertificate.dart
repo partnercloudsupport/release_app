@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -29,6 +30,7 @@ class IdentityCertificate extends StatefulWidget {
 }
 
 class _IdentityCertificateState extends State<IdentityCertificate> {
+  final DatabaseReference _rootRef = FirebaseDatabase.instance.reference();
   Future<File> imageFile1;
   Future<File> imageFile2;
   bool _saveNeeded = false;
@@ -340,6 +342,10 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
       _saveNeeded = false;
       _uploadSuccess = true;
     });
+    String uid;
+    await Firebaseui.currentUser.then((user){uid=user.uid;});
+    _rootRef.child('person_info/${uid}/checkStatus').set(0);
+
     Navigator.pop(context, IdentityDialogAction.save);
   }
 }

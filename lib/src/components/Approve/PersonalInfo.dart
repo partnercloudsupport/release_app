@@ -35,9 +35,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
   String _marriage = '';
   String _childencount = '';
   String _livetime = '';
-//  String _qq = '';
-//  String _email = '';
-//  String _address = '';
+
   Jobinfo _jobinfo;
   Contacts _contactsinfo;
   BankCard _bankcard;
@@ -456,6 +454,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
         setState(() {
           _saveNeeded = false;
         });
+        _rootRef.child('person_info/${_userid}/checkStatus').set(1);
         Navigator.pop(context, true);
       }, onError: () {
         /**
