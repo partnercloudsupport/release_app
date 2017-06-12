@@ -99,7 +99,7 @@ class BottomNavigationHome extends StatefulWidget {
 class _BottomNavigationHomeState extends State<BottomNavigationHome>
     with TickerProviderStateMixin {
   int _currentIndex = 0;
-  BottomNavigationBarType _type = BottomNavigationBarType.shifting;
+  BottomNavigationBarType _type = BottomNavigationBarType.fixed;
   List<NavigationIconView> _navigationViews;
 
   @override
@@ -189,19 +189,19 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
       },
     );
 
-    final CupertinoTabBar iosTabbar = new CupertinoTabBar(
-      items: _navigationViews
-          .map((NavigationIconView navigationView) => navigationView.item)
-          .toList(),
-      currentIndex: _currentIndex,
-      onTap: (int index) {
-        setState(() {
-          _navigationViews[_currentIndex].controller.reverse();
-          _currentIndex = index;
-          _navigationViews[_currentIndex].controller.forward();
-        });
-      },
-    );
+//    final CupertinoTabBar iosTabbar = new CupertinoTabBar(
+//      items: _navigationViews
+//          .map((NavigationIconView navigationView) => navigationView.item)
+//          .toList(),
+//      currentIndex: _currentIndex,
+//      onTap: (int index) {
+//        setState(() {
+//          _navigationViews[_currentIndex].controller.reverse();
+//          _currentIndex = index;
+//          _navigationViews[_currentIndex].controller.forward();
+//        });
+//      },
+//    );
 
     return new Scaffold(
 //      appBar: new AppBar(),
@@ -228,8 +228,7 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
 //        ],
 //      ),
       body: new Center(child: _buildTransitionsStack()),
-      bottomNavigationBar: defaultTargetPlatform ==
-          TargetPlatform.iOS?iosTabbar:botNavBar,
+      bottomNavigationBar: botNavBar,
     );
   }
 }

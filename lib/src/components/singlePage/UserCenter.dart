@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:release_app/src/comm/Colors.dart';
+import 'package:release_app/src/components/UserCenter/GiftPage.dart';
 import 'package:release_app/src/components/UserCenter/UserProfile.dart';
 import 'package:release_app/src/components/singlePage/Login.dart';
 import 'package:release_app/src/components/Usercenter/LoginEmail.dart';
@@ -215,7 +216,7 @@ class _UserCenter extends State<UserCenter> {
                       new Flexible(
                         child: new InkWell(
                           onTap: () {
-                            _handleClick(context, 3);
+                            _handleClick(context, 2);
                           },
                           child: new Container(
                             alignment: FractionalOffset.center,
@@ -451,7 +452,11 @@ class _UserCenter extends State<UserCenter> {
             ));
         break;
       case 2:
-        Navigator.pushNamed(context, '/borrowRecord');
+        Navigator.push(
+            context,
+            new MaterialPageRoute<Null>(
+              builder: (BuildContext context) => new GiftPage(),
+            ));
         break;
       case 3:
         Navigator.pushNamed(context, '/borrowRecord');

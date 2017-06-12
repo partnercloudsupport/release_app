@@ -3,6 +3,7 @@ import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/Colors.dart';
+import 'package:release_app/src/comm/commBottomModel.dart';
 
 /**
  * Created by zgx on 2017/6/9.
@@ -322,11 +323,137 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
   double _kAppBarHeight = 150.0;
   List<String> _allPages = ['个人信息', '职业信息', '社会关系'];
   TabController _tabController;
+  List<TextEditingController> _controllers = [
+    new TextEditingController(),
+  ];
+
+  bool _saveNeeded = false;
+  String _education = '';
+  String _marriage = '';
+  String _childencount = '';
+  String _livetime = '';
 
   @override
   void initState() {
     super.initState();
     _tabController = new TabController(length: _allPages.length, vsync: this);
+  }
+
+  /**
+   * 文本输入框
+   */
+  Widget _textInputItem(
+      String label, String hintText, TextInputType inputType, int i) {
+    return new Container(
+      child: new Row(
+        children: <Widget>[
+          new Expanded(
+            child: new Container(
+              alignment: FractionalOffset.centerRight,
+                padding: const EdgeInsets.only(right: 16.0),
+              child: new Text(label),
+            ),
+            flex: 1,
+          ),
+          new Expanded(
+            flex: 3,
+            child: new TextFormField(
+              decoration: new InputDecoration(
+                hideDivider: true,
+                hintText: hintText,
+              ),
+              controller: _controllers[i] != null ? _controllers[i] : null,
+              keyboardType: inputType,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void showDemoDialog<T>({BuildContext context, int index, Widget child}) {
+    showDialog<String>(
+      context: context,
+      child: child,
+    ).then<Null>((String value) {
+      // The value passed to Navigator.pop() or null.
+//        print('序号:' + index.toString() + '返回数据:' + value);
+      setState(() {
+        if (value != null) {
+          _saveNeeded = true;
+          switch (index) {
+            case 0:
+              _education = value;
+              break;
+            case 1:
+              _marriage = value;
+              break;
+            case 2:
+              _childencount = value;
+              break;
+            case 3:
+              _livetime = value;
+              break;
+          }
+        }
+      });
+    });
+  }
+
+  Widget _dropdownInputItem(String label, int index) {
+    return new InkWell(
+      onTap: () {
+        showDemoDialog<String>(
+          context: context,
+          index: index,
+          child: index == 0
+              ? new EduDiolog()
+              : index == 1
+              ? new MarriageDiolog()
+              : index == 2 ? new ChildenDiolog() : new LivetimeDiolog(),
+        );
+      },
+      child: new Container(
+        height: 45.0,
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            new Expanded(
+              flex: 1,
+              child: new Container(
+                alignment: FractionalOffset.centerRight,
+                  padding: const EdgeInsets.only(right: 16.0),
+                child: new Text(label),
+              ),
+            ),
+            new Expanded(
+              flex: 2,
+              child: index == 0
+                  ? new Text(_education)
+                  : index == 1
+                  ? new Text(_marriage)
+                  : index == 2
+                  ? new Text(_childencount)
+                  : index == 3 ? new Text(_livetime) : null,
+            ),
+            new Expanded(
+              flex: 1,
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  new Icon(
+                    Icons.arrow_drop_down,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.grey.shade700
+                        : Colors.white70,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   /**
@@ -341,85 +468,14 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
             new SingleChildScrollView(
               child: new Column(
                 children: <Widget>[
-                  new Row(
-                    children: <Widget>[
-                      new Container(
-                        alignment: FractionalOffset.centerRight,
-                        width: 70.0,
-                        child: new Text('QQ号码：'),
-                      ),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('电子邮箱：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Container(
-                        alignment: FractionalOffset.centerRight,
-                        width: 70.0,
-                        child: new Text('学历：'),
-                      ),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('婚姻状况：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('子女个数：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('居住地址：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('居住时长：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  _textInputItem('QQ:', '请输入QQ号码', TextInputType.number, 0),
+                  _textInputItem('电子邮箱:', '请输入电子邮箱', TextInputType.text, 0),
+                  _dropdownInputItem('学历:', 0),
+                  _dropdownInputItem('婚姻:', 1),
+                  _dropdownInputItem('子女个数:', 2),
+                  _textInputItem('居住地址:', '', TextInputType.text, 0),
+                  _dropdownInputItem('居住时长:', 3),
+                ]
               ),
             ),
             new Container(
@@ -451,81 +507,13 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
             new SingleChildScrollView(
               child: new Column(
                 children: <Widget>[
-                  new Row(
-                    children: <Widget>[
-                      new Container(
-                        alignment: FractionalOffset.centerRight,
-                        width: 70.0,
-                        child: new Text('职业：'),
-                      ),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('薪水范围：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Container(
-                        alignment: FractionalOffset.centerRight,
-                        child: new Text('公司名称：'),
-                      ),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('所在省市：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                      new SizedBox(
-                        width: 16.0,
-                      ),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('详细地址：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('单位电话：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
+                  _dropdownInputItem('职业:', 0),
+                  _dropdownInputItem('薪水范围:', 1),
+                  _textInputItem('公司名称:', '', TextInputType.text, 0),
+                  _textInputItem('电子邮箱:', '请输入电子邮箱', TextInputType.text, 0),
+                  _dropdownInputItem('所在省市:', 2),
+                  _textInputItem('详细地址:', '', TextInputType.text, 0),
+                  _textInputItem('单位电话:', '', TextInputType.phone, 0),
                 ],
               ),
             ),
@@ -566,52 +554,10 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
             new SingleChildScrollView(
               child: new Column(
                 children: <Widget>[
-                  new Row(
-                    children: <Widget>[
-                      new Container(
-                        alignment: FractionalOffset.centerRight,
-                        child: new Text('亲属关系：'),
-                      ),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('联系方式：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Container(
-                        alignment: FractionalOffset.centerRight,
-                        child: new Text('社会关系：'),
-                      ),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  new Row(
-                    children: <Widget>[
-                      new Text('联系方式：'),
-                      new Expanded(
-                        child: new TextFormField(
-                          decoration: new InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
+                  _dropdownInputItem('亲属关系:', 0),
+                  _textInputItem('联系方式:', '', TextInputType.phone, 0),
+                  _dropdownInputItem('亲属关系:', 0),
+                  _textInputItem('联系方式:', '', TextInputType.phone, 0),
                 ],
               ),
             ),
@@ -627,9 +573,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
                 ),
                 new RaisedButton(
                   color: AppColors.primary,
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                   child: const Text('提交'),
                 ),
               ],
@@ -678,8 +622,14 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
                           child: new Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          new Text('尊敬的xx', style: const TextStyle(color: Colors.white),),
-                          new Text('您的身份证号:130******2252', style: const TextStyle(color: Colors.white),),
+                          new Text(
+                            '尊敬的xx',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          new Text(
+                            '您的身份证号:130******2252',
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ],
                       )),
                     );
