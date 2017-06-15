@@ -69,8 +69,9 @@ class _ApproveState extends State<Approve> {
 
     Widget _itemLine(String lable, IconData icon, int index) {
       return new Container(
+        color: Colors.white,
           height: 45.0,
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           child: new InkWell(
             onTap: () {
               _handlePress(index);
@@ -127,15 +128,15 @@ class _ApproveState extends State<Approve> {
     }
 
     return new Scaffold(
-      appBar: new AppBar(
-        title: const Text('认证'),
-        centerTitle: true,
-        elevation: 0.0,
-      ),
+//      appBar: new AppBar(
+//        title: const Text('认证'),
+//        centerTitle: true,
+//        elevation: 0.0,
+//      ),
       body: new ListView(
         children: [
           new Container(
-//            height: 100.0,
+            height: 200.0,
             color: Theme.of(context).primaryColor,
             child: new Center(
               child: new Container(
@@ -182,25 +183,28 @@ class _ApproveState extends State<Approve> {
 //          ),
           ),
           new Container(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: const EdgeInsets.only(left: 16.0),
             alignment: FractionalOffset.centerLeft,
             height: 40.0,
-            color: Colors.grey[300],
-            child: const Text('基本信息',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+//            color: Colors.grey[300],
+            child: const Text('基本资料',),
           ),
           new Container(
 //          color: Colors.green,
 //          height: 100.0,
             child: new Column(
               children: [
-                _itemLine('身份认证', Icons.account_circle, 0),
-                new Divider(height: 1.0, indent: 40.0),
+                _itemLine('身份认证', Icons.account_box, 0),
+                new Divider(height: 1.0, indent: 16.0,),
                 _itemLine('个人信息', Icons.person, 1),
-                new Divider(height: 1.0, indent: 40.0),
-                _itemLine('信用认证', Icons.card_membership, 2),
-                new Divider(height: 1.0, indent: 40.0),
-                _itemLine('手机认证', Icons.phone_android, 3),
+//                new Divider(height: 1.0, indent: 16.0),
+                new SizedBox(height: 16.0,),
+                _itemLine('信用认证', Icons.security, 2),
+                new Divider(height: 1.0, indent: 16.0),
+                _itemLine('手机认证', Icons.phone_iphone, 3),
+                new SizedBox(height: 16.0,),
+                _itemLine('上传银行卡', Icons.credit_card, 3),
+
               ],
             ),
           ),

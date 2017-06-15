@@ -65,6 +65,8 @@ class _BankCardValidPageState extends State<BankCardValidPage> {
           _handleClick(index);
         },
         child: new Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+          color: Colors.white,
           height: 45.0,
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,13 +103,12 @@ class _BankCardValidPageState extends State<BankCardValidPage> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: const Text('紧急联系人'),
+        title: const Text('银行卡认证'),
         centerTitle: true,
       ),
       body: new Form(
         key: _fomrKey,
         child: new SingleChildScrollView(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
           child: new Container(
             child: new Column(
               children: <Widget>[
@@ -116,68 +117,95 @@ class _BankCardValidPageState extends State<BankCardValidPage> {
                   child: new Column(
                     children: <Widget>[
                       _bottonInputItem('开户行', 0),
-                      new Divider(),
+                      new Divider(height: 1.0, indent: 16.0 ),
                       _bottonInputItem('开户省市', 1),
-                      new Divider(),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Container(
-                            child: new Text('预留手机号'),
-                            margin: const EdgeInsets.only(right: 3.0),
-                          ),
-                          new Expanded(
-                            child: new TextFormField(
-                              controller: _phoneController != null
-                                  ? _phoneController
-                                  : null,
-                              validator: _validCompInfo,
-                              keyboardType: TextInputType.number,
+                      new SizedBox(height: 16.0,),
+                      new Container(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        color: Colors.white,
+                        child: new Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new Expanded(
+                              child: new Text('预留手机号'),
+                              flex: 1,
                             ),
-                          ),
-                        ],
+                            new Expanded(
+                              flex: 3,
+                              child: new TextFormField(
+                                decoration: new InputDecoration(
+                                    hideDivider: true
+                                ),
+                                controller: _phoneController != null
+                                    ? _phoneController
+                                    : null,
+                                validator: _validCompInfo,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Container(
-                            child: new Text('银行卡号'),
-                            margin: const EdgeInsets.only(right: 3.0),
-                          ),
-                          new Expanded(
-                            child: new TextFormField(
-                              controller: _cardController != null
-                                  ? _cardController
-                                  : null,
-                              validator: _validCompInfo,
-                              keyboardType: TextInputType.number,
+                      new SizedBox(height: 16.0,),
+                      new Container(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        color: Colors.white,
+                        child: new Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new Expanded(
+                              child: new Text('银行卡号'),
+                              flex: 1,
                             ),
-                          ),
-                        ],
+                            new Expanded(
+                              flex: 3,
+                              child: new TextFormField(
+                                decoration: new InputDecoration(
+                                    hideDivider: true
+                                ),
+                                controller: _cardController != null
+                                    ? _cardController
+                                    : null,
+                                validator: _validCompInfo,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Container(
-                            child: new Text('确认卡号'),
-                            margin: const EdgeInsets.only(right: 3.0),
-                          ),
-                          new Expanded(
-                            child: new TextFormField(
-                              controller: _confirmCardController != null
-                                  ? _confirmCardController
-                                  : null,
-                              validator: _validConfirmCard,
-                              keyboardType: TextInputType.number,
+                      new Divider(height: 1.0,),
+                      new Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: new Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new Expanded(
+                              child: new Text('确认卡号'),
+                              flex: 1,
                             ),
-                          ),
-                        ],
+                            new Expanded(
+                              flex: 3,
+                              child: new TextFormField(
+                                decoration: new InputDecoration(
+                                    hideDivider: true
+                                ),
+                                controller: _confirmCardController != null
+                                    ? _confirmCardController
+                                    : null,
+                                validator: _validConfirmCard,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
+                new SizedBox(height: 16.0,),
                 new Container(
-                  padding: const EdgeInsets.only(top: 16.0),
+                  padding: const EdgeInsets.only(left: 16.0),
                   child: new Row(
                     children: <Widget>[
                       const Icon(Icons.info),

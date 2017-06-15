@@ -224,6 +224,7 @@ class _IdentityCertificateState extends State<IdentityCertificate> {
                   margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
                   height: 45.0,
                   child: new Container(
+                    color: Colors.white,
                       child: new InkWell(
                     onTap: () {
                       _handleClick(context, 0);

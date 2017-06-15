@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
   final ThemeData defaultThme = new ThemeData(
     brightness: Brightness.light,
     primarySwatch: AppColors.primary,
+    backgroundColor: Colors.grey.shade100,
 //    accentColor: Colors.blueAccent[400],
   );
 

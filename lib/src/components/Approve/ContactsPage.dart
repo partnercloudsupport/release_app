@@ -96,6 +96,7 @@ class _ContactsInfoPageState extends State<ContactsInfoPage> {
     }
 
     return new Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: new AppBar(
         title: const Text('紧急联系人'),
         centerTitle: true,
@@ -103,12 +104,13 @@ class _ContactsInfoPageState extends State<ContactsInfoPage> {
       body: new Form(
         key: _fomrKey,
         child: new SingleChildScrollView(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
           child: new Container(
             child: new Column(
               children: <Widget>[
+                new SizedBox(height: 16.0,),
                 new Container(
-                  margin: const EdgeInsets.only(top: 16.0),
+                  color: Colors.white,
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: new Column(
                     children: <Widget>[
                       _bottonInputItem('亲属关系', 0),
@@ -116,12 +118,16 @@ class _ContactsInfoPageState extends State<ContactsInfoPage> {
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          new Container(
+                          new Expanded(
+                            flex: 1,
                             child: new Text('联系方式'),
-                            margin: const EdgeInsets.only(right: 3.0),
                           ),
                           new Expanded(
+                            flex: 3,
                             child: new TextFormField(
+                              decoration: new InputDecoration(
+                                hideDivider: true,
+                              ),
                               controller: _phoneController1 != null
                                   ? _phoneController1
                                   : null,
@@ -134,8 +140,10 @@ class _ContactsInfoPageState extends State<ContactsInfoPage> {
                     ],
                   ),
                 ),
+                new SizedBox(height: 16.0,),
                 new Container(
-                  margin: const EdgeInsets.only(top: 16.0),
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  color: Colors.white,
                   child: new Column(
                     children: <Widget>[
                       _bottonInputItem('社会关系', 1),
@@ -143,12 +151,16 @@ class _ContactsInfoPageState extends State<ContactsInfoPage> {
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          new Container(
+                          new Expanded(
                             child: new Text('联系方式'),
-                            margin: const EdgeInsets.only(right: 3.0),
+                            flex: 1,
                           ),
                           new Expanded(
+                            flex: 3,
                             child: new TextFormField(
+                              decoration: new InputDecoration(
+                                hideDivider: true,
+                              ),
                               controller: _phoneController2 != null
                                   ? _phoneController2
                                   : null,

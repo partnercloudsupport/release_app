@@ -143,7 +143,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
     Widget _textInputItem(
         String label, String hintText, TextInputType inputType, int i) {
       return new Container(
-//        height: 45.0,
+        padding: const EdgeInsets.only(left: 16.0),
+        color: Colors.white,
         child: new Row(
           children: <Widget>[
             new Expanded(
@@ -180,7 +181,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
           );
         },
         child: new Container(
+          color: Colors.white,
           height: 45.0,
+            padding: const EdgeInsets.only(left: 16.0),
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -314,6 +317,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
     }
 
     return new Scaffold(
+//      backgroundColor: Colors.grey.shade100,
       appBar: new AppBar(
         title: const Text('个人信息认证'),
         centerTitle: true,
@@ -321,41 +325,35 @@ class _PersonalInfoState extends State<PersonalInfo> {
       body: new Form(
           key: _formKey,
           onWillPop: _onWillPop,
-          child: new ListView(padding: const EdgeInsets.all(16.0), children: <
+          child: new ListView(children: <
               Widget>[
             new Container(
               decoration: new BoxDecoration(
                   border: new Border(
-                      top:
-                          new BorderSide(width: 1.0, color: theme.dividerColor),
                       bottom: new BorderSide(
                           width: 1.0, color: theme.dividerColor))),
               child: new Column(
                 children: <Widget>[
                   _textInputItem('QQ', '请输入QQ号码', TextInputType.number, 0),
-                  new Divider(),
+                  new Divider(height: 1.0, indent: 16.0,),
                   _textInputItem('电子邮箱', '输入电子邮箱', TextInputType.text, 1),
-                  new Divider(),
+                  new SizedBox(height: 16.0,),
                   _dropdownInputItem('学历', 0),
-                  new Divider(),
+                  new SizedBox(height: 16.0,),
                   _dropdownInputItem('婚姻', 1),
-                  new Divider(),
+                  new Divider(height: 1.0, indent: 16.0,),
                   _dropdownInputItem('子女个数', 2),
-                  new Divider(),
+                  new SizedBox(height: 16.0,),
                   _textInputItem('常住地址', '请输入常住地址', TextInputType.text, 2),
-                  new Divider(),
+                  new Divider(height: 1.0, indent: 16.0,),
                   _dropdownInputItem('居住时长', 3),
                 ],
               ),
             ),
+            new SizedBox(height: 16.0,),
             new Container(
-              margin: const EdgeInsets.only(top: 20.0),
-              decoration: new BoxDecoration(
-                  border: new Border(
-                      top:
-                          new BorderSide(width: 1.0, color: theme.dividerColor),
-                      bottom: new BorderSide(
-                          width: 1.0, color: theme.dividerColor))),
+              color: Colors.white,
+              padding: const EdgeInsets.only(left: 16.0),
               child: new Column(
                 children: <Widget>[
                   _iconButtonItem(

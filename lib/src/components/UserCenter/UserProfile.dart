@@ -345,12 +345,14 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
   Widget _textInputItem(
       String label, String hintText, TextInputType inputType, int i) {
     return new Container(
+      color: Colors.white,
+        padding: const EdgeInsets.only(left: 16.0),
       child: new Row(
         children: <Widget>[
           new Expanded(
             child: new Container(
-              alignment: FractionalOffset.centerRight,
-                padding: const EdgeInsets.only(right: 16.0),
+              alignment: FractionalOffset.centerLeft,
+//                padding: const EdgeInsets.only(right: 16.0),
               child: new Text(label),
             ),
             flex: 1,
@@ -414,6 +416,8 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
         );
       },
       child: new Container(
+        color: Colors.white,
+        padding: const EdgeInsets.only(left: 16.0),
         height: 45.0,
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -421,7 +425,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
             new Expanded(
               flex: 1,
               child: new Container(
-                alignment: FractionalOffset.centerRight,
+                alignment: FractionalOffset.centerLeft,
                   padding: const EdgeInsets.only(right: 16.0),
                 child: new Text(label),
               ),
@@ -460,24 +464,29 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
    * 个人信息维护页面
    */
   Widget _personInfoPage() {
-    return new Card(
+    return new Container(
       child: new Form(
         child: new ListView(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+//          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           children: <Widget>[
-            new SingleChildScrollView(
-              child: new Column(
+            new Column(
                 children: <Widget>[
                   _textInputItem('QQ:', '请输入QQ号码', TextInputType.number, 0),
+                  new Divider(height: 1.0, indent: 16.0,),
                   _textInputItem('电子邮箱:', '请输入电子邮箱', TextInputType.text, 0),
+                  new SizedBox(height: 16.0,),
                   _dropdownInputItem('学历:', 0),
+                  new SizedBox(height: 16.0,),
                   _dropdownInputItem('婚姻:', 1),
+                  new Divider(height: 1.0, indent: 16.0,),
                   _dropdownInputItem('子女个数:', 2),
+                  new SizedBox(height: 16.0,),
                   _textInputItem('居住地址:', '', TextInputType.text, 0),
+                  new Divider(height: 1.0, indent: 16.0,),
                   _dropdownInputItem('居住时长:', 3),
                 ]
               ),
-            ),
+
             new Container(
               margin: const EdgeInsets.only(top: 16.0),
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -599,7 +608,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
                 bottom: new TabBar(
                   controller: _tabController,
                   tabs: _allPages
-                      .map((String label) => new Tab(text: label))
+                      .map((String label) => new Tab(text: label,))
                       .toList(),
                 ),
                 flexibleSpace: new LayoutBuilder(
