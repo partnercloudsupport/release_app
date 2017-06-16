@@ -35,6 +35,7 @@ class _UserCenter extends State<UserCenter> {
   Widget build(BuildContext context) {
     Widget _itemLine(String lable, IconData icon, int index) {
       return new Container(
+        color: Colors.white,
           height: 45.0,
           padding: const EdgeInsets.only(left: 10.0, right: 10.0),
           child: new InkWell(
@@ -64,196 +65,207 @@ class _UserCenter extends State<UserCenter> {
     }
 
     return new Scaffold(
+      appBar: new AppBar(
+        title: const Text('现金口贷'),
+      ),
       body: new ListView(
+        padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
         children: [
           new Container(
 //            height: 200.0,
 //          color: Theme.of(context).primaryColor,
+//          padding: const EdgeInsets.only(top: 16.0),
             child: new Column(
               children: <Widget>[
                 new Container(
-                  color: AppColors.primary,
+                  color: Colors.white,
+                    alignment: FractionalOffset.center,
                   padding: const EdgeInsets.only(bottom: 10.0, left: 10.0),
-                  height: 140.0,
+                  height: 100.0,
                   child: new Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      new InkWell(
-                        child: new Container(
-                          height: 50.0,
-                          width: 50.0,
-                          decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                              image: (_photoUrl == null)
-                                  ? const AssetImage(
-                                      'images/Google.png') //登录后可替换为头像，待完善
-                                  : new NetworkImage(_photoUrl),
-                            ),
-                          ),
-                        ),
-                        onTap: () {
-                          print(_uiuser);
-                          if (_uiuser != null) {
-                            showDialog(
-                              context: context,
-                              child: defaultTargetPlatform == TargetPlatform.iOS
-                                  ? new CupertinoAlertDialog(
-                                      title: const Text('提示'),
-                                      content: new Text('你好:' + _userName),
-                                    )
-                                  : new AlertDialog(
-                                      content: new Text('您已登录:' + _userName),
-                                      actions: <Widget>[
-                                        new FlatButton(
-                                          child: const Text('OK'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop(null);
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                            );
-                          } else {
-                            _doLogin();
-                          }
-                        },
-                      ),
-                      new Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 5.0),
-                        child: new Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            new Text(
-                              _uiuser == null ? '  ' : '您好',
-                            ),
-                            new Text(
-                              _uiuser == null ? '  ' : _userName,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                new Container(
-                  height: 60.0,
-                  decoration: new BoxDecoration(
-                    border: new Border.all(
-                        width: 1.0, color: Theme.of(context).dividerColor),
-                  ),
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      new Flexible(
-                        child: new Container(
-                          alignment: FractionalOffset.center,
-                          decoration: new BoxDecoration(
-                            border: new Border(
-                                right: const BorderSide(
-                                    color: Colors.grey, width: 1.0)),
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  new Text('525.00',
-                                      style: new TextStyle(
-                                          fontSize: Theme
-                                              .of(context)
-                                              .primaryTextTheme
-                                              .title
-                                              .fontSize,
-                                          color: AppColors.primary)),
-                                  new Text('待还金额'),
-                                ],
+                      new Expanded(
+                        flex: 1,
+                        child: new InkWell(
+                          child: new Container(
+                            height: 50.0,
+                            width: 50.0,
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                image: (_photoUrl == null)
+                                    ? const AssetImage(
+                                    'images/Google.png') //登录后可替换为头像，待完善
+                                    : new NetworkImage(_photoUrl),
                               ),
-                              new Text('元')
+                            ),
+                          ),
+                          onTap: () {
+                            print(_uiuser);
+                            if (_uiuser != null) {
+                              showDialog(
+                                context: context,
+                                child: defaultTargetPlatform == TargetPlatform.iOS
+                                    ? new CupertinoAlertDialog(
+                                  title: const Text('提示'),
+                                  content: new Text('你好:' + _userName),
+                                )
+                                    : new AlertDialog(
+                                  content: new Text('您已登录:' + _userName),
+                                  actions: <Widget>[
+                                    new FlatButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop(null);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              _doLogin();
+                            }
+                          },
+                        ),
+                      ),
+                      new Expanded(
+                        flex: 3,
+                        child: new Container(
+                          child: new Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text(
+                                _uiuser == null ? '  ' : '您好',
+                                style: new TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                              ),
+                              new Text(
+                                _uiuser == null ? '  ' : '手机号:${_userName}',
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      new Flexible(
-                        child: new InkWell(
-//                          splashColor: Colors.black,
-                            onTap: () {
-                              _handleClick(context, 0);
-                            },
-                            child: new Container(
-                              alignment: FractionalOffset.center,
-                              decoration: new BoxDecoration(
-                                border: new Border(
-                                    right: const BorderSide(
-                                        color: Colors.grey, width: 1.0)),
-                              ),
-                              child: new Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  new Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      new Text('1',
-                                          style: new TextStyle(
-                                              fontSize: Theme
-                                                  .of(context)
-                                                  .primaryTextTheme
-                                                  .title
-                                                  .fontSize,
-                                              color: AppColors.primary)),
-                                      new Text('需还贷款'),
-                                    ],
-                                  ),
-                                  new Text('笔')
-                                ],
-                              ),
-                            )),
-                      ),
-                      new Flexible(
-                        child: new InkWell(
-                          onTap: () {
-                            _handleClick(context, 2);
-                          },
-                          child: new Container(
-                            alignment: FractionalOffset.center,
-                            decoration: new BoxDecoration(
-                              border: new Border(
-                                  right: new BorderSide(
-                                      color: Theme.of(context).dividerColor,
-                                      width: 1.0)),
-                            ),
-                            child: new Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                new Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    new Text('3',
-                                        style: new TextStyle(
-                                            fontSize: Theme
-                                                .of(context)
-                                                .primaryTextTheme
-                                                .title
-                                                .fontSize,
-                                            color: AppColors.primary)),
-                                    new Text('我的卡券'),
-                                  ],
-                                ),
-                                new Text('张')
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
+//                new Container(
+//                  height: 60.0,
+//                  decoration: new BoxDecoration(
+//                    border: new Border.all(
+//                        width: 1.0, color: Theme.of(context).dividerColor),
+//                  ),
+//                  child: new Row(
+//                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                    children: <Widget>[
+//                      new Flexible(
+//                        child: new Container(
+//                          alignment: FractionalOffset.center,
+//                          decoration: new BoxDecoration(
+//                            border: new Border(
+//                                right: const BorderSide(
+//                                    color: Colors.grey, width: 1.0)),
+//                          ),
+//                          child: new Row(
+//                            mainAxisAlignment: MainAxisAlignment.center,
+//                            children: <Widget>[
+//                              new Column(
+//                                mainAxisAlignment: MainAxisAlignment.center,
+//                                children: [
+//                                  new Text('525.00',
+//                                      style: new TextStyle(
+//                                          fontSize: Theme
+//                                              .of(context)
+//                                              .primaryTextTheme
+//                                              .title
+//                                              .fontSize,
+//                                          color: AppColors.primary)),
+//                                  new Text('待还金额'),
+//                                ],
+//                              ),
+//                              new Text('元')
+//                            ],
+//                          ),
+//                        ),
+//                      ),
+//                      new Flexible(
+//                        child: new InkWell(
+////                          splashColor: Colors.black,
+//                            onTap: () {
+//                              _handleClick(context, 0);
+//                            },
+//                            child: new Container(
+//                              alignment: FractionalOffset.center,
+//                              decoration: new BoxDecoration(
+//                                border: new Border(
+//                                    right: const BorderSide(
+//                                        color: Colors.grey, width: 1.0)),
+//                              ),
+//                              child: new Row(
+//                                mainAxisAlignment: MainAxisAlignment.center,
+//                                crossAxisAlignment: CrossAxisAlignment.center,
+//                                children: <Widget>[
+//                                  new Column(
+//                                    mainAxisAlignment: MainAxisAlignment.center,
+//                                    children: [
+//                                      new Text('1',
+//                                          style: new TextStyle(
+//                                              fontSize: Theme
+//                                                  .of(context)
+//                                                  .primaryTextTheme
+//                                                  .title
+//                                                  .fontSize,
+//                                              color: AppColors.primary)),
+//                                      new Text('需还贷款'),
+//                                    ],
+//                                  ),
+//                                  new Text('笔')
+//                                ],
+//                              ),
+//                            )),
+//                      ),
+//                      new Flexible(
+//                        child: new InkWell(
+//                          onTap: () {
+//                            _handleClick(context, 2);
+//                          },
+//                          child: new Container(
+//                            alignment: FractionalOffset.center,
+//                            decoration: new BoxDecoration(
+//                              border: new Border(
+//                                  right: new BorderSide(
+//                                      color: Theme.of(context).dividerColor,
+//                                      width: 1.0)),
+//                            ),
+//                            child: new Row(
+//                              mainAxisAlignment: MainAxisAlignment.center,
+//                              crossAxisAlignment: CrossAxisAlignment.center,
+//                              children: <Widget>[
+//                                new Column(
+//                                  mainAxisAlignment: MainAxisAlignment.center,
+//                                  children: [
+//                                    new Text('3',
+//                                        style: new TextStyle(
+//                                            fontSize: Theme
+//                                                .of(context)
+//                                                .primaryTextTheme
+//                                                .title
+//                                                .fontSize,
+//                                            color: AppColors.primary)),
+//                                    new Text('我的卡券'),
+//                                  ],
+//                                ),
+//                                new Text('张')
+//                              ],
+//                            ),
+//                          ),
+//                        ),
+//                      ),
+//                    ],
+//                  ),
+//                ),
               ],
             ),
           ),
@@ -262,6 +274,7 @@ class _UserCenter extends State<UserCenter> {
               height: 50.0,
               padding: const EdgeInsets.only(left: 10.0, right: 10.0),
               decoration: new BoxDecoration(
+                color: Colors.white,
                 border: new Border.all(
                     width: 1.0, color: Theme.of(context).dividerColor),
               ),

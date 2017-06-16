@@ -128,15 +128,16 @@ class _ApproveState extends State<Approve> {
     }
 
     return new Scaffold(
-//      appBar: new AppBar(
+      appBar: new AppBar(
 //        title: const Text('认证'),
-//        centerTitle: true,
-//        elevation: 0.0,
-//      ),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
       body: new ListView(
         children: [
           new Container(
-            height: 200.0,
+//            height: 200.0,
+          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
             color: Theme.of(context).primaryColor,
             child: new Center(
               child: new Container(
@@ -156,12 +157,12 @@ class _ApproveState extends State<Approve> {
                     new RichText(
                       text: new TextSpan(
                         text: '',
-                        style: DefaultTextStyle.of(context).style,
                         children: [
 //                          new TextSpan(text: '5000', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0,color: Colors.white),
                           new TextSpan(
                               text: '5000',
-                              style: Theme.of(context).primaryTextTheme.title),
+                              style: Theme.of(context).primaryTextTheme.title
+                          ),
                           new TextSpan(text: ' .00'),
                         ],
                       ),
