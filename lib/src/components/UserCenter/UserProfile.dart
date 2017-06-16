@@ -9,6 +9,7 @@ import 'package:release_app/src/comm/commBottomModel.dart';
  * Created by zgx on 2017/6/9.
  * 个人资料
  */
+
 class UserProfile extends StatefulWidget {
   UserProfile({Key key}) : super(key: key);
 
@@ -320,6 +321,8 @@ class UpdateUserProfile extends StatefulWidget {
 
 class _UpdateUserProfileState extends State<UpdateUserProfile>
     with SingleTickerProviderStateMixin {
+  final DatabaseReference _rootRef = FirebaseDatabase.instance.reference();
+
   double _kAppBarHeight = 150.0;
   List<String> _allPages = ['个人信息', '职业信息', '社会关系'];
   TabController _tabController;
@@ -327,16 +330,50 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
     new TextEditingController(),
   ];
 
+  bool _init = false;
+
   bool _saveNeeded = false;
   String _education = '';
   String _marriage = '';
   String _childencount = '';
   String _livetime = '';
+  String _job = '';
+  String _monIncome = '';
+  String _city = '';
+  String _kindtype1 = '';
+  String _kindtype2 = '';
+
+  List<DialogItemValue> _educations = [];
+  List<DialogItemValue> _marriages = [];
+  List<DialogItemValue> _childencounts = [];
+  List<DialogItemValue> _livetimes = [];
+  List<DialogItemValue> _jobs = [];
+  List<DialogItemValue> _monIncomes = [];
+  List<DialogItemValue> _cities = [];
+  List<DialogItemValue> _kindtypes = [];
+
+  String userid;
 
   @override
   void initState() {
     super.initState();
     _tabController = new TabController(length: _allPages.length, vsync: this);
+
+    _educations.add(new DialogItemValue('01', '小学'));
+    _educations.add(new DialogItemValue('02', '初中'));
+    _educations.add(new DialogItemValue('03', '高中'));
+    _educations.add(new DialogItemValue('04', '大学'));
+
+    _marriages.add(new DialogItemValue('01', '未婚'));
+    _marriages.add(new DialogItemValue('02', '已婚'));
+    _marriages.add(new DialogItemValue('03', '离异'));
+
+    _childencounts.add(new DialogItemValue('00', '0个'));
+    _childencounts.add(new DialogItemValue('01', '1个'));
+    _childencounts.add(new DialogItemValue('02', '2个'));
+    _childencounts.add(new DialogItemValue('03', '2个以上'));
+
+    _initBottomModelValues();
   }
 
   /**
@@ -346,7 +383,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
       String label, String hintText, TextInputType inputType, int i) {
     return new Container(
       color: Colors.white,
-        padding: const EdgeInsets.only(left: 16.0),
+      padding: const EdgeInsets.only(left: 16.0),
       child: new Row(
         children: <Widget>[
           new Expanded(
@@ -385,16 +422,31 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
           _saveNeeded = true;
           switch (index) {
             case 0:
-              _education = item.key;
+              _education = item.text;
               break;
             case 1:
-              _marriage = item.key;
+              _marriage = item.text;
               break;
             case 2:
-              _childencount = item.key;
+              _childencount = item.text;
               break;
             case 3:
-              _livetime = item.key;
+              _livetime = item.text;
+              break;
+            case 4:
+              _job = item.text;
+              break;
+            case 5:
+              _monIncome = item.text;
+              break;
+            case 6:
+              _city = item.text;
+              break;
+            case 7:
+              _kindtype1 = item.text;
+              break;
+            case 8:
+              _kindtype2 = item.text;
               break;
           }
         }
@@ -402,17 +454,20 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
     });
   }
 
-  Widget _dropdownInputItem(String label, int index) {
+  Widget _dropdownInputItem(
+      String label, int index, List<DialogItemValue> values) {
     return new InkWell(
       onTap: () {
         showDemoDialog<String>(
           context: context,
           index: index,
-          child: index == 0
-              ? new BottomModelDiolog(title: label)
-              : index == 1
-              ? new MarriageDiolog()
-              : index == 2 ? new ChildenDiolog() : new LivetimeDiolog(),
+          child: new BottomModelDiolog(
+            title: label,
+            values: values,
+          ),
+//              : index == 1
+//                  ? new MarriageDiolog()
+//                  : index == 2 ? new ChildenDiolog() : new LivetimeDiolog(),
         );
       },
       child: new Container(
@@ -426,7 +481,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
               flex: 1,
               child: new Container(
                 alignment: FractionalOffset.centerLeft,
-                  padding: const EdgeInsets.only(right: 16.0),
+                padding: const EdgeInsets.only(right: 16.0),
                 child: new Text(label),
               ),
             ),
@@ -435,10 +490,22 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
               child: index == 0
                   ? new Text(_education)
                   : index == 1
-                  ? new Text(_marriage)
-                  : index == 2
-                  ? new Text(_childencount)
-                  : index == 3 ? new Text(_livetime) : null,
+                      ? new Text(_marriage)
+                      : index == 2
+                          ? new Text(_childencount)
+                          : index == 3
+                              ? new Text(_livetime)
+                              : index == 4
+                                  ? new Text(_job)
+                                  : index == 5
+                                      ? new Text(_monIncome)
+                                      : index == 6
+                                          ? new Text(_city)
+                                          : index == 7
+                                              ? new Text(_kindtype1)
+                                              : index == 8
+                                                  ? new Text(_kindtype2)
+                                                  : null,
             ),
             new Expanded(
               flex: 1,
@@ -469,24 +536,36 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
         child: new ListView(
 //          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           children: <Widget>[
-            new Column(
-                children: <Widget>[
-                  _textInputItem('QQ:', '请输入QQ号码', TextInputType.number, 0),
-                  new Divider(height: 1.0, indent: 16.0,),
-                  _textInputItem('电子邮箱:', '请输入电子邮箱', TextInputType.text, 0),
-                  new SizedBox(height: 16.0,),
-                  _dropdownInputItem('学历:', 0),
-                  new SizedBox(height: 16.0,),
-                  _dropdownInputItem('婚姻:', 1),
-                  new Divider(height: 1.0, indent: 16.0,),
-                  _dropdownInputItem('子女个数:', 2),
-                  new SizedBox(height: 16.0,),
-                  _textInputItem('居住地址:', '', TextInputType.text, 0),
-                  new Divider(height: 1.0, indent: 16.0,),
-                  _dropdownInputItem('居住时长:', 3),
-                ]
+            new Column(children: <Widget>[
+              _textInputItem('QQ:', '请输入QQ号码', TextInputType.number, 0),
+              new Divider(
+                height: 1.0,
+                indent: 16.0,
               ),
-
+              _textInputItem('电子邮箱:', '请输入电子邮箱', TextInputType.text, 0),
+              new SizedBox(
+                height: 16.0,
+              ),
+              _dropdownInputItem('学历:', 0, _educations),
+              new SizedBox(
+                height: 16.0,
+              ),
+              _dropdownInputItem('婚姻:', 1, _marriages),
+              new Divider(
+                height: 1.0,
+                indent: 16.0,
+              ),
+              _dropdownInputItem('子女个数:', 2, _childencounts),
+              new SizedBox(
+                height: 16.0,
+              ),
+              _textInputItem('居住地址:', '', TextInputType.text, 0),
+              new Divider(
+                height: 1.0,
+                indent: 16.0,
+              ),
+              _dropdownInputItem('居住时长:', 3, _marriages),
+            ]),
             new Container(
               margin: const EdgeInsets.only(top: 16.0),
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -516,11 +595,11 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
             new SingleChildScrollView(
               child: new Column(
                 children: <Widget>[
-                  _dropdownInputItem('职业:', 0),
-                  _dropdownInputItem('薪水范围:', 1),
+                  _dropdownInputItem('职业:', 4, _jobs),
+                  _dropdownInputItem('薪水范围:', 5, _monIncomes),
                   _textInputItem('公司名称:', '', TextInputType.text, 0),
                   _textInputItem('电子邮箱:', '请输入电子邮箱', TextInputType.text, 0),
-                  _dropdownInputItem('所在省市:', 2),
+                  _dropdownInputItem('所在省市:', 6, _cities),
                   _textInputItem('详细地址:', '', TextInputType.text, 0),
                   _textInputItem('单位电话:', '', TextInputType.phone, 0),
                 ],
@@ -563,9 +642,9 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
             new SingleChildScrollView(
               child: new Column(
                 children: <Widget>[
-                  _dropdownInputItem('亲属关系:', 0),
+                  _dropdownInputItem('亲属关系:', 7, _kindtypes),
                   _textInputItem('联系方式:', '', TextInputType.phone, 0),
-                  _dropdownInputItem('亲属关系:', 0),
+                  _dropdownInputItem('亲属关系:', 8, _kindtypes),
                   _textInputItem('联系方式:', '', TextInputType.phone, 0),
                 ],
               ),
@@ -608,7 +687,9 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
                 bottom: new TabBar(
                   controller: _tabController,
                   tabs: _allPages
-                      .map((String label) => new Tab(text: label,))
+                      .map((String label) => new Tab(
+                            text: label,
+                          ))
                       .toList(),
                 ),
                 flexibleSpace: new LayoutBuilder(
@@ -647,13 +728,17 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
               ),
             ];
           },
-          body: new TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              _personInfoPage(),
-              _jobInfoPage(),
-              _contactInfoPage(),
-            ],
+          body: !_init
+              ? new Center(
+                  child: new CupertinoActivityIndicator(),
+                )
+              : new TabBarView(
+                  controller: _tabController,
+                  children: <Widget>[
+                    _personInfoPage(),
+                    _jobInfoPage(),
+                    _contactInfoPage(),
+                  ],
 //            children: _allPages.keys.map((_Page page) {
 //              return new ListView(
 //                padding:
@@ -667,9 +752,73 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
 //                }).toList(),
 //              );
 //            }).toList(),
-          ),
+                ),
         ),
       ),
     );
+  }
+
+  _initBottomModelValues() async {
+    if (userid == null) {
+      await Firebaseui.currentUser.then((user) {
+        userid = user.uid;
+      });
+    }
+
+    _rootRef.child('person_info/${userid}').once().then((info) {
+      Map<String, dynamic> infos = info.value;
+      if (infos != null) {
+        setState(() {
+          print('已初始化：' + _init.toString());
+          _education = infos['education'];
+          _marriage = infos['marriage'];
+          _education = infos['education'];
+          _childencount = infos['childCount'];
+          _livetime = infos['livetime'];
+          _job = infos['job']['job'];
+          _city = infos['job']['cities'];
+          _kindtype1 = infos['contacts']['contact1']['type'];
+          _kindtype2 = infos['contacts']['contact2']['type'];
+          _init = true;
+          print('已初始化：' + _init.toString());
+        });
+      }
+    });
+
+    _rootRef.child('comm/jobname').once().then((valus) {
+      if (valus.value != null) {
+        Map<String, String> jobs = valus.value;
+        jobs.forEach((key, value) {
+          _jobs.add(new DialogItemValue(key, value));
+        });
+      }
+    });
+
+    _rootRef.child('comm/kind_type').once().then((valus) {
+      if (valus.value != null) {
+        Map<String, String> jobs = valus.value;
+        jobs.forEach((key, value) {
+          _kindtypes.add(new DialogItemValue(key, value));
+        });
+      }
+    });
+
+    _rootRef.child('comm/citis').once().then((valus) {
+      if (valus.value != null) {
+        Map<String, String> jobs = valus.value;
+        jobs.forEach((key, value) {
+          _cities.add(new DialogItemValue(key, value));
+        });
+      }
+    });
+
+    _rootRef.child('comm/income').once().then((valus) {
+      if (valus.value != null) {
+        Map<String, String> jobs = valus.value;
+        jobs.forEach((key, value) {
+          _monIncomes.add(new DialogItemValue(key, value));
+        });
+      }
+    });
   }
 }
