@@ -374,27 +374,27 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
   }
 
   void showDemoDialog<T>({BuildContext context, int index, Widget child}) {
-    showDialog<String>(
+    showDialog<DialogItemValue>(
       context: context,
       child: child,
-    ).then<Null>((String value) {
+    ).then<Null>((DialogItemValue item) {
       // The value passed to Navigator.pop() or null.
 //        print('序号:' + index.toString() + '返回数据:' + value);
       setState(() {
-        if (value != null) {
+        if (item != null) {
           _saveNeeded = true;
           switch (index) {
             case 0:
-              _education = value;
+              _education = item.key;
               break;
             case 1:
-              _marriage = value;
+              _marriage = item.key;
               break;
             case 2:
-              _childencount = value;
+              _childencount = item.key;
               break;
             case 3:
-              _livetime = value;
+              _livetime = item.key;
               break;
           }
         }
@@ -409,7 +409,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
           context: context,
           index: index,
           child: index == 0
-              ? new EduDiolog()
+              ? new BottomModelDiolog(title: label)
               : index == 1
               ? new MarriageDiolog()
               : index == 2 ? new ChildenDiolog() : new LivetimeDiolog(),

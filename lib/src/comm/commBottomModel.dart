@@ -34,44 +34,60 @@ class DialogItem extends StatelessWidget {
   }
 }
 
-//'学历'弹出对话框
-class EduDiolog extends StatelessWidget {
+class DialogItemValue {
+
+  final String key;
+  final String text;
+
+
+  DialogItemValue(this.key, this.text);
+}
+
+
+//'底部'弹出对话框
+class BottomModelDiolog extends StatelessWidget {
+  const BottomModelDiolog({Key key, this.title, this.values})
+      : super(key: key);
+
+  final String title;
+  final List<DialogItemValue> values;
   @override
   Widget build(BuildContext context) {
     return new SimpleDialog(
-      title: const Text('请选择学历'),
-      children: <Widget>[
-        new DialogItem(
-          text: '小学',
-          onPressed: () {
-            Navigator.pop(context, '小学');
-          },
-        ),
-        new DialogItem(
-          text: '初中',
-          onPressed: () {
-            Navigator.pop(context, '初中');
-          },
-        ),
-        new DialogItem(
-          text: '高中',
-          onPressed: () {
-            Navigator.pop(context, '高中');
-          },
-        ),
-        new DialogItem(
-          text: '大学',
-          onPressed: () {
-            Navigator.pop(context, '大学');
-          },
-        ),
-        new DialogItem(
-          text: '研究生及以上',
-          onPressed: () {
-            Navigator.pop(context, '研究生及以上');
-          },
-        ),
-      ],
+      title: new Text(title),
+      children: values.map((value)=> new DialogItem(text: value.text, onPressed: (){Navigator.pop(context, value);},)).toList(),
+//      children: <Widget>[
+//        new DialogItem(
+//          text: '小学',
+//          onPressed: () {
+//            Navigator.pop(context, '小学');
+//          },
+//        ),
+//        new DialogItem(
+//          text: '初中',
+//          onPressed: () {
+//            Navigator.pop(context, '初中');
+//          },
+//        ),
+//        new DialogItem(
+//          text: '高中',
+//          onPressed: () {
+//            Navigator.pop(context, '高中');
+//          },
+//        ),
+//        new DialogItem(
+//          text: '大学',
+//          onPressed: () {
+//            Navigator.pop(context, '大学');
+//          },
+//        ),
+//        new DialogItem(
+//          text: '研究生及以上',
+//          onPressed: () {
+//            Navigator.pop(context, '研究生及以上');
+//          },
+//        ),
+//      ],
     );
   }
 }

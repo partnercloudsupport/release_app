@@ -174,7 +174,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
             context: context,
             index: index,
             child: index == 0
-                ? new EduDiolog()
+                ? new BottomModelDiolog()
                 : index == 1
                     ? new MarriageDiolog()
                     : index == 2 ? new ChildenDiolog() : new LivetimeDiolog(),
