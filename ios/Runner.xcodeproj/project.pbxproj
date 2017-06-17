@@ -186,6 +186,7 @@
 				TargetAttributes = {
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 3JKY8TH7X4;
 					};
 				};
 			};
@@ -430,6 +431,7 @@
 			buildSettings = {
 				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 3JKY8TH7X4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -443,6 +445,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.releaseApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -452,6 +455,7 @@
 			buildSettings = {
 				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 3JKY8TH7X4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -465,6 +469,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.releaseApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

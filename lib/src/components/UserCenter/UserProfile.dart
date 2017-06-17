@@ -761,6 +761,9 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
   _initBottomModelValues() async {
     if (userid == null) {
       await Firebaseui.currentUser.then((user) {
+        if(user==null){
+          return;
+        }
         userid = user.uid;
       });
     }

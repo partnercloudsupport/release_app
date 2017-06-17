@@ -223,7 +223,9 @@ class _ApproveState extends State<Approve> {
         ));
     if (o == IdentityDialogAction.save) {
       setState(() {
-        _checkStatus += 1;
+        if(_checkStatus<0){
+          _checkStatus = 0;
+        }
       });
     }
   }
@@ -239,7 +241,9 @@ class _ApproveState extends State<Approve> {
         ));
     if (reslut != null && reslut) {
       setState(() {
-        _checkStatus += 1;
+        if(_checkStatus < 1){
+          _checkStatus = 1;
+        }
       });
     }
   }
@@ -247,6 +251,9 @@ class _ApproveState extends State<Approve> {
   initCheckStatus() async {
     String uid;
     await Firebaseui.currentUser.then((user) {
+      if(user==null){
+        return;
+      }
       uid = user.uid;
     });
     _rootRef.child('person_info/${uid}/checkStatus').once().then((status) {

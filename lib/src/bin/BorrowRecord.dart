@@ -6,10 +6,11 @@ import 'package:release_app/src/comm/Colors.dart';
  * 单条借款记录显示模板
  */
 class SingleRecord extends StatelessWidget {
-  SingleRecord({this.balance, this.term, this.status, this.animationController});
-
+  SingleRecord({this.orderno, this.balance, this.term,this.termUnit, this.status, this.animationController});
+  final String orderno;
   final double balance;
   final String term;
+  final String termUnit;
   final String status;
   final AnimationController animationController;
 
@@ -37,13 +38,13 @@ class SingleRecord extends StatelessWidget {
                       children: [
                         new Container(
                           padding: const EdgeInsets.only(left: 5.0),
-                          child: new FlutterLogo(colors: AppColors.primary,),
+                          child: new FlutterLogo(colors: Colors.amber,),
                         ),
                         new Container(
-                          child: new Text('借款', style: new TextStyle(color: AppColors.primary.shade500)),
+                          child: new Text('借款', style: new TextStyle(color: Theme.of(context).primaryColor)),
                         ),
                         new Flexible(
-                            child: new Text('ABC-1234564654', style: new TextStyle(color: AppColors.primary.shade500))
+                            child: new Text('${orderno}', style: new TextStyle(color: Theme.of(context).primaryColor))
                         ),
                       ],
                     ),
@@ -54,12 +55,12 @@ class SingleRecord extends StatelessWidget {
                       children: [
                         new Container(
                           padding: const EdgeInsets.only(left: 5.0),
-                          child: new  Text('金额', style: new TextStyle(color: AppColors.primary.shade300)),
+                          child: new  Text('金额', style: new TextStyle(color: Theme.of(context).primaryColor)),
                         ),
-                        new Text('期限', style: new TextStyle(color: AppColors.primary.shade300)),
+                        new Text('期限', style: new TextStyle(color: Theme.of(context).primaryColor)),
                         new Container(
                           padding: const EdgeInsets.all(5.0),
-                          child: new Text('状态',style: new TextStyle(color: AppColors.primary.shade300)),
+                          child: new Text('状态',style: new TextStyle(color: Theme.of(context).primaryColor)),
                         ),
                       ],
                     ),
@@ -70,12 +71,12 @@ class SingleRecord extends StatelessWidget {
                       children: [
                         new Container(
                           padding: const EdgeInsets.only(left: 5.0),
-                          child: new Text(balance.toString()+'元',style: new TextStyle(color: AppColors.primary.shade500)),
+                          child: new Text(balance.toString()+'元',style: new TextStyle(color: Theme.of(context).primaryColor)),
                         ),
-                        new Text(term,style: new TextStyle(color: AppColors.primary.shade500)),
+                        new Text('${term} ${termUnit}',style: new TextStyle(color: Theme.of(context).primaryColor)),
                         new Container(
                           padding: const EdgeInsets.all(5.0),
-                          child: new Text(status,style: new TextStyle(color: AppColors.primary.shade500)),
+                          child: new Text(status,style: new TextStyle(color: Theme.of(context).primaryColor)),
                         ),
                       ],
                     ),
