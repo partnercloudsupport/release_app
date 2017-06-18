@@ -342,13 +342,28 @@ class _UserCenter extends State<UserCenter> {
         setState(() {
           _uiuser = user;
           _islogin = true;
-          if (user.providerData.length > 1) {
-            _userName = user.providerData[1].displayName;
-            _photoUrl = user.providerData[1].photoUrl;
-          } else {
-            _userName = user.displayName;
-            _photoUrl = user.photoUrl;
-          }
+          user.providerData.forEach((u){
+            if(u.providerId=='phone'){
+              print('phone:${u.phoneNumber}');
+              _userName = u.phoneNumber;
+            }
+            if(u.providerId=='password'){
+              print('password:${u.uid}');
+              _userName = u.uid;
+            }
+            if(u.providerId=='google'){
+              _userName = u.displayName;
+              _photoUrl = u.photoUrl;
+            }
+          });
+
+//          if (user.providerData.length > 1) {
+//            _userName = user.providerData[1].displayName;
+//            _photoUrl = user.providerData[1].photoUrl;
+//          } else {
+//            _userName = user.displayName;
+//            _photoUrl = user.photoUrl;
+//          }
         });
       } else {
         setState(() {

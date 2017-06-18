@@ -61,6 +61,22 @@ class _ApproveState extends State<Approve> {
           }
           _verPersonInfo(context);
           break;
+        case 3:
+          print('手机认证...');
+          try {
+            Firebaseui.signinPhone.then((phone) {
+              if (phone == null) {
+                print('电话号码为null:${phone}');
+              } else {
+                print('电话号码不为null');
+              }
+            }, onError: (e) {
+              print('onError:${e}');
+            }).catchError((e){print('catchError:${e}');});
+          } catch(e){
+            print('catch:${e}');
+          }
+          break;
         default:
           share('check out my website https://example.com');
           break;
@@ -255,17 +271,18 @@ class _ApproveState extends State<Approve> {
         return;
       }
       uid = user.uid;
+      _rootRef.child('person_info/${uid}/checkStatus').once().then((status) {
+        if(!mounted){
+          return;
+        }
+        if (status.value != null) {
+          print('认证状态：${status.key} ${status.value}');
+          setState(() {
+            _checkStatus = status.value;
+          });
+        }
+      });
     });
-    _rootRef.child('person_info/${uid}/checkStatus').once().then((status) {
-      if(!mounted){
-        return;
-      }
-      if (status.value != null) {
-        print('认证状态：${status.key} ${status.value}');
-        setState(() {
-          _checkStatus = status.value;
-        });
-      }
-    });
+
   }
 }

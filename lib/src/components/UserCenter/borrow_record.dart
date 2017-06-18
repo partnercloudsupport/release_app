@@ -29,6 +29,7 @@ class _BorrowRecordState extends State<BorrowRecord>
   final List<SingleRecord> _listRecord = <SingleRecord>[];
 
   bool _firstTime = true;
+  bool _noRecord = false;
 
   @override
   void initState() {
@@ -110,6 +111,10 @@ class _BorrowRecordState extends State<BorrowRecord>
           ? new Center(
         child: new CupertinoActivityIndicator(),
       )
+          :_noRecord
+      ?new Center(
+        child: const Text('您还没有借款呢，赶紧去认证借款吧！'),
+      )
           : new RefreshIndicator(
         key: _refreshIndicatorKey,
         child: new ListView.builder(
@@ -174,6 +179,12 @@ class _BorrowRecordState extends State<BorrowRecord>
 
   void _initList(DataSnapshot snapshot) {
     if (snapshot.value == null) {
+      setState((){
+        if(_firstTime){
+          _firstTime = !_firstTime;
+        }
+        _noRecord = true;
+      });
       return;
     }
 

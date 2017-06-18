@@ -54,6 +54,7 @@ class _BorrowCashState extends State<BorrowCash> {
     ));
     _daysController = new TextEditingController(text: '0');
     _firebaseMessaging.getToken().then((token) {
+      print('消息token：${token}');
       setState(() {
         _token = token;
       });

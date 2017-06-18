@@ -257,5 +257,8 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
 //        _navigateToItemDetail(message);
       },
     );
+    _firebaseMessaging.getToken().then((token) {
+      print('消息token：${token}');
+    });
   }
 }
