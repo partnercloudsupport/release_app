@@ -20,9 +20,9 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   final TextStyle labelStyle = new TextStyle(fontSize: 16.0);
   final TextStyle highStyle =
-      new TextStyle(fontSize: 16.0, color: AppColors.primary);
+  new TextStyle(fontSize: 16.0, color: AppColors.primary);
   final TextStyle infoStyle =
-      new TextStyle(fontSize: 16.0, color: AppColors.bankCardTextCorlor);
+  new TextStyle(fontSize: 16.0, color: AppColors.bankCardTextCorlor);
   final DatabaseReference _rootRef = FirebaseDatabase.instance.reference();
   String userid;
   bool _readyIcon = false;
@@ -45,7 +45,9 @@ class _UserProfileState extends State<UserProfile> {
           new CupertinoButton(
             child: new Text(
               '修改',
-              style: new TextStyle(color: Theme.of(context).buttonColor),
+              style: new TextStyle(color: Theme
+                  .of(context)
+                  .buttonColor),
             ),
             onPressed: () {
               Navigator.of(context).push(new MaterialPageRoute<Null>(
@@ -66,7 +68,7 @@ class _UserProfileState extends State<UserProfile> {
                   new Container(
                     height: 48.0,
                     padding:
-                        const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                    const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
 //                    margin: const EdgeInsets.only(
 //                        top: 8.0, bottom: 8.0, left: 2.0, right: 2.0),
                     child: new Row(
@@ -99,7 +101,7 @@ class _UserProfileState extends State<UserProfile> {
                   new Container(
                     height: 48.0,
                     padding:
-                        const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                    const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -120,7 +122,7 @@ class _UserProfileState extends State<UserProfile> {
                   new Container(
                     height: 48.0,
                     padding:
-                        const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                    const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -141,7 +143,7 @@ class _UserProfileState extends State<UserProfile> {
                   new Container(
                     height: 48.0,
                     padding:
-                        const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                    const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -162,7 +164,7 @@ class _UserProfileState extends State<UserProfile> {
                   new Container(
                     height: 48.0,
                     padding:
-                        const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                    const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -229,14 +231,14 @@ class _UserProfileState extends State<UserProfile> {
                     children: <Widget>[
                       _readyIcon
                           ? new Image(
-                              image: bankIcon,
-                              width: 48.0,
-                              height: 48.0,
-                            )
+                        image: bankIcon,
+                        width: 48.0,
+                        height: 48.0,
+                      )
                           : const Icon(
-                              Icons.credit_card,
-                              size: 48.0,
-                            ),
+                        Icons.credit_card,
+                        size: 48.0,
+                      ),
                       new Container(
                         width: 200.0,
                         child: new Column(
@@ -284,7 +286,12 @@ class _UserProfileState extends State<UserProfile> {
         .child('bankcards')
         .once()
         .then((bank) {
-      if (bank != null) {
+      print('openBank${bank.value['openBank']==''}');
+      if (bank.value != null) {
+        if(bank.value['openBank']==null|| bank.value['cardNo']==null ||
+            bank.value['openBank']==''|| bank.value['cardNo']==''){
+          return;
+        }
         setState(() {
           _bankinfo = bank.value;
         });
@@ -295,7 +302,6 @@ class _UserProfileState extends State<UserProfile> {
             .then((bankinfos) {
           print(bankinfos.key);
           Map<String, String> bankinfo = bankinfos.value;
-
           bankIcon = new NetworkImage('${bankinfo['logo']}');
           if (mounted) {
             setState(() {
@@ -343,10 +349,10 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
   String _kindtype1 = '';
   String _kindtype2 = '';
 
-  List<DialogItemValue> _educations = [];
-  List<DialogItemValue> _marriages = [];
-  List<DialogItemValue> _childencounts = [];
-  List<DialogItemValue> _livetimes = [];
+//  List<DialogItemValue> _educations = educations;
+//  List<DialogItemValue> _marriages = marriages;
+//  List<DialogItemValue> _childencounts = childencounts;
+//  List<DialogItemValue> _livetimes = [];
   List<DialogItemValue> _jobs = [];
   List<DialogItemValue> _monIncomes = [];
   List<DialogItemValue> _cities = [];
@@ -359,28 +365,14 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
     super.initState();
     _tabController = new TabController(length: _allPages.length, vsync: this);
 
-    _educations.add(new DialogItemValue('01', '小学'));
-    _educations.add(new DialogItemValue('02', '初中'));
-    _educations.add(new DialogItemValue('03', '高中'));
-    _educations.add(new DialogItemValue('04', '大学'));
-
-    _marriages.add(new DialogItemValue('01', '未婚'));
-    _marriages.add(new DialogItemValue('02', '已婚'));
-    _marriages.add(new DialogItemValue('03', '离异'));
-
-    _childencounts.add(new DialogItemValue('00', '0个'));
-    _childencounts.add(new DialogItemValue('01', '1个'));
-    _childencounts.add(new DialogItemValue('02', '2个'));
-    _childencounts.add(new DialogItemValue('03', '2个以上'));
-
     _initBottomModelValues();
   }
 
   /**
    * 文本输入框
    */
-  Widget _textInputItem(
-      String label, String hintText, TextInputType inputType, int i) {
+  Widget _textInputItem(String label, String hintText, TextInputType inputType,
+      int i) {
     return new Container(
       color: Colors.white,
       padding: const EdgeInsets.only(left: 16.0),
@@ -454,8 +446,8 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
     });
   }
 
-  Widget _dropdownInputItem(
-      String label, int index, List<DialogItemValue> values) {
+  Widget _dropdownInputItem(String label, int index,
+      List<DialogItemValue> values) {
     return new InkWell(
       onTap: () {
         showDemoDialog<String>(
@@ -490,22 +482,22 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
               child: index == 0
                   ? new Text(_education)
                   : index == 1
-                      ? new Text(_marriage)
-                      : index == 2
-                          ? new Text(_childencount)
-                          : index == 3
-                              ? new Text(_livetime)
-                              : index == 4
-                                  ? new Text(_job)
-                                  : index == 5
-                                      ? new Text(_monIncome)
-                                      : index == 6
-                                          ? new Text(_city)
-                                          : index == 7
-                                              ? new Text(_kindtype1)
-                                              : index == 8
-                                                  ? new Text(_kindtype2)
-                                                  : null,
+                  ? new Text(_marriage)
+                  : index == 2
+                  ? new Text(_childencount)
+                  : index == 3
+                  ? new Text(_livetime)
+                  : index == 4
+                  ? new Text(_job)
+                  : index == 5
+                  ? new Text(_monIncome)
+                  : index == 6
+                  ? new Text(_city)
+                  : index == 7
+                  ? new Text(_kindtype1)
+                  : index == 8
+                  ? new Text(_kindtype2)
+                  : null,
             ),
             new Expanded(
               flex: 1,
@@ -514,7 +506,9 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
                 children: <Widget>[
                   new Icon(
                     Icons.arrow_drop_down,
-                    color: Theme.of(context).brightness == Brightness.light
+                    color: Theme
+                        .of(context)
+                        .brightness == Brightness.light
                         ? Colors.grey.shade700
                         : Colors.white70,
                   ),
@@ -546,16 +540,16 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
               new SizedBox(
                 height: 16.0,
               ),
-              _dropdownInputItem('学历:', 0, _educations),
+              _dropdownInputItem('学历:', 0, educations),
               new SizedBox(
                 height: 16.0,
               ),
-              _dropdownInputItem('婚姻:', 1, _marriages),
+              _dropdownInputItem('婚姻:', 1, marriages),
               new Divider(
                 height: 1.0,
                 indent: 16.0,
               ),
-              _dropdownInputItem('子女个数:', 2, _childencounts),
+              _dropdownInputItem('子女个数:', 2, childencounts),
               new SizedBox(
                 height: 16.0,
               ),
@@ -564,7 +558,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
                 height: 1.0,
                 indent: 16.0,
               ),
-              _dropdownInputItem('居住时长:', 3, _marriages),
+              _dropdownInputItem('居住时长:', 3, liveTimes),
             ]),
             new Container(
               margin: const EdgeInsets.only(top: 16.0),
@@ -687,41 +681,48 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
                 bottom: new TabBar(
                   controller: _tabController,
                   tabs: _allPages
-                      .map((String label) => new Tab(
-                            text: label,
-                          ))
+                      .map((String label) =>
+                  new Tab(
+                    text: label,
+                  ))
                       .toList(),
                 ),
                 flexibleSpace: new LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     final Size size = constraints.biggest;
                     final double appBarHeight =
-                        size.height - MediaQuery.of(context).padding.top;
+                        size.height - MediaQuery
+                            .of(context)
+                            .padding
+                            .top;
                     final double t = (appBarHeight - kToolbarHeight) /
                         (_kAppBarHeight - kToolbarHeight);
                     final double extraPadding =
-                        new Tween<double>(begin: 10.0, end: 24.0).lerp(t);
+                    new Tween<double>(begin: 10.0, end: 24.0).lerp(t);
                     final double logoHeight = appBarHeight - 1.5 * extraPadding;
                     return new Padding(
                       padding: new EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top +
+                        top: MediaQuery
+                            .of(context)
+                            .padding
+                            .top +
                             0.5 * extraPadding,
                         bottom: extraPadding,
                       ),
                       child: new Center(
                           child: new Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Text(
-                            '尊敬的xx',
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          new Text(
-                            '您的身份证号:130******2252',
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      )),
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              new Text(
+                                '尊敬的xx',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              new Text(
+                                '您的身份证号:130******2252',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          )),
                     );
                   },
                 ),
@@ -730,15 +731,15 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
           },
           body: !_init
               ? new Center(
-                  child: new CupertinoActivityIndicator(),
-                )
+            child: new CupertinoActivityIndicator(),
+          )
               : new TabBarView(
-                  controller: _tabController,
-                  children: <Widget>[
-                    _personInfoPage(),
-                    _jobInfoPage(),
-                    _contactInfoPage(),
-                  ],
+            controller: _tabController,
+            children: <Widget>[
+              _personInfoPage(),
+              _jobInfoPage(),
+              _contactInfoPage(),
+            ],
 //            children: _allPages.keys.map((_Page page) {
 //              return new ListView(
 //                padding:
@@ -752,7 +753,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
 //                }).toList(),
 //              );
 //            }).toList(),
-                ),
+          ),
         ),
       ),
     );
@@ -761,7 +762,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
   _initBottomModelValues() async {
     if (userid == null) {
       await Firebaseui.currentUser.then((user) {
-        if(user==null){
+        if (user == null) {
           return;
         }
         userid = user.uid;

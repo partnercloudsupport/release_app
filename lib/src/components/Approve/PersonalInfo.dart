@@ -42,6 +42,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
   List<Map<String, String>> _contacts = [];
   List<Map<String, String>> _bankcards = [];
 
+  List<DialogItemValue> _educations = educations;
+  List<DialogItemValue> _marriages = marriages;
+  List<DialogItemValue> _childencounts = childencounts;
+
   StreamSubscription _infoSubscription;
 
   static TextEditingController _qqController;
@@ -167,17 +171,13 @@ class _PersonalInfoState extends State<PersonalInfo> {
       );
     }
 
-    Widget _dropdownInputItem(String label, int index) {
+    Widget _dropdownInputItem(String label, int index, List<DialogItemValue> values) {
       return new InkWell(
         onTap: () {
           showDemoDialog<String>(
             context: context,
             index: index,
-            child: index == 0
-                ? new BottomModelDiolog()
-                : index == 1
-                    ? new MarriageDiolog()
-                    : index == 2 ? new ChildenDiolog() : new LivetimeDiolog(),
+            child: new BottomModelDiolog(title: '请选择${label}' ,values: values,)
           );
         },
         child: new Container(
@@ -338,15 +338,15 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   new Divider(height: 1.0, indent: 16.0,),
                   _textInputItem('电子邮箱', '输入电子邮箱', TextInputType.text, 1),
                   new SizedBox(height: 16.0,),
-                  _dropdownInputItem('学历', 0),
+                  _dropdownInputItem('学历', 0, educations),
                   new SizedBox(height: 16.0,),
-                  _dropdownInputItem('婚姻', 1),
+                  _dropdownInputItem('婚姻', 1, marriages),
                   new Divider(height: 1.0, indent: 16.0,),
-                  _dropdownInputItem('子女个数', 2),
+                  _dropdownInputItem('子女个数', 2, childencounts),
                   new SizedBox(height: 16.0,),
                   _textInputItem('常住地址', '请输入常住地址', TextInputType.text, 2),
                   new Divider(height: 1.0, indent: 16.0,),
-                  _dropdownInputItem('居住时长', 3),
+                  _dropdownInputItem('居住时长', 3, liveTimes),
                 ],
               ),
             ),
@@ -478,6 +478,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
           .listen((Event event) {
         setState(() {
           Map<String, dynamic> maps = event.snapshot.value;
+          print('返回数据：${maps}');
+          if(maps == null){
+            return;
+          }
           setState(() {
             print('开始setState....');
             _qqController =
@@ -491,10 +495,11 @@ class _PersonalInfoState extends State<PersonalInfo> {
             _controllers[2] = _addressController;
             print('结束setState....');
           });
-          _education = maps != null ? maps['education'] : '';
-          _livetime = maps != null ? maps['livetime'] : '';
-          _childencount = maps != null ? maps['childCount'] : '';
-          _marriage = maps != null ? maps['marriage'] : '';
+          _education = (maps != null ? maps['education']!= null ?maps['education']:'' : '');
+          _livetime = (maps != null ? maps['livetime']!= null ?maps['livetime']:''  : '');
+          _childencount = (maps != null ? maps['childCount']!= null ?maps['childCount']:''  : '');
+          _marriage = (maps != null ? maps['marriage']!= null ?maps['marriage']:''  : '');
+
           /**
            * 职业
            */

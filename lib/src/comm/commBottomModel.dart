@@ -51,11 +51,15 @@ class BottomModelDiolog extends StatelessWidget {
 
   final String title;
   final List<DialogItemValue> values;
+
   @override
   Widget build(BuildContext context) {
     return new SimpleDialog(
       title: new Text(title),
-      children: values.map((value)=> new DialogItem(text: value.text, onPressed: (){Navigator.pop(context, value);},)).toList(),
+      children: values.map((value) =>
+      new DialogItem(text: value.text, onPressed: () {
+        Navigator.pop(context, value);
+      },)).toList(),
 //      children: <Widget>[
 //        new DialogItem(
 //          text: '小学',
@@ -182,4 +186,27 @@ class LivetimeDiolog extends StatelessWidget {
   }
 }
 
+final List<DialogItemValue> educations = [
+  new DialogItemValue('01', '小学'),
+  new DialogItemValue('02', '初中'),
+  new DialogItemValue('03', '高中'),
+  new DialogItemValue('04', '大学')
+];
+
+final List<DialogItemValue> marriages = [
+  new DialogItemValue('01', '未婚'),
+  new DialogItemValue('02', '已婚'),
+  new DialogItemValue('03', '离异'),
+];
+final List<DialogItemValue> childencounts = [
+  new DialogItemValue('00', '0个'),
+  new DialogItemValue('01', '1个'),
+  new DialogItemValue('02', '2个'),
+  new DialogItemValue('03', '2个以上'),
+];
+final List<DialogItemValue> liveTimes = [
+  new DialogItemValue('01', '一个月'),
+  new DialogItemValue('02', '半年以内'),
+  new DialogItemValue('03', '一年以上'),
+];
  
