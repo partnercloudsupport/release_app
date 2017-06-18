@@ -133,25 +133,9 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
       view.controller.addListener(_rebuild);
 
     _navigationViews[_currentIndex].controller.value = 1.0;
-
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) {
-        print("onMessage: $message");
-        print(message);
-        //我的页面显示红色提醒，点击后红色消失,待添加处理
-//        _showItemDialog(message);
-      },
-      onLaunch: (Map<String, dynamic> message) {
-        print("onLaunch: $message");
-        Navigator.of(context).pushNamed('/borrowRecord');
-//        _navigateToItemDetail(message);
-      },
-      onResume: (Map<String, dynamic> message) {
-        print("onResume: $message");
-        Navigator.of(context).pushNamed('/borrowRecord');
-//        _navigateToItemDetail(message);
-      },
-    );
+    print('注册通知');
+    _initMessage;
+    print('注册通知完成');
   }
 
   @override
@@ -251,6 +235,27 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
 //      ),
       body: new Center(child: _buildTransitionsStack()),
       bottomNavigationBar: botNavBar,
+    );
+  }
+
+  _initMessage() async {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) {
+        print("onMessage: $message");
+        print(message);
+        //我的页面显示红色提醒，点击后红色消失,待添加处理
+//        _showItemDialog(message);
+      },
+      onLaunch: (Map<String, dynamic> message) {
+        print("onLaunch: $message");
+        Navigator.of(context).pushNamed('/borrowRecord');
+//        _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) {
+        print("onResume: $message");
+        Navigator.of(context).pushNamed('/borrowRecord');
+//        _navigateToItemDetail(message);
+      },
     );
   }
 }

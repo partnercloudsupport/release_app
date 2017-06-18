@@ -3,11 +3,14 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:convert';
+
+//import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter/cupertino.dart';
+
+//import 'package:http/http.dart' as http;
 import 'package:release_app/src/bin/BorrowRecord.dart';
 
 class BorrowRecord extends StatefulWidget {
@@ -24,6 +27,8 @@ class _BorrowRecordState extends State<BorrowRecord>
   new GlobalKey<RefreshIndicatorState>();
 
   final List<SingleRecord> _listRecord = <SingleRecord>[];
+
+  bool _firstTime = true;
 
   @override
   void initState() {
@@ -101,7 +106,11 @@ class _BorrowRecordState extends State<BorrowRecord>
 
     return new Scaffold(
       appBar: new AppBar(title: const Text('我的借款'), centerTitle: true),
-      body: new RefreshIndicator(
+      body: _firstTime
+          ? new Center(
+        child: new CupertinoActivityIndicator(),
+      )
+          : new RefreshIndicator(
         key: _refreshIndicatorKey,
         child: new ListView.builder(
           itemBuilder: (_, int index) => _listRecord[index],
@@ -191,6 +200,9 @@ class _BorrowRecordState extends State<BorrowRecord>
 
     for (var i = 0; i < _listRecord.length; ++i) {
       _listRecord[i].animationController.forward();
+    }
+    if(_firstTime){
+      _firstTime = !_firstTime;
     }
   }
 }
