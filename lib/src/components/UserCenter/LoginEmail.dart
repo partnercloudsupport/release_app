@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:release_app/src/comm/Colors.dart';
 
 /**
@@ -320,19 +320,19 @@ class _LoginEmailState extends State<LoginEmail> {
   }
 
   _handleGoogleSingn() async {
-    GoogleSignIn _googleSignIn = new GoogleSignIn(
-      scopes: [
-        'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
-      ],
-    );
-    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    await auth.signInWithGoogle(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    Navigator.pop(context, auth.currentUser);
+//    GoogleSignIn _googleSignIn = new GoogleSignIn(
+//      scopes: [
+//        'email',
+//        'https://www.googleapis.com/auth/contacts.readonly',
+//      ],
+//    );
+//    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+//    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+//    await auth.signInWithGoogle(
+//      accessToken: googleAuth.accessToken,
+//      idToken: googleAuth.idToken,
+//    );
+//    Navigator.pop(context, auth.currentUser);
   }
 
   String _validateEmailAddress(String value) {

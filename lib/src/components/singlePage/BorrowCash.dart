@@ -1,4 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
+
+//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -17,12 +20,17 @@ class BorrowCash extends StatefulWidget {
 
 class _BorrowCashState extends State<BorrowCash> {
   final DatabaseReference _rootRef = FirebaseDatabase.instance.reference();
+  final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+
+//  final FirebaseAuth auth = FirebaseAuth.instance;
   double _borrowBlance = 0.00;
   double _fee = 0.00;
   int _borrowDays = 7;
   int _groupDays = 7;
   bool _otherDay = false;
   String _termUnit = '天';
+
+  String _token = '';
 
   TextEditingController _daysController;
 
@@ -45,6 +53,11 @@ class _BorrowCashState extends State<BorrowCash> {
       value: '年',
     ));
     _daysController = new TextEditingController(text: '0');
+    _firebaseMessaging.getToken().then((token) {
+      setState(() {
+        _token = token;
+      });
+    });
   }
 
   /**
@@ -388,6 +401,9 @@ class _BorrowCashState extends State<BorrowCash> {
       }
       uid = user.uid;
     });
+
+//    await auth.currentUser.getToken(refresh: true).then((token){print(token);});
+
     _rootRef.child('person_info/${uid}/checkStatus').once().then((status) {
       print('返回了...');
       if (status.value != 3) {
@@ -403,7 +419,9 @@ class _BorrowCashState extends State<BorrowCash> {
           'term': '${_borrowDays}', //借款期限
           'terUnit': '${_termUnit}', //期限单位
           'fee': _fee, //费用
-          'status': '0' //状态
+          'status': '0', //状态
+          'Token': _token,
+          'timestamp': new DateTime.now().millisecondsSinceEpoch,
         }).then((value) async {
           print('已创建订单...');
           await showMessage(context, '创建订单成功！');

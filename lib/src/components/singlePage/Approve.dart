@@ -257,6 +257,9 @@ class _ApproveState extends State<Approve> {
       uid = user.uid;
     });
     _rootRef.child('person_info/${uid}/checkStatus').once().then((status) {
+      if(!mounted){
+        return;
+      }
       if (status.value != null) {
         print('认证状态：${status.key} ${status.value}');
         setState(() {

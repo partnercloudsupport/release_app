@@ -156,7 +156,7 @@ class _BorrowRecordState extends State<BorrowRecord>
       }
       uid = user.uid;
     });
-    _rootRef.child('orders/${uid}').once().then((records) {
+    _rootRef.child('orders/${uid}').orderByKey().once().then((records) {
       _initList(records);
     }).whenComplete(() {
       completer.complete(null);
@@ -169,18 +169,18 @@ class _BorrowRecordState extends State<BorrowRecord>
     }
 
     _listRecord.clear();
+    print(snapshot.value);
 
     Map<String, dynamic> recs = snapshot.value;
 
     setState(() {
       recs.forEach((key, dynamic rec) {
-        print(rec['blance']);
         _listRecord.add(new SingleRecord(
           orderno: key,
-          balance: rec['blance'],
+          balance: rec['blance'].toDouble(),
           term: rec['term'],
           termUnit: rec['terUnit'],
-          status: rec['status'],
+          status: rec['timestamp'],
           animationController: new AnimationController(
             vsync: this,
             duration: new Duration(milliseconds: 500),

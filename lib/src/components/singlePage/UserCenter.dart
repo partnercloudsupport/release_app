@@ -5,7 +5,7 @@ import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:release_app/src/comm/Colors.dart';
 import 'package:release_app/src/components/UserCenter/GiftPage.dart';
 import 'package:release_app/src/components/UserCenter/TestPage.dart';
@@ -15,7 +15,7 @@ import 'package:release_app/src/components/Usercenter/LoginEmail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
-final googleSignIn = new GoogleSignIn();
+//final googleSignIn = new GoogleSignIn();
 
 class UserCenter extends StatefulWidget {
   UserCenter({Key key}) : super(key: key);
@@ -96,7 +96,7 @@ class _UserCenter extends State<UserCenter> {
                               shape: BoxShape.circle,
                               image: new DecorationImage(
                                 image: (_photoUrl == null)
-                                    ? const AssetImage(
+                                    ? new AssetImage(
                                     'images/Google.png') //登录后可替换为头像，待完善
                                     : new NetworkImage(_photoUrl),
                               ),
@@ -487,11 +487,11 @@ class _UserCenter extends State<UserCenter> {
     }
   }
 
-  Future<Null> _handleSubmitted() async {
-    GoogleSignInAccount account = googleSignIn.currentUser;
-    if (account == null) account = await googleSignIn.signInSilently();
-    if (account == null) await googleSignIn.signIn();
-  }
+//  Future<Null> _handleSubmitted() async {
+//    GoogleSignInAccount account = googleSignIn.currentUser;
+//    if (account == null) account = await googleSignIn.signInSilently();
+//    if (account == null) await googleSignIn.signIn();
+//  }
 
   Future<bool> _saveUserInterface() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

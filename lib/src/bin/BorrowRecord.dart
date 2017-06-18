@@ -11,7 +11,7 @@ class SingleRecord extends StatelessWidget {
   final double balance;
   final String term;
   final String termUnit;
-  final String status;
+  final int status;
   final AnimationController animationController;
 
   @override
@@ -76,7 +76,7 @@ class SingleRecord extends StatelessWidget {
                         new Text('${term} ${termUnit}',style: new TextStyle(color: Theme.of(context).primaryColor)),
                         new Container(
                           padding: const EdgeInsets.all(5.0),
-                          child: new Text(status,style: new TextStyle(color: Theme.of(context).primaryColor)),
+                          child: new Text(new DateTime.fromMillisecondsSinceEpoch(status).toIso8601String(),style: new TextStyle(color: Theme.of(context).primaryColor)),
                         ),
                       ],
                     ),
