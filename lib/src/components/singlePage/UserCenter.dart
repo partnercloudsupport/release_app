@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'package:release_app/src/comm/Colors.dart';
 import 'package:release_app/src/components/UserCenter/GiftPage.dart';
+import 'package:release_app/src/components/UserCenter/HelpCenter.dart';
 import 'package:release_app/src/components/UserCenter/TestPage.dart';
 import 'package:release_app/src/components/UserCenter/UserProfile.dart';
 import 'package:release_app/src/components/singlePage/Login.dart';
@@ -470,10 +471,13 @@ class _UserCenter extends State<UserCenter> {
     }
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/borrowRecord');
+        Navigator.push(
+            context,
+            new MaterialPageRoute<Null>(
+              builder: (BuildContext context) => new HelpCenter(),
+            ));
         break;
       case 1:
-//        Navigator.pushNamed(context, '/borrowRecord');
         Navigator.push(
             context,
             new MaterialPageRoute<Null>(

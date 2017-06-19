@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebaseui/firebaseui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/components/Approve/IdentityCertificate.dart';
 import 'package:release_app/src/components/Approve/PersonalInfo.dart';
@@ -53,7 +54,9 @@ class _ApproveState extends State<Approve> {
                   actions: [
                     new FlatButton(
                       child: const Text('OK'),
-                      onPressed: (){Navigator.pop(context,null);},
+                      onPressed: () {
+                        Navigator.pop(context, null);
+                      },
                     ),
                   ],
                 ));
@@ -63,19 +66,27 @@ class _ApproveState extends State<Approve> {
           break;
         case 3:
           print('手机认证...');
-          try {
-            Firebaseui.signinPhone.then((phone) {
-              if (phone == null) {
-                print('电话号码为null:${phone}');
-              } else {
-                print('电话号码不为null');
-              }
-            }, onError: (e) {
-              print('onError:${e}');
-            }).catchError((e){print('catchError:${e}');});
-          } catch(e){
-            print('catch:${e}');
+          if (defaultTargetPlatform ==
+              TargetPlatform.android) {
+            try {
+              Firebaseui.signinPhone.then((phone) {
+                if (phone == null) {
+                  print('电话号码为null:${phone}');
+                } else {
+                  print('电话号码不为null');
+                }
+              }, onError: (e) {
+                print('onError:${e}');
+              }).catchError((e) {
+                print('catchError:${e}');
+              });
+            } catch (e) {
+              print('catch:${e}');
+            }
+          }else{
+
           }
+
           break;
         default:
           share('check out my website https://example.com');
@@ -85,7 +96,7 @@ class _ApproveState extends State<Approve> {
 
     Widget _itemLine(String lable, IconData icon, int index) {
       return new Container(
-        color: Colors.white,
+          color: Colors.white,
           height: 45.0,
           padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           child: new InkWell(
@@ -97,7 +108,9 @@ class _ApproveState extends State<Approve> {
               children: [
                 new Icon(
                   icon,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme
+                      .of(context)
+                      .primaryColor,
                 ),
                 new Container(
                   padding: const EdgeInsets.only(left: 2.0),
@@ -108,9 +121,9 @@ class _ApproveState extends State<Approve> {
                     alignment: FractionalOffset.centerRight,
                     child: _checkStatus >= index
                         ? const Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                          )
+                      Icons.check_circle,
+                      color: Colors.green,
+                    )
                         : const Icon(Icons.cancel),
                   ),
                 ),
@@ -153,8 +166,10 @@ class _ApproveState extends State<Approve> {
         children: [
           new Container(
 //            height: 200.0,
-          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-            color: Theme.of(context).primaryColor,
+            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+            color: Theme
+                .of(context)
+                .primaryColor,
             child: new Center(
               child: new Container(
                 height: 120.0,
@@ -177,7 +192,10 @@ class _ApproveState extends State<Approve> {
 //                          new TextSpan(text: '5000', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0,color: Colors.white),
                           new TextSpan(
                               text: '5000',
-                              style: Theme.of(context).primaryTextTheme.title
+                              style: Theme
+                                  .of(context)
+                                  .primaryTextTheme
+                                  .title
                           ),
                           new TextSpan(text: ' .00'),
                         ],
@@ -239,7 +257,7 @@ class _ApproveState extends State<Approve> {
         ));
     if (o == IdentityDialogAction.save) {
       setState(() {
-        if(_checkStatus<0){
+        if (_checkStatus < 0) {
           _checkStatus = 0;
         }
       });
@@ -252,12 +270,12 @@ class _ApproveState extends State<Approve> {
 
   _verPersonInfo(BuildContext context) async {
     bool reslut = await Navigator.of(context).push(new MaterialPageRoute(
-          builder: (BuildContext context) => new PersonalInfo(),
-          fullscreenDialog: true,
-        ));
+      builder: (BuildContext context) => new PersonalInfo(),
+      fullscreenDialog: true,
+    ));
     if (reslut != null && reslut) {
       setState(() {
-        if(_checkStatus < 1){
+        if (_checkStatus < 1) {
           _checkStatus = 1;
         }
       });
@@ -267,12 +285,12 @@ class _ApproveState extends State<Approve> {
   initCheckStatus() async {
     String uid;
     await Firebaseui.currentUser.then((user) {
-      if(user==null){
+      if (user == null) {
         return;
       }
       uid = user.uid;
       _rootRef.child('person_info/${uid}/checkStatus').once().then((status) {
-        if(!mounted){
+        if (!mounted) {
           return;
         }
         if (status.value != null) {
@@ -283,6 +301,5 @@ class _ApproveState extends State<Approve> {
         }
       });
     });
-
   }
 }
