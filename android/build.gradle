@@ -14,6 +14,10 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }    // Enable getting dependencies from jitpack.io.
         maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://jitpack.io" }
+        maven {                              // NEW
+           url "https://maven.google.com"   // NEW
+        }
     }
 }
 

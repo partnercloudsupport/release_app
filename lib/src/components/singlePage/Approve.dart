@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:release_app/src/components/Approve/IdentityCertificate.dart';
 import 'package:release_app/src/components/Approve/PersonalInfo.dart';
 import 'package:share/share.dart';
+import 'package:release_app/src/comm/CommBin.dart';
 
 class Approve extends StatefulWidget {
   Approve({Key key}) : super(key: key);
@@ -284,7 +285,7 @@ class _ApproveState extends State<Approve> {
 
   initCheckStatus() async {
     String uid;
-    await Firebaseui.currentUser.then((user) {
+    await getFirebaseUser().then((user){
       if (user == null) {
         return;
       }
@@ -300,6 +301,23 @@ class _ApproveState extends State<Approve> {
           });
         }
       });
-    });
+    }).catchError((error){print(error);});
+//    await Firebaseui.currentUser.then((user) {
+//      if (user == null) {
+//        return;
+//      }
+//      uid = user.uid;
+//      _rootRef.child('person_info/${uid}/checkStatus').once().then((status) {
+//        if (!mounted) {
+//          return;
+//        }
+//        if (status.value != null) {
+//          print('认证状态：${status.key} ${status.value}');
+//          setState(() {
+//            _checkStatus = status.value;
+//          });
+//        }
+//      });
+//    });
   }
 }

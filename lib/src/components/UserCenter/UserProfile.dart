@@ -3,6 +3,7 @@ import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/Colors.dart';
+import 'package:release_app/src/comm/CommBin.dart';
 import 'package:release_app/src/comm/commBottomModel.dart';
 
 /**
@@ -286,7 +287,6 @@ class _UserProfileState extends State<UserProfile> {
         .child('bankcards')
         .once()
         .then((bank) {
-      print('openBank${bank.value['openBank']==''}');
       if (bank.value != null) {
         if(bank.value['openBank']==null|| bank.value['cardNo']==null ||
             bank.value['openBank']==''|| bank.value['cardNo']==''){
@@ -761,7 +761,8 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
 
   _initBottomModelValues() async {
     if (userid == null) {
-      await Firebaseui.currentUser.then((user) {
+//      await Firebaseui.currentUser.then((user) {
+      await getFirebaseUser().then((user) {
         if (user == null) {
           return;
         }
@@ -774,15 +775,24 @@ class _UpdateUserProfileState extends State<UpdateUserProfile>
       if (infos != null) {
         setState(() {
           print('已初始化：' + _init.toString());
-          _education = infos['education'];
-          _marriage = infos['marriage'];
-          _education = infos['education'];
-          _childencount = infos['childCount'];
-          _livetime = infos['livetime'];
-          _job = infos['job']['job'];
-          _city = infos['job']['cities'];
-          _kindtype1 = infos['contacts']['contact1']['type'];
-          _kindtype2 = infos['contacts']['contact2']['type'];
+          _education = infos['education']!=null?infos['education']:'';
+          _marriage = infos['marriage']!=null?infos['marriage']:'';
+          _childencount = infos['childCount']!=null?infos['childCount']:'';
+          _livetime = infos['livetime']!=null?infos['livetime']:'';
+          if(infos['job']!=null){
+            _job = infos['job']['job'];
+            _city = infos['job']['cities'];
+          }else{
+            _job = '';
+            _city = '';
+          }
+          if (infos['contacts']!=null){
+            _kindtype1 = infos['contacts']['contact1']['type'];
+            _kindtype2 = infos['contacts']['contact2']['type'];
+          }else{
+            _kindtype1 = '';
+            _kindtype2 = '';
+          }
           _init = true;
           print('已初始化：' + _init.toString());
         });

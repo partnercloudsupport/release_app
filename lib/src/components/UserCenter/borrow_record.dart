@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 
 //import 'package:http/http.dart' as http;
 import 'package:release_app/src/bin/BorrowRecord.dart';
+import 'package:release_app/src/comm/CommBin.dart';
 
 class BorrowRecord extends StatefulWidget {
   static const String routeName = '/material/two-level-list';
@@ -164,7 +165,8 @@ class _BorrowRecordState extends State<BorrowRecord>
 //          completer.complete(null);
 //        });
     String uid;
-    await Firebaseui.currentUser.then((user) {
+//    await Firebaseui.currentUser.then((user) {
+    await getFirebaseUser().then((user) {
       if (user == null) {
         return;
       }

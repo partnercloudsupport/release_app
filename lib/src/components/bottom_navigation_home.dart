@@ -239,24 +239,25 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
   }
 
   _initMessage() async{
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) {
-        print("onMessage: $message");
-        print(message);
-        //我的页面显示红色提醒，点击后红色消失,待添加处理
-//        _showItemDialog(message);
-      },
-      onLaunch: (Map<String, dynamic> message) {
-        print("onLaunch: $message");
-        Navigator.of(context).pushNamed('/borrowRecord');
-//        _navigateToItemDetail(message);
-      },
-      onResume: (Map<String, dynamic> message) {
-        print("onResume: $message");
-        Navigator.of(context).pushNamed('/borrowRecord');
-//        _navigateToItemDetail(message);
-      },
-    );
+//    _firebaseMessaging.configure(
+//      onMessage: (Map<String, dynamic> message) {
+//        print("onMessage: $message");
+//        print(message);
+//        //我的页面显示红色提醒，点击后红色消失,待添加处理
+////        _showItemDialog(message);
+//      },
+//      onLaunch: (Map<String, dynamic> message) {
+//        print("onLaunch: $message");
+//        Navigator.of(context).pushNamed('/borrowRecord');
+////        _navigateToItemDetail(message);
+//      },
+//      onResume: (Map<String, dynamic> message) {
+//        print("onResume: $message");
+//        Navigator.of(context).pushNamed('/borrowRecord');
+////        _navigateToItemDetail(message);
+//      },
+//    );
     _firebaseMessaging.getToken();
+
   }
 }

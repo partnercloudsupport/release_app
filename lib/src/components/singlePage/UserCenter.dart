@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'package:release_app/src/comm/Colors.dart';
+import 'package:release_app/src/comm/CommBin.dart';
 import 'package:release_app/src/components/UserCenter/GiftPage.dart';
 import 'package:release_app/src/components/UserCenter/HelpCenter.dart';
 import 'package:release_app/src/components/UserCenter/TestPage.dart';
@@ -338,7 +339,8 @@ class _UserCenter extends State<UserCenter> {
 
   _initUser() async {
     try {
-      UiFirebaseUser user = await Firebaseui.currentUser;
+//      UiFirebaseUser user = await Firebaseui.currentUser;
+      UiFirebaseUser user = await getFirebaseUser();
       if (user != null) {
         setState(() {
           _uiuser = user;

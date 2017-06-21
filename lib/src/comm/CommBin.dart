@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/material.dart';
 
 /**
@@ -48,4 +50,18 @@ class BankCard {
   String cardNo = '';
 
   BankCard(this.openBank, this.opencity, this.phoneNo, this.cardNo);
+}
+
+UiFirebaseUser _user;
+
+Future<UiFirebaseUser> getFirebaseUser() async{
+  print('获取用户');
+  if(_user==null){
+     await Firebaseui.currentUser.then((user){
+       if(user!=null){
+         _user = user;
+       }
+     }).catchError((e){print('获取用户出错了${e}');});
+  }
+  return _user;
 }

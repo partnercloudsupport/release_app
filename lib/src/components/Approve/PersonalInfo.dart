@@ -465,9 +465,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   //新起一个线程获取登录用户认证信息
   initValiable() async {
-    await Firebaseui.currentUser.then((user) {
+//    await Firebaseui.currentUser.then((user) {
+    await getFirebaseUser().then((user) {
       if(user==null){
-
         return;
       }
       _userid = user.uid;
