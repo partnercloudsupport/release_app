@@ -1,12 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebaseui/firebaseui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:release_app/src/comm/Colors.dart';
+import 'package:release_app/src/comm/CommBin.dart';
 import 'package:release_app/src/components/singlePage/Approve.dart';
 
 /**
@@ -396,7 +396,8 @@ class _BorrowCashState extends State<BorrowCash> {
       return;
     }
     String uid;
-    await Firebaseui.currentUser.then((user) {
+//    await Firebaseui.currentUser.then((user) {
+    await getFirebaseUser().then((user) {
       if (user == null) {
         return;
       }

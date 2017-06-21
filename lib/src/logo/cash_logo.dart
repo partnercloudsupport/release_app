@@ -327,7 +327,6 @@ class _FlutterLogoPainter extends BoxPainter {
       ..moveTo(79.5, 170.7)
       ..lineTo(100.4, 191.6)
       ..lineTo(156.2, 191.6)
-      ..lineTo(156.2, 191.6)
       ..lineTo(107.4, 142.8);
     canvas.drawPath(bottomBeam, darkPaint);
 

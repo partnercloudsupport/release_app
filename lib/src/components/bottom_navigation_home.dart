@@ -10,6 +10,7 @@ import 'package:release_app/src/components/singlePage/BorrowCash.dart';
 import 'package:release_app/src/components/singlePage/BorrowHome.dart';
 import 'package:release_app/src/components/singlePage/UserCenter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:release_app/src/comm/CommBin.dart';
 
 class NavigationIconView {
   NavigationIconView({
@@ -100,7 +101,6 @@ class BottomNavigationHome extends StatefulWidget {
 
 class _BottomNavigationHomeState extends State<BottomNavigationHome>
     with TickerProviderStateMixin {
-  final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   int _currentIndex = 0;
   BottomNavigationBarType _type = BottomNavigationBarType.fixed;
   List<NavigationIconView> _navigationViews;
@@ -134,7 +134,7 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
 
     _navigationViews[_currentIndex].controller.value = 1.0;
     print('注册通知');
-    _initMessage();
+    configMessage(context);
     print('注册通知完成');
   }
 
@@ -239,25 +239,24 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
   }
 
   _initMessage() async{
-//    _firebaseMessaging.configure(
-//      onMessage: (Map<String, dynamic> message) {
-//        print("onMessage: $message");
-//        print(message);
-//        //我的页面显示红色提醒，点击后红色消失,待添加处理
-////        _showItemDialog(message);
-//      },
-//      onLaunch: (Map<String, dynamic> message) {
-//        print("onLaunch: $message");
-//        Navigator.of(context).pushNamed('/borrowRecord');
-////        _navigateToItemDetail(message);
-//      },
-//      onResume: (Map<String, dynamic> message) {
-//        print("onResume: $message");
-//        Navigator.of(context).pushNamed('/borrowRecord');
-////        _navigateToItemDetail(message);
-//      },
-//    );
-    _firebaseMessaging.getToken();
-
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) {
+        print("onMessage: $message");
+        print(message);
+        //我的页面显示红色提醒，点击后红色消失,待添加处理
+//        _showItemDialog(message);
+      },
+      onLaunch: (Map<String, dynamic> message) {
+        print("onLaunch: $message");
+        Navigator.of(context).pushNamed('/borrowRecord');
+//        _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) {
+        print("onResume: $message");
+        Navigator.of(context).pushNamed('/borrowRecord');
+//        _navigateToItemDetail(message);
+      },
+    );
+//    firebaseMessaging.getToken();
   }
 }

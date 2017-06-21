@@ -79,14 +79,17 @@ class _BorrowHomeState extends State<BorrowHome> {
                 new Container(
                   decoration: new BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.primary,
+//                    color: AppColors.primary,
                   ),
                     alignment: FractionalOffset.center,
-                  child: new Icon(
-                    Icons.attach_money,
+                  child: new CashLogo(
                     size: 150.0,
-                    color: AppColors.primary.shade100,
                   ),
+//                  child: new Icon(
+//                    Icons.attach_money,
+//                    size: 150.0,
+//                    color: AppColors.primary.shade100,
+//                  ),
                 ),
                 new Container(
 //                decoration: defaultTargetPlatform == TargetPlatform.iOS

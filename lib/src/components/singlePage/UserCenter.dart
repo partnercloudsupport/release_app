@@ -345,6 +345,7 @@ class _UserCenter extends State<UserCenter> {
         setState(() {
           _uiuser = user;
           _islogin = true;
+          print('登录用户信息: ${user}');
           user.providerData.forEach((u){
             if(u.providerId=='phone'){
               print('phone:${u.phoneNumber}');
@@ -440,7 +441,7 @@ class _UserCenter extends State<UserCenter> {
   _handleClick(BuildContext context, int index) async {
 //    await Firebaseui.signinstatus;
 //    if(!await Firebaseui.signinstatus){
-    if (_uiuser == null) {
+    if (_uiuser == null && index > 0) {
       showDialog(
         context: context,
         child: defaultTargetPlatform == TargetPlatform.iOS
@@ -526,10 +527,14 @@ class _UserCenter extends State<UserCenter> {
 
   _signout() async {
 //    await Firebaseui.signout;
+    await saveToken(false);
     await auth.signOut();
     setState(() {
       _uiuser = null;
       _islogin = false;
     });
+    print('开始清理....');
+    clearUser();
+    print('退出完成....');
   }
 }

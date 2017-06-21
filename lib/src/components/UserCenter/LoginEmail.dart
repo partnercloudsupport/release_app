@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'package:release_app/src/comm/Colors.dart';
+import 'package:release_app/src/comm/CommBin.dart';
 
 /**
  * Created by zgx on 2017/5/24.
@@ -80,6 +81,7 @@ class _LoginEmailState extends State<LoginEmail> {
               setState(() {
                 _isLogining = false;
               });
+              saveToken(true);
               return auth.currentUser != null;
             }, onError: (e) {
               print(e.message);
