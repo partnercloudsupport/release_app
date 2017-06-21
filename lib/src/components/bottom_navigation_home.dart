@@ -134,7 +134,7 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
 
     _navigationViews[_currentIndex].controller.value = 1.0;
     print('注册通知');
-    _initMessage;
+    _initMessage();
     print('注册通知完成');
   }
 
@@ -238,7 +238,7 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
     );
   }
 
-  _initMessage() async {
+  _initMessage() async{
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
         print("onMessage: $message");
@@ -257,8 +257,6 @@ class _BottomNavigationHomeState extends State<BottomNavigationHome>
 //        _navigateToItemDetail(message);
       },
     );
-    _firebaseMessaging.getToken().then((token) {
-      print('消息token：${token}');
-    });
+    _firebaseMessaging.getToken();
   }
 }
