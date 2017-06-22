@@ -352,8 +352,8 @@ class _UserCenter extends State<UserCenter> {
               _userName = u.phoneNumber;
             }
             if(u.providerId=='password'){
-              print('password:${u.uid}');
-              _userName = u.uid;
+              print('password:${u.displayName}');
+              _userName = u.displayName;
             }
             if(u.providerId=='google'){
               _userName = u.displayName;
@@ -420,7 +420,6 @@ class _UserCenter extends State<UserCenter> {
 //      print(e.message);
 //    }
   }
-
   _dosave(user) async {
     setState(() {
       _uiuser = user;
@@ -441,7 +440,7 @@ class _UserCenter extends State<UserCenter> {
   _handleClick(BuildContext context, int index) async {
 //    await Firebaseui.signinstatus;
 //    if(!await Firebaseui.signinstatus){
-    if (_uiuser == null && index > 0) {
+    if (_uiuser == null && index > 0 && index!= 3) {
       showDialog(
         context: context,
         child: defaultTargetPlatform == TargetPlatform.iOS

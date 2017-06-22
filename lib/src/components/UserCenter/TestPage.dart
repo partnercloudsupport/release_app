@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-
 /**
  * Created by zgx on 2017/6/16.
  */
- class TestPage extends StatefulWidget {
+class TestPage extends StatefulWidget {
   TestPage({Key key}) : super(key: key);
 
   @override
@@ -18,11 +17,10 @@ class _TestPageState extends State<TestPage> {
 
   bool _init = true;
 
-
   @override
   void initState() {
     super.initState();
-    print('ini前:'+ _init.toString());
+    print('ini前:' + _init.toString());
     _initvar();
   }
 
@@ -33,25 +31,46 @@ class _TestPageState extends State<TestPage> {
         title: const Text('测试'),
       ),
       body: new Center(
-        child: _init?new RaisedButton(
-          onPressed: (){
-            print(_init.toString());
-            setState((){_init=!_init;});
-            },
-          child: const Text('测试'),
-        ):new RaisedButton(
-          onPressed: (){print(_init.toString());setState((){_init=!_init;});},
-          child: const Text('测试1'),
-        ),
-      ),
+          child: _init
+              ? new RaisedButton(
+                  onPressed: () {
+                    print(_init.toString());
+                    setState(() {
+                      _init = !_init;
+                    });
+                  },
+                  child: const Text('测试'),
+                )
+              : new Container(
+                  child: new Stack(
+                    alignment: FractionalOffset.topRight,
+                    children: <Widget>[
+                      new RaisedButton(
+                        onPressed: () {
+                          print(_init.toString());
+                          setState(() {
+                            _init = !_init;
+                          });
+                        },
+                        child: const Text('测试1'),
+                      ),
+                      new Container(
+                        padding: const EdgeInsets.all(3.0),
+                        child: new CircleAvatar(
+                          backgroundColor: Colors.red,
+                          radius: 10.0,
+                          child: const Text('3', style: const TextStyle(fontSize: 13.0),),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
     );
   }
 
-  _initvar()async {
+  _initvar() async {
     await startTimeout(3);
   }
-
-
 
   startTimeout([int milliseconds]) {
     var duration = milliseconds == null ? TIMEOUT : ms * milliseconds;
@@ -59,8 +78,9 @@ class _TestPageState extends State<TestPage> {
   }
 
   void handleTimeout() {
-    setState((){_init=!_init; print('ini后:'+ _init.toString());});
+    setState(() {
+      _init = !_init;
+      print('ini后:' + _init.toString());
+    });
   }
 }
-
- 

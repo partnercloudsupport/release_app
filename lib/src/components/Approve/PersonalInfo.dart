@@ -336,7 +336,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 children: <Widget>[
                   _textInputItem('QQ', '请输入QQ号码', TextInputType.number, 0),
                   new Divider(height: 1.0, indent: 16.0,),
-                  _textInputItem('电子邮箱', '输入电子邮箱', TextInputType.text, 1),
+                  _textInputItem('电子邮箱', '输入电子邮箱', TextInputType.emailAddress, 1),
                   new SizedBox(height: 16.0,),
                   _dropdownInputItem('学历', 0, educations),
                   new SizedBox(height: 16.0,),

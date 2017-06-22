@@ -135,7 +135,7 @@ class _LoginEmailState extends State<LoginEmail> {
                     hintText: '请输入邮箱地址',
                     labelText: '邮箱地址',
                   ),
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.emailAddress,
 //                  onSaved: (String value) {
 //                    //form.save时才会调用
 //                    user.phoneno = value;
