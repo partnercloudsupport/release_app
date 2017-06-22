@@ -335,7 +335,7 @@ class _BorrowCashState extends State<BorrowCash> {
                           const Text('单位'),
                           new SizedBox(width: 16.0,),
                           new DropdownButton(
-                              value: '天',
+                              value: '${_termUnit}',
                               items: _termUnitMenu,
                               onChanged: (term) {
                                 setState(() {
