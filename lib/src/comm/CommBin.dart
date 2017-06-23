@@ -75,7 +75,7 @@ final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
  * 保存推送token的状态,退出登录后将不会收到推送的消息
  */
 saveToken(bool islogin) async{
-  String token = await firebaseMessaging.getToken();
+  String token = await firebaseMessaging.getToken().catchError((e){print(e);});
   if(token==null){
     return;
   }
@@ -103,23 +103,23 @@ clearUser() {
 
 configMessage(context) async{
   print('注册通知');
-//  firebaseMessaging.configure(
-//    onMessage: (Map<String, dynamic> message) {
-//      print("onMessage: $message");
-//      print(message);
-//      //我的页面显示红色提醒，点击后红色消失,待添加处理
-////        _showItemDialog(message);
-//    },
-//    onLaunch: (Map<String, dynamic> message) {
-//      print("onLaunch: $message");
-//      Navigator.of(context).pushNamed('/borrowRecord');
-////        _navigateToItemDetail(message);
-//    },
-//    onResume: (Map<String, dynamic> message) {
-//      print("onResume: $message");
-//      Navigator.of(context).pushNamed('/borrowRecord');
-////        _navigateToItemDetail(message);
-//    },
-//  );
+  firebaseMessaging.configure(
+    onMessage: (Map<String, dynamic> message) {
+      print("onMessage: $message");
+      print(message);
+      //我的页面显示红色提醒，点击后红色消失,待添加处理
+//        _showItemDialog(message);
+    },
+    onLaunch: (Map<String, dynamic> message) {
+      print("onLaunch: $message");
+      Navigator.of(context).pushNamed('/borrowRecord');
+//        _navigateToItemDetail(message);
+    },
+    onResume: (Map<String, dynamic> message) {
+      print("onResume: $message");
+      Navigator.of(context).pushNamed('/borrowRecord');
+//        _navigateToItemDetail(message);
+    },
+  );
   firebaseMessaging.getToken().then((token){print(token);});
 }

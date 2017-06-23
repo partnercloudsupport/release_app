@@ -116,10 +116,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
     final ThemeData theme = Theme.of(context);
 
     void showDemoDialog<T>({BuildContext context, int index, Widget child}) {
-      showDialog<String>(
+      showDialog<DialogItemValue>(
         context: context,
         child: child,
-      ).then<Null>((String value) {
+      ).then<Null>((DialogItemValue value) {
         // The value passed to Navigator.pop() or null.
 //        print('序号:' + index.toString() + '返回数据:' + value);
         setState(() {
@@ -127,16 +127,16 @@ class _PersonalInfoState extends State<PersonalInfo> {
             _saveNeeded = true;
             switch (index) {
               case 0:
-                _education = value;
+                _education = value.text;
                 break;
               case 1:
-                _marriage = value;
+                _marriage = value.text;
                 break;
               case 2:
-                _childencount = value;
+                _childencount = value.text;
                 break;
               case 3:
-                _livetime = value;
+                _livetime = value.text;
                 break;
             }
           }

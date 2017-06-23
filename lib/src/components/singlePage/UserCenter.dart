@@ -532,8 +532,6 @@ class _UserCenter extends State<UserCenter> {
       _uiuser = null;
       _islogin = false;
     });
-    print('开始清理....');
     clearUser();
-    print('退出完成....');
   }
 }

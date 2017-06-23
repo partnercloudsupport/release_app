@@ -30,7 +30,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.yiyisandra.release_app"
+        applicationId "com.yiyisandra.release_app1"
         multiDexEnabled true
     }
 
