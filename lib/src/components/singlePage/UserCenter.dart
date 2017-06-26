@@ -383,36 +383,53 @@ class _UserCenter extends State<UserCenter> {
   }
 
   Future<Null> _doLogin() async {
-    await Navigator
-        .push(
-            context,
-            new MaterialPageRoute<FirebaseUser>(
-              builder: (BuildContext context) => new LoginEmail(),
-//              fullscreenDialog: false,
-            ))
-        .then((user) {
-      if (user != null) {
-        _initUser();
-        print(user);
-//        if (user != null) {
-//          setState(() {
-//            _uiuser = user;
-//            _islogin = true;
-//            if (user.providerData.length > 1) {
-//              _userName = user.providerData[1].displayName;
-//              _photoUrl = user.providerData[1].photoUrl;
-//            } else {
-//              _userName = user.displayName;
-//              _photoUrl = user.photoUrl;
-//            }
-//          });
-//        } else {
-//          setState(() {
-//            _islogin = false;
-//          });
-//        }
-      }
-    });
+    try {
+      Firebaseui.signinPhone.then((phone) {
+        if (phone == null) {
+          print('电话号码为null:${phone}');
+        } else {
+          print('电话号码不为null');
+          _initUser();
+          saveToken(true);
+        }
+      }, onError: (e) {
+        print('onError:${e}');
+      }).catchError((e) {
+        print('catchError:${e}');
+      });
+    } catch (e) {
+      print('catch:${e}');
+    }
+
+//    await Navigator
+//        .push(
+//            context,
+//            new MaterialPageRoute<FirebaseUser>(
+//              builder: (BuildContext context) => new LoginEmail(),
+//            ))
+//        .then((user) {
+//      if (user != null) {
+//        _initUser();
+//        print(user);
+////        if (user != null) {
+////          setState(() {
+////            _uiuser = user;
+////            _islogin = true;
+////            if (user.providerData.length > 1) {
+////              _userName = user.providerData[1].displayName;
+////              _photoUrl = user.providerData[1].photoUrl;
+////            } else {
+////              _userName = user.displayName;
+////              _photoUrl = user.photoUrl;
+////            }
+////          });
+////        } else {
+////          setState(() {
+////            _islogin = false;
+////          });
+////        }
+//      }
+//    });
 //    try {
 //      String name = await Firebaseui.signin;
 //      _initUser();
