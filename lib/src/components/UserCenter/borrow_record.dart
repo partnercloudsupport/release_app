@@ -172,7 +172,7 @@ class _BorrowRecordState extends State<BorrowRecord>
       }
       uid = user.uid;
     });
-    _rootRef.child('orders/${uid}').orderByKey().once().then((records) {
+    _rootRef.child('orders').orderByChild('uid').equalTo(uid).once().then((records) {
       _initList(records);
     }).whenComplete(() {
       completer.complete(null);

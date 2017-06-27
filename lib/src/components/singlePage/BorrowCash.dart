@@ -415,7 +415,8 @@ class _BorrowCashState extends State<BorrowCash> {
       } else {
         //提交订单处理
         print('开始提交订单');
-        _rootRef.child('orders/${uid}').push().set({
+        _rootRef.child('orders/').push().set({
+          'uid':uid,
           'allBlance': _borrowBlance + _fee, //总还款金额
           'blance': _borrowBlance, //借款金额
           'term': '${_borrowDays}', //借款期限
