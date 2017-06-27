@@ -421,7 +421,7 @@ class _BorrowCashState extends State<BorrowCash> {
           'term': '${_borrowDays}', //借款期限
           'terUnit': '${_termUnit}', //期限单位
           'fee': _fee, //费用
-          'status': '0', //状态
+          'status': '00', //状态
           'Token': _token,
           'timestamp': new DateTime.now().millisecondsSinceEpoch,
         }).then((value) async {
