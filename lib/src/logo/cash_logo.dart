@@ -8,6 +8,7 @@ import 'dart:ui' as ui show Gradient, TextBox, lerpDouble;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/src/foundation/tree_diagnostics_mixin.dart';
 
 
 /// Possible ways to draw Flutter's logo.
@@ -207,6 +208,11 @@ class CashLogoDecoration extends Decoration {
   String toString([String prefix = '', String prefixIndent ]) {
     final String extra = _inTransition ? ', transition $_position:$_opacity' : '';
     return '$prefix$runtimeType($lightColor/$darkColor on $textColor, $style$extra)';
+  }
+  @override
+  DiagnosticsNode toDiagnosticsNode({String name, DiagnosticsTreeStyle style: DiagnosticsTreeStyle.sparse}) {
+    // TODO: implement toDiagnosticsNode
+    return null;
   }
 }
 

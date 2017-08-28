@@ -106,7 +106,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       onPressed: () {
                         Navigator.of(context).pop(
                             true); // Returning true to _onWillPop will pop again.
-                      })
+                      }),
+                  new FlutterLogo()
                 ])) ??
         false;
   }

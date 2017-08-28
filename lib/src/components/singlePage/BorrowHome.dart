@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:release_app/src/comm/Colors.dart';
+//import 'package:release_app/src/comm/Colors.dart';
 import 'package:release_app/src/logo/logo.dart';
+import 'package:firebaseui/firebaseui.dart';
 
 class BorrowHome extends StatefulWidget {
   final String title;
@@ -121,6 +122,9 @@ class _BorrowHomeState extends State<BorrowHome> {
                         )
                       : new RaisedButton(
                           onPressed: () {
+                            if(Firebaseui.currentUser == null){
+
+                            }
                             Navigator.of(context).pushNamed('/cash');
                           },
                           child: const Text(
